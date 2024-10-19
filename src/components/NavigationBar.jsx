@@ -26,7 +26,7 @@ const NavigationBar = () => {
 
   return (
     <header>
-      <div className='sticky-container sticky'>
+      <div className='sticky-container sticky z-10'>
         <div className='top-header-row flex items-center px-4 pt-3'>
           <div className='left-container w-1/2 flex space-x-5 font-montserrat text-sm'>
             <div className='flex items-center'>
