@@ -55,7 +55,7 @@ const LandingPage = () => {
                 </div>
             </div>
 
-            <div className='booking-banner flex justify-center w-full h-auto z-0 mt-4'>
+            <div className='booking-banner flex justify-center w-full h-auto z-0 mt-4 mb-20'>
                 <div className='flex relative justify-center w-11/12'>
                     <img className='w-3/4 lg:w-full h-auto' src={BookingBanner} alt="Booking Banner" />
                     <div className='hidden lg:flex absolute top-20 left-20'>
