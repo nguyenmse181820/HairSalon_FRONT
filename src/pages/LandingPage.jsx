@@ -3,6 +3,7 @@ import LeftAboveImage from '../assets/left-above-container.png'
 import LeftUnderImage from '../assets/left-under-container.png'
 import RightImage from '../assets/right-container.png'
 import BookingBanner from '../assets/booking-banner.png'
+{/*Test merge*/}
 
 const LandingPage = () => {
     return (
