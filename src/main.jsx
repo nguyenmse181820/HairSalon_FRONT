@@ -1,9 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
 import CustomerFrame from './pages/frame/CustomerFrame.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
+import AboutUs from './pages/AboutUsPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 import './index.css'
 import StylistFrame from './pages/frame/StylistFrame.jsx';
 import StylistPage from './pages/stylistpage/StylistPage.jsx';
@@ -25,6 +27,18 @@ const router = createBrowserRouter([
       {
         path: 'account',
         element: <AccountPage />
+      },
+      {
+        path: 'about-us',
+        element: <AboutUs />
+      },
+      {
+        path: 'contact',
+        element: <ContactPage />
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />
       }
     ]
   },

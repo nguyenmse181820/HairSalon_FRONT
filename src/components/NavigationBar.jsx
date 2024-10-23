@@ -61,9 +61,17 @@ const NavigationBar = () => {
 
         <div className="menubar">
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
-          {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
-                <li key={i} className="nav-link font-normal text-sm cursor-pointer">{menuItem}</li>
-              ))}
+            {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
+              <li key={i} className="nav-link font-semibold text-sm cursor-pointer">
+                {menuItem === 'CONTACT' ? (
+                  <Link to="/contact" onClick={toggleMenu}>{menuItem}</Link>
+                ) : menuItem === 'ABOUT US' ? (
+                  <Link to="/about-us" onClick={toggleMenu}>{menuItem}</Link>
+                ) : (
+                  menuItem
+                )}
+              </li>
+            ))}
           </ul>
 
           <div className='flex justify-end pr-5 text-2xl'>
@@ -81,7 +89,16 @@ const NavigationBar = () => {
             </div>
             <ul className="flex flex-col items-center space-y-8 text-xl">
               {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
-                <li key={i} className="nav-link font-semibold cursor-pointer">{menuItem}</li>
+
+                <li key={i} className="nav-link font-semibold cursor-pointer">
+                  {menuItem === 'ABOUT US' ? (
+                    <Link to="/contact" onClick={toggleMenu}>{menuItem}</Link>
+                  ) : menuItem === 'ABOUT US' ? (
+                    <Link to="/about-us" onClick={toggleMenu}>{menuItem}</Link>
+                  ) : (
+                    menuItem
+                  )}
+                </li>
               ))}
             </ul>
           </div>
