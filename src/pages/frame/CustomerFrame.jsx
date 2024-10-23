@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Toaster } from 'sonner'
 import NavigationBar from '../../components/NavigationBar'
 import Footer from '../../components/Footer'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -6,8 +7,11 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 const CustomerFrame = () => {
     return (
         <div>
+            <Toaster position='top-right' richColors expand={true}></Toaster>
             <NavigationBar />
-            <Outlet />
+            <div className='pt-32 lg:pt-48'>
+                <Outlet />
+            </div>
             <Footer />
         </div>
     )

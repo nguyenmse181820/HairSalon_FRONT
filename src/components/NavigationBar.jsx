@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faHeadphonesSimple, faMagnifyingGlass, faUser, faCalendar, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +27,7 @@ const NavigationBar = () => {
 
   return (
     <header>
-      <div className='sticky-container sticky z-10'>
+      <div className='sticky-container fixed w-full z-10 bg-white'>
         <div className='top-header-row flex items-center px-4 pt-3'>
           <div className='left-container w-1/2 flex space-x-5 font-montserrat text-sm'>
             <div className='flex items-center'>
@@ -45,7 +46,7 @@ const NavigationBar = () => {
             </div>
             <div className='flex items-center'>
               <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faUser} />
-              <a className='hidden lg:inline-block' href="">My Account</a>
+              <Link className='hidden lg:inline-block' to="/account">My Account</Link>
             </div>
             <div className='flex items-center'>
               <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faCalendar} />
@@ -61,7 +62,7 @@ const NavigationBar = () => {
         <div className="menubar">
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
           {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
-                <li key={i} className="nav-link font-semibold text-sm cursor-pointer">{menuItem}</li>
+                <li key={i} className="nav-link font-normal text-sm cursor-pointer">{menuItem}</li>
               ))}
           </ul>
 
@@ -86,6 +87,7 @@ const NavigationBar = () => {
           </div>
         </div>
       </div>
+      <hr className='border border-gray-300'/>
     </header>
   );
 }

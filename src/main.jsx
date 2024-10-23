@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NavigationBar from './components/NavigationBar.jsx'
 import CustomerFrame from './pages/frame/CustomerFrame.jsx';
 import LandingPage from './pages/LandingPage.jsx';
+import AccountPage from './pages/AccountPage.jsx';
 import './index.css'
 
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <LandingPage />
+      },
+      {
+        path: 'account',
+        element: <AccountPage />
       }
     ]
   }
