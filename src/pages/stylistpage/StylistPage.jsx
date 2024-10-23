@@ -1,11 +1,9 @@
 import React from 'react'
-import NavBarStylist from '../../components/stylist/NavBarStylist';
 import BackGroundStylist from '../../assets/stylist-home-page.jpg';
 
 function StylistPage() {
     return (
         <div>
-            <NavBarStylist />
 
             <div className='flex justify-center  mt-10'>
                 <img className='bg-no-repeat bg-cover bg-center w-3/4 lg:w-full' src={BackGroundStylist} alt="" />

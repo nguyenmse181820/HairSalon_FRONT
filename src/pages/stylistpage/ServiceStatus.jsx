@@ -1,10 +1,8 @@
 import React from 'react'
-import NavBarStylist from '../../components/stylist/NavBarStylist'
 
 function ServiceStatus() {
     return (
         <div>
-            <NavBarStylist />
             <div className='shadow-lg flex flex-col mt-10 mb-10 mx-1 lg:mx-10 text-sm lg:text-lg'>
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
                     <thead className=''>

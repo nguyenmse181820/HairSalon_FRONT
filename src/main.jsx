@@ -5,7 +5,7 @@ import CustomerFrame from './pages/frame/CustomerFrame.jsx';
 import LandingPage from './pages/LandingPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import './index.css'
-
+import StylistFrame from './pages/frame/StylistFrame.jsx';
 import StylistPage from './pages/stylistpage/StylistPage.jsx';
 import ServiceStatus from './pages/stylistpage/ServiceStatus.jsx';
 import AppointmentView from './pages/stylistpage/AppointmentView.jsx';
@@ -28,31 +28,33 @@ const router = createBrowserRouter([
       }
     ]
   },
-
   {
     path: '/stylist',
-    element: <StylistPage />
+    element: <StylistFrame />,
+    children: [
+      {
+        path: 'home',
+        element: <StylistPage />
+      },
+      {
+        path: 'services',
+        element: <ServiceStatus />
+      },
+      {
+        path: 'appointmentView',
+        element: <AppointmentView />
+      },
+      {
+        path: 'appointmentManagement',
+        element: <ManagementAppointment />
+      },
+      {
+        path: 'earning',
+        element: <Earning />
+      }
+    ]
   },
-  {
-    path: '/stylist/services',
-    element: <ServiceStatus />
-  },
-  {
-    path: '/stylist/appointmentView',
-    element: <AppointmentView />
-  },
-  {
-    path: '/stylist/appointmentManagement',
-    element: <ManagementAppointment />
-  },
-  {
-    path: '/stylist/earning',
-    element: <Earning />
-  }
-
-
-
-
+  
 ])
 
 createRoot(document.getElementById('root')).render(

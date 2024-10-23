@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Logo from '../../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faHeadphonesSimple, faMagnifyingGlass, faUser, faCalendar, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
-// import '../css/NavigationBar.css';
 
 function NavBarStylist() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -61,7 +60,7 @@ function NavBarStylist() {
                 <div className="menustylist-bar">
                     <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
 
-                        <li><a href="/stylist" className="nav-link font-semibold text-sm uppercase">HOME</a></li>
+                        <li><a href="/stylist/home" className="nav-link font-semibold text-sm uppercase">HOME</a></li>
                         <li><a href="/stylist/services" className="nav-link font-semibold text-sm uppercase">SERVICE STATUS</a></li>
                         <li><a href="/stylist/earning" className="nav-link font-semibold text-sm uppercase">EARNING</a></li>
                         <li>

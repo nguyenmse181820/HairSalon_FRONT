@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import NavBarStylist from '../../components/stylist/NavBarStylist'
 
 function ManagementAppointment() {
 
     return (
         <div>
-            <NavBarStylist />
             <div className='flex flex-col lg:flex-row items-start mt-6  lg:items-center ml-10'>
                 <div className='mr-10 font-bold' >Sort: </div>
                 <div className='mr-10'><button className='bg-black text-white py-2 px-6 mt-4'>Date</button></div>
