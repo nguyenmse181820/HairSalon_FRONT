@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faHeadphonesSimple, faMagnifyingGlass, faUser, faCalendar, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 import '../css/NavigationBar.css';
 
 const NavigationBar = () => {
@@ -60,6 +61,12 @@ const NavigationBar = () => {
         </div>
 
         <div className="menubar">
+          {/* <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
+            {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
+              <li key={i} className="nav-link font-semibold text-sm cursor-pointer">{menuItem}</li>
+            ))}
+          </ul> */}
+
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
             {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
               <li key={i} className="nav-link font-semibold text-sm cursor-pointer">
@@ -67,12 +74,15 @@ const NavigationBar = () => {
                   <Link to="/contact" onClick={toggleMenu}>{menuItem}</Link>
                 ) : menuItem === 'ABOUT US' ? (
                   <Link to="/about-us" onClick={toggleMenu}>{menuItem}</Link>
+
                 ) : (
                   menuItem
                 )}
               </li>
             ))}
           </ul>
+
+
 
           <div className='flex justify-end pr-5 text-2xl'>
             <FontAwesomeIcon className='lg:hidden cursor-pointer hover:rotate-90 transition-transform duration-500 ease-in-out' icon={faBars} onClick={toggleMenu} />
@@ -87,7 +97,7 @@ const NavigationBar = () => {
                 <img className='w-1/2 mb-12' src={Logo} alt="Logo Coiffure" />
               </div>
             </div>
-            <ul className="flex flex-col items-center space-y-8 text-xl">
+            {/* <ul className="flex flex-col items-center space-y-8 text-xl">
               {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
 
                 <li key={i} className="nav-link font-semibold cursor-pointer">
@@ -95,6 +105,18 @@ const NavigationBar = () => {
                     <Link to="/contact" onClick={toggleMenu}>{menuItem}</Link>
                   ) : menuItem === 'ABOUT US' ? (
                     <Link to="/about-us" onClick={toggleMenu}>{menuItem}</Link>
+                  ) : (
+                    menuItem
+                  )}
+                </li>
+              ))}
+            </ul> */}
+
+            <ul className="flex flex-col items-center space-y-8 text-xl">
+              {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
+                <li key={i} className="nav-link font-semibold cursor-pointer">
+                  {menuItem === 'ABOUT US' ? (
+                    <Link to="/about-us" onClick={toggleMenu}>{menuItem}</Link> // Close the menu when clicked in mobile view
                   ) : (
                     menuItem
                   )}
