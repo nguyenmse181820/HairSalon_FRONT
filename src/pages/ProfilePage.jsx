@@ -1,31 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { toast, Toaster } from 'sonner';
+import axios from 'axios';
 
 const ProfilePage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [userAPI, setUserAPI] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isActing, setIsActing] = useState(false);
     const [userInfo, setUserInfo] = useState({
-        name: 'Nguyen Van A',
-        birthdate: '02/02/2004',
-        loyaltyPoints: 1000,
-        phone: '0123456789',
-        email: 'thachstylist@gmail.com',
-        address: '123 Becker Street',
+        name: '',
+        email: '',
+        address: '',
+        phone: '',
+        loyaltyPoint: '',
     });
 
-    // Function to handle opening/closing edit modal
-    const toggleEditModal = () => {
+    const fetchUserData = async () => {
+        const userId = 1; // Use the ID of the specific user you want to fetch
+        try {
+            console.log(`Fetching data for user with id: ${userId}...`);
+            const response = await axios.get(
+                `https://671bb4d32c842d92c380ff3f.mockapi.io/UserAccount/${userId}`
+            );
+            console.log("Fetched user data:", response.data);
+            setUserInfo(response.data);
+        } catch (error) {
+            console.error("Failed to fetch user data:", error);
+            toast.error("Failed to fetch user data");
+        }
+    };
+
+    useEffect(() => {
+        fetchUserData();
+    }, []);
+
+
+    const handleEdit = async () => {
+        if (isActing) return;
+        setIsActing(true);
+        try {
+            const response = await axios.put(
+                `https://671bb4d32c842d92c380ff3f.mockapi.io/UserAccount/${selectedUser.id}`,
+                userInfo
+            );
+            const updatedUser = userAPI.map((user) =>
+                user.id === selectedUser.id ? response.data : user
+            );
+            toast.success("User edited successfully");
+            setUserAPI(updatedUser);
+            setSelectedUser(null);
+            setIsEditModalOpen(false);
+        } catch (error) {
+            toast.error("Failed to edit user");
+            console.error("Failed to edit user:", error);
+        } finally {
+            setIsActing(false);
+        }
+    };
+
+
+    const handleSave = () => {
+        handleEdit();
+    };
+
+    const toggleEditModal = (user = null) => {
+        setSelectedUser(user);
+        setUserInfo(user || userInfo);
         setIsEditModalOpen(!isEditModalOpen);
     };
 
-    // Function to handle saving updated user info
-    const handleSave = () => {
-        // Add functionality for saving data here
-        toggleEditModal();
-    };
+
+
 
     return (
-        <div className="min-h-screen flex flex-col items-center bg-white py-10">
+        <div className="min-h-screen flex flex-col items-center bg-white py-2">
+            <Toaster />
+
             {/* Avatar Section */}
-            <div className="w-24 h-24 bg-gray-300 mb-6 rounded-full flex justify-center items-center">
+            <div className="w-32 h-32 bg-gray-300 mb-10 rounded-full flex justify-center items-center">
                 <span>AVATAR</span>
             </div>
 
@@ -33,53 +85,48 @@ const ProfilePage = () => {
             <h2 className="text-2xl font-bold mb-8 uppercase">PERSONAL INFORMATION</h2>
 
             {/* Edit Button */}
-            <div className="flex justify-end w-full max-w-2xl mb-4">
+            <div className="flex justify-end w-full max-w-4xl mb-4">
                 <button
                     className="text-sm font-semilight text-blue-600"
-                    onClick={toggleEditModal}
+                    onClick={() => toggleEditModal(userInfo)} // Pass userInfo to populate modal
                 >
                     EDIT
                 </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 w-full max-w-2xl mb-4">
+            <div className="grid grid-cols-2 gap-8 w-full max-w-4xl mb-4">
+
                 <div>
                     <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">NAME</label>
-                    <input
-                        value={userInfo.name}
-                        className="w-full border border-gray-300 p-2 text-lg font-light"
-                        readOnly
-                    />
+                    <div className="w-full border border-gray-300 p-2 text-lg font-light">
+                        {userInfo.name}
+                    </div>
                 </div>
                 <div>
-                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">BIRTHDATE</label>
-                    <input
-                        value={userInfo.birthdate}
-                        className="w-full border border-gray-300 p-2 text-lg font-light"
-                        readOnly
-                    />
+                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">Email</label>
+                    <div className="w-full border border-gray-300 p-2 text-lg font-light">
+                        {userInfo.email}
+                    </div>
                 </div>
+
                 <div>
-                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">LOYALTY POINT</label>
-                    <input
-                        value={userInfo.loyaltyPoints}
-                        className="w-full border border-gray-300 p-2 text-lg font-light"
-                        readOnly
-                    />
+                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">Loyalty Point</label>
+                    <div className="w-full border border-gray-300 p-2 text-lg font-light">
+                        {userInfo.loyaltyPoint}
+                    </div>
                 </div>
                 <div>
                     <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">PHONE</label>
-                    <input
-                        value={userInfo.phone}
-                        className="w-full border border-gray-300 p-2 text-lg font-light"
-                        readOnly
-                    />
+                    <div className="w-full border border-gray-300 p-2 text-lg font-light">
+                        {userInfo.phone}
+                    </div>
                 </div>
             </div>
 
+
             {/* Upcoming Appointment */}
-            <div className="w-full max-w-2xl mb-4">
-                <h3 className="text-gray-600 font-semibold mb-2 tracking-wide uppercase">Upcoming Appointment</h3>
+            <div className="w-full max-w-4xl mb-4">
+                <h3 className="text-gray-600 font-semibold mb-2 mt-4 tracking-wide uppercase">Upcoming Appointment</h3>
                 <div className="flex justify-between items-center">
                     <div>
                         <p className="font-bold">TODAY</p>
@@ -104,43 +151,50 @@ const ProfilePage = () => {
                 </div>
             </div>
 
-
             {/* Edit Modal */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-6 w-full max-w-md rounded-md shadow-lg">
                         <h3 className="text-lg font-bold mb-4">EDIT INFORMATION</h3>
+
+                        {/* Name and Email Row */}
                         <div className="grid grid-cols-2 gap-4 mb-4">
-                            <label className="text-gray-700">Name</label>
-                            <input
-                                value={userInfo.name}
-                                onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
-                                className="border border-gray-300 p-2 w-full"
-                            />
+                            <div>
+                                <label className="text-gray-700 block mb-1">Name</label>
+                                <input
+                                    value={userInfo.name}
+                                    onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
+                                    className="border border-gray-300 p-2 w-full"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-gray-700 block mb-1">Email</label>
+                                <input
+                                    value={userInfo.email}
+                                    onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
+                                    className="border border-gray-300 p-2 w-full"
+                                />
+                            </div>
                         </div>
+
+                        {/* Address and Phone Row */}
                         <div className="grid grid-cols-2 gap-4 mb-4">
-                            <label className="text-gray-700">Email</label>
-                            <input
-                                value={userInfo.email}
-                                onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
-                                className="border border-gray-300 p-2 w-full"
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
-                            <label className="text-gray-700">Phone</label>
-                            <input
-                                value={userInfo.phone}
-                                onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
-                                className="border border-gray-300 p-2 w-full"
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
-                            <label className="text-gray-700">Address</label>
-                            <input
-                                value={userInfo.address}
-                                onChange={(e) => setUserInfo({ ...userInfo, address: e.target.value })}
-                                className="border border-gray-300 p-2 w-full"
-                            />
+                            <div>
+                                <label className="text-gray-700 block mb-1">Address</label>
+                                <input
+                                    value={userInfo.address}
+                                    onChange={(e) => setUserInfo({ ...userInfo, address: e.target.value })}
+                                    className="border border-gray-300 p-2 w-full"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-gray-700 block mb-1">Phone</label>
+                                <input
+                                    value={userInfo.phone}
+                                    onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                                    className="border border-gray-300 p-2 w-full"
+                                />
+                            </div>
                         </div>
 
                         {/* Modal Buttons */}

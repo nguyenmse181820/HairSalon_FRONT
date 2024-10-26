@@ -17,13 +17,13 @@ const LoginPage = () => {
     }
 
     const unionLogin = async () => {
-        if(email.length > 0 && password.length > 0){
+        if (email.length > 0 && password.length > 0) {
             try {
                 const response = await axios.post('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/login', {
                     email: email,
                     password: password
                 });
-                if(response.status === 200){
+                if (response.status === 200) {
                     toast.success('Login successful');
                     console.log(response.data);
                 }
@@ -38,7 +38,7 @@ const LoginPage = () => {
     }
 
     return (
-        
+
         <div className='min-h-screen flex justify-center'>
             <div className='container'>
                 <div className='title mt-8 flex justify-center'>
@@ -110,8 +110,8 @@ const LoginPage = () => {
                                 </div>
                                 <button className='text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
                             hover:text-black transform duration-300 border border-black mt-3'
-                            onClick={unionLogin}
-                            >Continue</button>
+                                    onClick={unionLogin}
+                                >Continue</button>
                             </div>
                         </div>
                     ) : (

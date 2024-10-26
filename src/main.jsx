@@ -40,7 +40,8 @@ const router = createBrowserRouter([
         path: 'profile',
         element: <ProfilePage />
 
-      }
+      },
+
     ]
   },
   {
@@ -69,7 +70,7 @@ const router = createBrowserRouter([
       }
     ]
   },
-  
+
 ])
 
 createRoot(document.getElementById('root')).render(
