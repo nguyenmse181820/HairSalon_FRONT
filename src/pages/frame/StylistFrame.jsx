@@ -7,7 +7,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 const CustomerFrame = () => {
     return (
         <div>
-            <Toaster position='top-right' richColors expand={true}></Toaster>
+            <Toaster position='bottom-right' richColors expand={true}></Toaster>
             <NavigationBar />
             <div className='pt-32 lg:pt-48'>
                 <Outlet />
