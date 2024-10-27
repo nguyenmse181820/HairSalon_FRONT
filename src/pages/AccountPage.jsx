@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import useDocumentTitle from '../components/Title.jsx'
 import { toast } from 'sonner';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../main.jsx';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoginActive, setIsLoginActive] = useState(true);
+    const { setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
     useDocumentTitle('My Coiffure Account')
 
     const handleEmail = (e) => {
@@ -17,25 +22,42 @@ const LoginPage = () => {
     }
 
     const unionLogin = async () => {
-        if(email.length > 0 && password.length > 0){
+        if (email && password) {
             try {
-                const response = await axios.post('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/login', {
-                    email: email,
-                    password: password
-                });
-                if(response.status === 200){
-                    toast.success('Login successful');
-                    console.log(response.data);
+                const response = await axios.post(
+                    'https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/login', 
+                    { email, password }
+                );
+
+                if (response.status === 200) {
+                    const user = response.data.user;
+                    const token = response.data.token;
+
+                    localStorage.setItem('user', JSON.stringify(user));
+                    localStorage.setItem('token', token);
+
+                    setUser({ ...user, isLoggedIn: true });
+
+                    if (user.role === 'stylist') {
+                        toast.success('Welcome, Stylist!');
+                        navigate('/stylist/home');
+                    } else if (user.role === 'customer') {
+                        navigate('/');
+                        console.log(user);
+                    } else {
+                        toast.error('Unauthorized role');
+                    }
+                } else {
+                    toast.error('Invalid credentials. Please try again.');
                 }
             } catch (error) {
-                console.log(error);
-                toast.error(`Invalid credentials, please try again!`);
+                toast.error('Invalid credentials, please try again!');
             }
         } else {
-            console.log('Please fill in all fields');
             toast.error('Please fill in all fields');
         }
-    }
+    };
+    
 
     return (
         

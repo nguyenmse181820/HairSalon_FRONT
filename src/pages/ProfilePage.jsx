@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../main';
+import { Toaster, toast } from 'sonner';
 
 const ProfilePage = () => {
+    const navigate = useNavigate(); 
+    const { user, setUser } = useContext(UserContext);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [userInfo, setUserInfo] = useState({
         name: 'Nguyen Van A',
@@ -21,6 +26,14 @@ const ProfilePage = () => {
         // Add functionality for saving data here
         toggleEditModal();
     };
+
+    const logout = () => {
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('token');
+        setUser(null);
+        navigate('/');
+        toast.success('Logged out successfully');
+      };
 
     return (
         <div className="min-h-screen flex flex-col items-center bg-white py-10">
@@ -46,15 +59,15 @@ const ProfilePage = () => {
                 <div>
                     <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">NAME</label>
                     <input
-                        value={userInfo.name}
+                        value={user.name}
                         className="w-full border border-gray-300 p-2 text-lg font-light"
                         readOnly
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">BIRTHDATE</label>
+                    <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">DATE OF BIRTH</label>
                     <input
-                        value={userInfo.birthdate}
+                        value={user.birthday}
                         className="w-full border border-gray-300 p-2 text-lg font-light"
                         readOnly
                     />
@@ -101,6 +114,14 @@ const ProfilePage = () => {
                             </svg>
                         </a>
                     </div>
+                </div>
+                <div className='flex justify-end pt-10'>
+                    <button className='px-5 py-1 font-montserrat font-bold italic bg-transparent border-2
+                         border-black text-black hover:bg-black hover:text-white border-solid hover:scale-95 
+                         transform transition-all duration-300 ease-in-out'
+                         onClick={logout}>
+                        LOG OUT
+                    </button>
                 </div>
             </div>
 
