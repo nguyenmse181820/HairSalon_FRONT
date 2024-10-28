@@ -69,7 +69,12 @@ const ProfilePage = () => {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
-
+  const logout = () => {
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    setUser(null); // Set user to null on logout
+    navigate('/');
+};
 
 
   return (
