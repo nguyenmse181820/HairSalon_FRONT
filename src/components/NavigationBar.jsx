@@ -50,15 +50,17 @@ const NavigationBar = () => {
             </div>
             <div className='flex items-center'>
               <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faCalendar} />
-              <a className='hidden lg:inline-block' href="">My Appoinment</a>
+              <Link className='hidden lg:inline-block' to="/appointment">My Appointment</Link>
+
             </div>
           </div>
         </div>
 
-        <div className='middle-header-row flex items-center justify-center'>
-          <img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" />
-        </div>
-
+        <Link to='/'>
+          <div className='middle-header-row flex items-center justify-center'>
+            <img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" />
+          </div>
+        </Link>
         <div className="menubar">
           {/* <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
             {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
@@ -125,7 +127,7 @@ const NavigationBar = () => {
           </div>
         </div>
       </div>
-      <hr className='border border-gray-300'/>
+      <hr className='border border-gray-300' />
     </header>
   );
 }

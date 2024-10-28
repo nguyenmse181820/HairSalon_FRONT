@@ -6,6 +6,7 @@ import AccountPage from './pages/AccountPage.jsx';
 import AboutUs from './pages/AboutUsPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
+import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import './index.css'
 import StylistFrame from './pages/frame/StylistFrame.jsx';
 import StylistPage from './pages/stylistpage/StylistPage.jsx';
@@ -39,6 +40,11 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <ProfilePage />
+
+      },
+      {
+        path: 'appointment',
+        element: <CustomerAppointment />
 
       },
 
