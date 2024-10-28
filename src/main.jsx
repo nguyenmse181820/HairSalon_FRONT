@@ -1,32 +1,17 @@
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import React, { createContext, useState, useEffect, StrictMode } from "react";
-import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
-import LandingPage from "./pages/LandingPage.jsx";
-import AccountPage from "./pages/AccountPage.jsx";
-import AboutUs from "./pages/AboutUsPage.jsx";
-import ContactPage from "./pages/ContactPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import StylistFrame from "./pages/frame/StylistFrame.jsx";
-import StylistPage from "./pages/stylist-page/StylistPage.jsx";
-import ServiceStatus from "./pages/stylist-page/ServiceStatus.jsx";
-import AppointmentView from "./pages/stylist-page/AppointmentView.jsx";
-import ManagementAppointment from "./pages/stylist-page/ManagementAppointment.jsx";
-import Earning from "./pages/stylist-page/Earning.jsx";
-import "./index.css";
+import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-export const UserContext = createContext(null);
+import CustomerFrame from './pages/frame/CustomerFrame.jsx';
+import LandingPage from './pages/LandingPage.jsx';
+import AccountPage from './pages/AccountPage.jsx';
+import './index.css'
+import StylistFrame from './pages/frame/StylistFrame.jsx';
+import StylistPage from './pages/stylistpage/StylistPage.jsx';
+import ServiceStatus from './pages/stylistpage/ServiceStatus.jsx';
+import AppointmentView from './pages/stylistpage/AppointmentView.jsx';
+import ManagementAppointment from './pages/stylistpage/ManagementAppointment.jsx';
+import Earning from './pages/stylistpage/Earning.jsx';
 
-const App = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      console.log("user: ", storedUser);
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
 
   const router = createBrowserRouter([
     {
