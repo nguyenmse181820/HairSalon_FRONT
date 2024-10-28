@@ -1,39 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const CustomerAppointment = () => {
     const [activeTab, setActiveTab] = useState('UPCOMING');
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [showConfirmPopup, setShowConfirmPopup] = useState(false);
     const [cancelReason, setCancelReason] = useState('');
+    const [appointments, setAppointments] = useState([]);
 
-    const appointments = [
-        {
-            dateLabel: 'TODAY',
-            time: '10:00 - 11:00',
-            stylistName: 'HOANG THACH',
-            stylistEmail: 'thachstylist@gmail.com',
-            serviceType: 'BLEACH HAIR HAIR STYLING',
-            description: `Color: Ranges from golden blonde to icy platinum, depending on the level of bleach used and the natural hair color.\n\nTexture: Bleaching can make hair more porous and potentially drier, so it's important to use moisturizing products to maintain softness.\n\nVolume: Depending on the cut and styling, bleached hair can appear voluminous and textured, especially with added layers or waves.`,
-            date: 'TODAY\n10:00 - 11:00',
-            status: 'UNPAID',
-            statusLabel: 'UPCOMING'
-        },
-    ];
+    const fetchUserAppointments = async () => {
+        try {
+            const response = await axios.get(
+                `https://671f29bf1dfc429919842514.mockapi.io/api/appointment/UserAppointment`
+            );
+            console.log("Fetched appointments data:", response.data);
+            setAppointments(response.data);
+        } catch (error) {
+            console.error("Failed to fetch appointments data:", error);
+        }
+    };
 
-    // Filter appointments based on the active tab
-    const filteredAppointments = appointments.filter(appointment => appointment.statusLabel === activeTab);
+    useEffect(() => {
+        fetchUserAppointments();
+    }, []);
 
+
+    const getDisplayDate = (date) => {
+        const appointmentDate = new Date(date);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        if (appointmentDate.toDateString() === today.toDateString()) {
+            return "TODAY";
+        } else if (appointmentDate.toDateString() === yesterday.toDateString()) {
+            return "YESTERDAY";
+        } else if (appointmentDate.toDateString() === tomorrow.toDateString()) {
+            return "TOMORROW";
+        } else {
+            return appointmentDate.toLocaleDateString('en-US', {
+                weekday: 'short',
+                day: '2-digit',
+                month: 'short',
+            }).toUpperCase();
+        }
+    };
+
+
+    const getFilteredAppointments = () => {
+        const today = new Date();
+        const upcomingLimitDate = new Date(today);
+        upcomingLimitDate.setDate(today.getDate() + 5);
+
+        return appointments.filter(appointment => {
+            const appointmentDate = new Date(appointment.date);
+
+            if (activeTab === 'UPCOMING') {
+                return appointment.status === true &&
+                    appointmentDate >= today &&
+                    appointmentDate <= upcomingLimitDate;
+            } else if (activeTab === 'SUCCESS') {
+                return appointment.status === true;
+            } else if (activeTab === 'CANCELLED') {
+                return appointment.status === false;
+            }
+            return false;
+        });
+    };
+
+    const filteredAppointments = getFilteredAppointments();
 
     const handleCancelOrder = () => {
-        // Show confirmation popup
         setShowConfirmPopup(true);
     };
 
     const handleConfirmCancel = () => {
-        // Logic to cancel the order with reason
         console.log("Cancellation Reason:", cancelReason);
         setShowConfirmPopup(false);
-        setSelectedAppointment(null); // Close detail popup
+        setSelectedAppointment(null);
     };
 
     return (
@@ -62,100 +108,103 @@ const CustomerAppointment = () => {
 
             {/* Appointment Rows */}
             <div className="divide-y mt-4">
-                {filteredAppointments.map((appointment, index) => (
-                    <div key={index} className="flex items-center py-4">
-                        <div className="col-span-1 w-1/4 text-sm">
-                            <div className="font-semibold">{appointment.dateLabel}</div>
-                            <div>{appointment.time}</div>
-                        </div>
-                        <div className="col-span-1 w-1/4 text-sm">
-                            <div className="font-semibold">{appointment.stylistName}</div>
-                            <div>{appointment.stylistEmail}</div>
-                        </div>
-                        <div className="col-span-1 w-1/4 text-sm font-semibold whitespace-pre-line">
-                            {appointment.serviceType}
-                        </div>
-                        <div className="col-span-1 w-1/4 text-right text-blue-500">
-                            <a href="#" onClick={() => setSelectedAppointment(appointment)}>DETAIL &gt;</a>
-                        </div>
+                {filteredAppointments.length > 0 ? (
+                    filteredAppointments.map((appointment, index) => {
+                        const displayDate = getDisplayDate(appointment.date);
+                        const services = appointment.serviceType.split(', ');
+
+                        return (
+                            <div key={index} className="flex items-center py-4">
+                                <div className="col-span-1 w-1/4 text-sm">
+                                    <div className="font-semibold">{displayDate}</div>
+                                    <div>{appointment.time}</div>
+                                </div>
+                                <div className="col-span-1 w-1/4 text-sm">
+                                    <div className="font-semibold">{appointment.stylistName}</div>
+                                    <div>{appointment.stylistEmail}</div>
+                                </div>
+                                <div className="col-span-1 w-1/4 text-sm font-semibold whitespace-pre-line">
+                                    {services.map((service, idx) => (
+                                        <div key={idx}>{service.toUpperCase()}</div>
+                                    ))}
+                                </div>
+                                <div className="col-span-1 w-1/4 text-blue-500 flex justify-end pr-10">
+                                    <a href="#" onClick={() => setSelectedAppointment(appointment)}>DETAIL &gt;</a>
+                                </div>
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div className="text-center text-gray-500 mt-4">
+                        No appointments found.
                     </div>
-                ))}
+                )}
             </div>
 
-
+            {/* Detail and Confirmation Popups */}
             {selectedAppointment && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="relative bg-white p-10 rounded-lg max-w-xl w-full space-y-10">
-                        {/* X icon to close the popup */}
-                        <button
-                            onClick={() => setSelectedAppointment(null)}
-                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-                            aria-label="Close"
-                        >
+                    <div className="relative bg-white p-6 max-w-xl w-full space-y-10 border border-gray-300 ">
+                        <button onClick={() => setSelectedAppointment(null)} className="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-
-                        <h2 className="text-lg font-bold text-center">DETAIL BOOKING</h2>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                            <div className="text-gray-700 font-semibold">STYLIST NAME</div>
-                            <div className="font-semibold">{selectedAppointment.stylistName}</div>
-
-                            <div className="text-gray-700 font-semibold">EMAIL</div>
-                            <div>{selectedAppointment.stylistEmail}</div>
-
-                            <div className="text-gray-700 font-semibold">SERVICE TYPE</div>
-                            <div className="font-semibold">{selectedAppointment.serviceType}</div>
-
-                            <div className="text-gray-700 font-semibold">DESCRIPTION</div>
-                            <div className="whitespace-pre-line">
-                                {selectedAppointment.description.split('\n').map((line, index) => (
-                                    <p key={index} className={index === 0 ? "font-bold" : ""}>{line}</p>
-                                ))}
+                        <h2 className="text-lg font-semibold text-center">DETAIL BOOKING</h2>
+                        <div className="grid gap-y-4 text-sm"> {/* Single-column grid layout */}
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">STYLIST NAME</div>
+                                <div className="font-semibold">{selectedAppointment.stylistName.toUpperCase()}</div>
                             </div>
 
-                            <div className="text-gray-700 font-semibold">DATE</div>
-                            <div>{selectedAppointment.date}</div>
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">EMAIL</div>
+                                <div>{selectedAppointment.stylistEmail}</div>
+                            </div>
 
-                            <div className="text-gray-700 font-semibold">STATUS</div>
-                            <div className="font-semibold">{selectedAppointment.status}</div>
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">SERVICE TYPE</div>
+                                <div className="font-semibold">{selectedAppointment.serviceType.toUpperCase()}</div>
+                            </div>
+
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">DESCRIPTION</div>
+                                <div className="whitespace-pre-line">{selectedAppointment.description}</div>
+                            </div>
+
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">DATE & TIME</div>
+                                <div>
+                                    <div className="font-semibold">{getDisplayDate(selectedAppointment.date)}</div>
+                                    <div>{selectedAppointment.time}</div>
+                                </div>
+                            </div>
+
+                            <div className="flex">
+                                <div className="text-gray-600 w-1/3">STATUS</div>
+                                <div className="font-semibold">{selectedAppointment.payment ? "PAID" : "UNPAID"}</div>
+                            </div>
                         </div>
-                        <button
-                            onClick={handleCancelOrder}
-                            className="mt-4 w-full bg-red-500 text-white py-2 rounded font-semibold"
-                        >
-                            CANCEL ORDER
-                        </button>
+                        <div className="flex justify-center mt-4">
+                            <button
+                                onClick={handleCancelOrder}
+                                className="bg-black text-white py-1 px-4 font-semibold"
+                            >
+                                CANCEL ORDER
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
 
-            {/* Confirmation Popup */}
             {showConfirmPopup && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded-lg max-w-md w-full space-y-4">
+                    <div className="bg-white p-8 rounded-lg max-w-md w-full space-y-4">
                         <h2 className="text-lg font-bold text-center">Confirm Cancellation</h2>
-                        <p className="text-sm text-gray-700">Please provide a reason for the cancellation:</p>
-                        <textarea
-                            value={cancelReason}
-                            onChange={(e) => setCancelReason(e.target.value)}
-                            className="w-full h-24 p-2 border rounded"
-                            placeholder="Enter your reason here..."
-                        />
+                        <textarea value={cancelReason} onChange={(e) => setCancelReason(e.target.value)} className="w-full h-24 p-2 border rounded resize-none" placeholder="Enter your reason here..." />
                         <div className="flex justify-end space-x-2">
-                            <button
-                                onClick={() => setShowConfirmPopup(false)}
-                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded"
-                            >
-                                Close
-                            </button>
-                            <button
-                                onClick={handleConfirmCancel}
-                                className="bg-red-500 text-white px-4 py-2 rounded"
-                            >
-                                Confirm
-                            </button>
+                            <button onClick={() => setShowConfirmPopup(false)} className="bg-gray-200 text-gray-700 px-4 py-2 rounded">Close</button>
+                            <button onClick={handleConfirmCancel} className="bg-red-500 text-white px-4 py-2 rounded">Confirm</button>
                         </div>
                     </div>
                 </div>

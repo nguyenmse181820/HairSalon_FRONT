@@ -128,15 +128,15 @@ const ProfilePage = () => {
             <div className="w-full max-w-4xl mb-4">
                 <h3 className="text-gray-600 font-semibold mb-2 mt-4 tracking-wide uppercase">Upcoming Appointment</h3>
                 <div className="flex justify-between items-center">
-                    <div>
+                    <div className="text-left">
                         <p className="font-bold">TODAY</p>
                         <p className="text-sm text-gray-500">10:00 - 11:00</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left">
                         <p className="font-bold justify-start">Hoang Thach</p>
                         <p className="text-sm text-gray-500">thachstylist@gmail.com</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left">
                         <p className="font-bold">Bleach Hair</p>
                         <p className="font-bold">Hair Styling</p>
                     </div>
