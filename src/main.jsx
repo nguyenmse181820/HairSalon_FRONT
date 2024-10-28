@@ -23,7 +23,6 @@ const App = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      console.log("user: ", storedUser);
       setUser(JSON.parse(storedUser));
     }
   }, []);

@@ -30,12 +30,37 @@ const AccountPage = () => {
     }
   }, [setUser, navigate]);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const register = async () => {
+    if (fullName && registerEmail && registerPassword) {
+      try {
+        const response = await axios.post(
+          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
+          {
+            fullName,
+            email: registerEmail,
+            password: registerPassword,
+          }
+        );
+  
+        if (response.status === 201) {
+          const { user, token } = response.data;  
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", token);
+  
+          setUser({ ...user, isLoggedIn: true });
+          toast.success("Account created successfully!");
+          navigate("/");
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      } catch (error) {
+        toast.error("Error creating account. Please try again!");
+      }
+    } else {
+      toast.error("Please fill in all fields");
+    }
   };
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  };
+  
 
   const unionLogin = async () => {
     if (email && password) {
@@ -110,7 +135,7 @@ const AccountPage = () => {
                     type="text"
                     id="email"
                     value={email}
-                    onChange={handleEmail}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
                                     border-b border-black appearance-none 
                                     focus:outline-none focus:ring-0 focus:text-black peer"
@@ -133,7 +158,7 @@ const AccountPage = () => {
                     type="password"
                     id="password"
                     value={password}
-                    onChange={handlePassword}
+                    onChange={(e) => setPassword(e.target.value)} 
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
                                     border-b border-black appearance-none
                                     focus:outline-none focus:ring-0 focus:text-black peer"
