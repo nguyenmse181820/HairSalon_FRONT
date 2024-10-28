@@ -30,7 +30,7 @@ function StylistPage() {
                             <td>John Doe</td>
                             <td>Haircut</td>
                             <td>2023-09-01</td>
-                            <td>10:00 AM</td>
+                            <td>35 min</td>
                             <td>Completed</td>
                         </tr>
                         <tr>
@@ -38,7 +38,7 @@ function StylistPage() {
                             <td>Jane Smith</td>
                             <td>Haircut</td>
                             <td>2023-09-02</td>
-                            <td>11:00 AM</td>
+                            <td>120 min</td>
                         </tr>
                     </tbody>
                 </table>

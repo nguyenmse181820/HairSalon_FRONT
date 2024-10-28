@@ -25,7 +25,7 @@ function NavBarStylist() {
 
     return (
         <header>
-            <div className='sticky-container sticky z-10'>
+            <div className='sticky-container sticky'>
                 <div className='top-header-row flex items-center px-4 pt-3'>
                     <div className='left-container w-1/2 flex space-x-5 font-montserrat text-sm'>
                         <div className='flex items-center'>
@@ -67,12 +67,13 @@ function NavBarStylist() {
                             <button onClick={() => setIsOpen((prev) => !prev)} type='button' className='nav-link font-semibold text-sm uppercase'>Appointment</button>
                             {isOpen && (
                                 <ul className='absolute bg-white text-black w-[220px] border'>
-                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white'><a href="/stylist/appointmentView" >View Appointment</a></li>
-                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white'><a href="/stylist/appointmentManagement" >Management Appointment</a></li>
+                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500'><a href="/stylist/appointmentView" >View Appointment</a></li>
+                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500'><a href="/stylist/appointmentManagement" >Management Appointment</a></li>
                                 </ul>
                             )
                             }
                         </li>
+                        <li><a href="/stylist/schedule" className="nav-link font-semibold text-sm uppercase">Schedule</a></li>
 
                     </ul>
 

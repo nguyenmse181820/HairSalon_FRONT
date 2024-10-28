@@ -3,7 +3,7 @@ import React from 'react'
 function AppointmentView() {
     return (
         <div>
-            <div className='mx-auto mt-10 py-2 px-2 font-bold text-xl text-center'>Appointment</div>
+            <div className='mx-auto py-2 px-2 font-bold text-xl ml-10 text-center'>Appointment</div>
             <div className='shadow-lg flex flex-col mt-10 mb-10 mx-1 lg:mx-10 text-sm lg:text-lg'>
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
                     <thead className=''>

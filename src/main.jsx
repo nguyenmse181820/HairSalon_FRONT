@@ -14,6 +14,7 @@ import ServiceStatus from './pages/stylistpage/ServiceStatus.jsx';
 import AppointmentView from './pages/stylistpage/AppointmentView.jsx';
 import ManagementAppointment from './pages/stylistpage/ManagementAppointment.jsx';
 import Earning from './pages/stylistpage/Earning.jsx';
+import ScheduleManagement from './pages/stylistpage/ScheduleManagement.jsx';
 
 
 const router = createBrowserRouter([
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: 'earning',
         element: <Earning />
+      },
+      {
+        path: 'schedule',
+        element: <ScheduleManagement />
       }
     ]
   },
