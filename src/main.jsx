@@ -40,11 +40,7 @@ const App = () => {
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
-        {
-          path: 'appointment',
-          element: <CustomerAppointment />
-
-        },
+        { path: 'appointment', element: <CustomerAppointment /> },
       ],
     },
     {
