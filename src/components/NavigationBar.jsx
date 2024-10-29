@@ -12,6 +12,8 @@ const NavigationBar = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const { user } = useContext(UserContext);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,7 +59,7 @@ const NavigationBar = () => {
         </div>
 
         <div className='middle-header-row flex items-center justify-center'>
-          <img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" />
+          <Link className='w-1/4 lg:w-1/5' to="/"><img src={Logo} alt="Logo Coiffure" /></Link>
         </div>
 
         <div className="menubar">
