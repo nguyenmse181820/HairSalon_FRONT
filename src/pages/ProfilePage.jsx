@@ -200,7 +200,7 @@ const ProfilePage = () => {
               <div>
                 <label className="text-gray-700 block mb-1">Name</label>
                 <input
-                  value={userInfo.name}
+                  value={userInfo.fullName}
                   onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                   className="border border-gray-300 p-2 w-full"
                 />
