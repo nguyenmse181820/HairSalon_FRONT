@@ -2,6 +2,24 @@ import React from 'react'
 import BackGroundStylist from '../../assets/stylist-home-page.jpg';
 
 function StylistPage() {
+    const data = [
+        {
+            id: 1,
+            name: 'John Doe',
+            service: 'Haircut',
+            date: '2023-09-01',
+            time: '35 min',
+            status: 'Completed',
+        },
+        {
+            id: 2,
+            name: 'Jane Smith',
+            service: 'Haircut',
+            date: '2023-09-02',
+            time: '60 min',
+            status: 'Doing',
+        }
+    ]
     return (
         <div>
 
@@ -11,35 +29,36 @@ function StylistPage() {
 
             <div className='mx-auto mt-10 py-2 px-2 font-bold text-xl text-center'>Daily Appointments</div>
             <input type='date' className='mx-auto ml-10 mt-10 py-2 px-6 border-2 border-gray-400'></input>
-            <div className='shadow-lg flex flex-col mt-10 mb-10 mx-1 lg:mx-10 text-sm lg:text-lg'>
+            <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm lg:text-lg'>
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
                     <thead className=''>
                         <tr>
                             <th>Stt</th>
                             <th>Customer Name</th>
-                            <th>Service Type</th>
+                            <th className='hidden sm:table-cell'>Service Type</th>
                             <th>Date</th>
-                            <th>Time</th>
+                            <th className='hidden sm:table-cell'>Time</th>
                             <th>Status</th>
                         </tr>
 
                     </thead>
                     <tbody className='text-center'>
-                        <tr className=''>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>Haircut</td>
-                            <td>2023-09-01</td>
-                            <td>35 min</td>
-                            <td>Completed</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>Haircut</td>
-                            <td>2023-09-02</td>
-                            <td>120 min</td>
-                        </tr>
+                        {
+                            data.map((item) => {
+                                return (
+                                    <tr key={item.id}>
+                                        <td>{item.id}</td>
+                                        <td>{item.name}</td>
+                                        <td className='hidden sm:table-cell'>{item.service}</td>
+                                        <td>{item.date}</td>
+                                        <td className='hidden sm:table-cell'>{item.time}</td>
+                                        <td>{item.status}</td>
+                                    </tr>
+                                )
+                            }
+                            )
+                        }
+                        
                     </tbody>
                 </table>
             </div>
