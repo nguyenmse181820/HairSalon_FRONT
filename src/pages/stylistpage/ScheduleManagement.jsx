@@ -95,7 +95,7 @@ function ScheduleManagement() {
             {showDetail && (
                 <div className='modal'>
                     <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0 ' onClick={toggleDetail}></div>
-                    <div className='modal-content fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-16 '>
+                    <div className='modal-content fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-16 z-20'>
                         <div className='text-xl font-semibold mb-8 uppercase tracking-wider'>Information customer booking</div>
                         <div className='flex mb-10 gap-4'>
                             <div className='basis-1/3'>Customer name:</div>

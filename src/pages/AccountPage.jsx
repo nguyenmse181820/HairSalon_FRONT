@@ -28,7 +28,8 @@ const AccountPage = () => {
     if (storedUser && token) {
       setUser({ ...JSON.parse(storedUser), isLoggedIn: true });
     }
-  
+  }, [setUser, navigate]);
+
   const register = async () => {
     if (fullName && registerEmail && registerPassword) {
       try {
@@ -88,10 +89,15 @@ const AccountPage = () => {
             toast.error("Unauthorized role");
           }
         } else {
-            console.log('Please fill in all fields');
-            toast.error('Please fill in all fields');
+          toast.error("Invalid credentials. Please try again.");
         }
+      } catch (error) {
+        toast.error("Invalid credentials, please try again!");
+      }
+    } else {
+      toast.error("Please fill in all fields");
     }
+  };
 
   return (
     <div className="min-h-screen flex justify-center">

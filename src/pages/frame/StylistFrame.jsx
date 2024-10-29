@@ -9,7 +9,7 @@ const CustomerFrame = () => {
         <div>
             <Toaster position='top-right' richColors expand={true}></Toaster>
             <NavigationBar />
-            <div className='pt-10 mt-10 mb-20'>
+            <div className='pt-32 lg:pt-48'>
                 <Outlet />
             </div>
             <Footer />

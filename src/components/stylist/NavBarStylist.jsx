@@ -25,13 +25,10 @@ function NavBarStylist() {
 
     return (
         <header>
-            <div className='sticky-container sticky'>
+            <div className='sticky-container fixed w-full z-10 bg-white'>
                 <div className='top-header-row flex items-center px-4 pt-3'>
                     <div className='left-container w-1/2 flex space-x-5 font-montserrat text-sm'>
-                        <div className='flex items-center'>
-                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faHeadphonesSimple} />
-                            <a className='hidden lg:inline-block' href=""> Contact us</a>
-                        </div>
+
                         <div>
                             <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faMagnifyingGlass} />
                             <a className='hidden lg:inline-block' href="">Search</a>
@@ -46,10 +43,7 @@ function NavBarStylist() {
                             <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faUser} />
                             <a className='hidden lg:inline-block' href="">My Account</a>
                         </div>
-                        <div className='flex items-center'>
-                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faCalendar} />
-                            <a className='hidden lg:inline-block' href="">My Appoinment</a>
-                        </div>
+
                     </div>
                 </div>
 
