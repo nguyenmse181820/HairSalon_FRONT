@@ -9,12 +9,14 @@ import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
-import StylistPage from "./pages/stylist-page/StylistPage.jsx";
-import ServiceStatus from "./pages/stylist-page/ServiceStatus.jsx";
-import AppointmentView from "./pages/stylist-page/AppointmentView.jsx";
-import ManagementAppointment from "./pages/stylist-page/ManagementAppointment.jsx";
-import Earning from "./pages/stylist-page/Earning.jsx";
+import StylistPage from "./pages/stylistpage/StylistPage.jsx";
+import ServiceStatus from "./pages/stylistpage/ServiceStatus.jsx";
+import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
+import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
+import Earning from "./pages/stylistpage/Earning.jsx";
+import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import "./index.css";
+
 
 export const UserContext = createContext(null);
 
@@ -51,11 +53,13 @@ const App = () => {
       children: [
         { path: "home", element: <StylistPage /> },
         { path: "services", element: <ServiceStatus /> },
-        { path: "appointmentView", element: <AppointmentView /> },
-        { path: "appointmentManagement", element: <ManagementAppointment /> },
+        { path: "appointment_view", element: <AppointmentView /> },
+        { path: "appointment_management", element: <ManagementAppointment /> },
         { path: "earning", element: <Earning /> },
+        { path: "schedule", element: <ScheduleManagement /> },
       ],
     },
+    
   ]);
 
   if (loadingUser) return <div>Loading...</div>;
