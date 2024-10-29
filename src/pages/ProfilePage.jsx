@@ -127,17 +127,19 @@ const ProfilePage = () => {
             {userInfo.phone ? userInfo.phone : "Information needs to be updated"}
           </div>
         </div>
+        <div>
+          <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">DATE OF BIRTH</label>
+          <div className="w-full border border-gray-300 p-2 text-lg font-light">
+            {userInfo.birthday ? userInfo.birthday : "Information needs to be updated"}
+          </div>
+        </div>
+        <div>
+          <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">ADDRESS</label>
+          <div className="w-full border border-gray-300 p-2 text-lg font-light">
+            {userInfo.address ? userInfo.address : "Information needs to be updated"}
+          </div>
+        </div>
 
-      </div>
-
-      {/* Date of Birth */}
-      <div className="w-full max-w-4xl mb-4">
-        <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">DATE OF BIRTH</label>
-        <input
-          value={userInfo.birthday ? userInfo.birthday : "Information needs to be updated"}
-          className="w-full border border-gray-300 p-2 text-lg font-light"
-          readOnly
-        />
       </div>
 
       {/* Upcoming Appointment Section */}
@@ -228,6 +230,16 @@ const ProfilePage = () => {
                 <input
                   value={userInfo.phone}
                   onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                  className="border border-gray-300 p-2 w-full"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <div>
+                <label className="text-gray-700 block mb-1">Date of birth</label>
+                <input
+                  value={userInfo.birthday}
+                  onChange={(e) => setUserInfo({ ...userInfo, birthday: e.target.value })}
                   className="border border-gray-300 p-2 w-full"
                 />
               </div>
