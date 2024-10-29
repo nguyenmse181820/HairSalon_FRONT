@@ -17,6 +17,7 @@ import Earning from "./pages/stylistpage/Earning.jsx";
 import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import "./index.css";
 
+
 export const UserContext = createContext(null);
 
 const App = () => {
@@ -50,12 +51,13 @@ const App = () => {
       children: [
         { path: "home", element: <StylistPage /> },
         { path: "services", element: <ServiceStatus /> },
-        { path: "appointmentView", element: <AppointmentView /> },
-        { path: "appointmentManagement", element: <ManagementAppointment /> },
+        { path: "appointment_view", element: <AppointmentView /> },
+        { path: "appointment_management", element: <ManagementAppointment /> },
         { path: "earning", element: <Earning /> },
         { path: "schedule", element: <ScheduleManagement /> },
       ],
     },
+    
   ]);
 
   return (
