@@ -6,6 +6,7 @@ const ProfilePage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [userAPI, setUserAPI] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [originalUserInfo, setOriginalUserInfo] = useState({});
   const [isActing, setIsActing] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: '',
@@ -13,6 +14,7 @@ const ProfilePage = () => {
     address: '',
     phone: '',
     loyaltyPoint: '',
+    birthday: '',
   });
 
   const fetchUserData = async () => {
@@ -20,7 +22,7 @@ const ProfilePage = () => {
     try {
       console.log(`Fetching data for user with id: ${userId}...`);
       const response = await axios.get(
-        `https://671bb4d32c842d92c380ff3f.mockapi.io/UserAccount/${userId}`
+        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${userId}`
       );
       console.log("Fetched user data:", response.data);
       setUserInfo(response.data);
@@ -40,14 +42,16 @@ const ProfilePage = () => {
     setIsActing(true);
     try {
       const response = await axios.put(
-        `https://671bb4d32c842d92c380ff3f.mockapi.io/UserAccount/${selectedUser.id}`,
+        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${selectedUser.id}`,
         userInfo
       );
       const updatedUser = userAPI.map((user) =>
         user.id === selectedUser.id ? response.data : user
       );
+      console.log(response.data);
       toast.success("User edited successfully");
       setUserAPI(updatedUser);
+      setUserInfo(response.data);
       setSelectedUser(null);
       setIsEditModalOpen(false);
     } catch (error) {
@@ -64,28 +68,30 @@ const ProfilePage = () => {
   };
 
   const toggleEditModal = (user = null) => {
+    if (user) {
+      setOriginalUserInfo(userInfo);
+      setUserInfo(user);
+    }
     setSelectedUser(user);
-    setUserInfo(user || userInfo);
     setIsEditModalOpen(!isEditModalOpen);
   };
 
   const logout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('token');
-    setUser(null); // Set user to null on logout
+    setUser(null);
     navigate('/');
-};
+  };
+  const handleCancel = () => {
+    setUserInfo(originalUserInfo);
+    setIsEditModalOpen(false);
+  };
+
 
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white py-2">
       <Toaster />
-
-      {/* Avatar Section */}
-      <div className="w-32 h-32 bg-gray-300 mb-10 rounded-full flex justify-center items-center">
-        <span>AVATAR</span>
-      </div>
-
       {/* Edit Button */}
       <div className="flex justify-end w-full max-w-4xl mb-4">
         <button
@@ -230,7 +236,7 @@ const ProfilePage = () => {
             {/* Modal Buttons */}
             <div className="flex justify-end gap-4">
               <button
-                onClick={toggleEditModal}
+                onClick={handleCancel}
                 className="px-4 py-2 bg-gray-300 text-black font-semibold rounded-md"
               >
                 Cancel
