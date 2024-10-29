@@ -31,35 +31,44 @@ const AccountPage = () => {
   }, [setUser, navigate]);
 
   const register = async () => {
-    if (fullName && registerEmail && registerPassword) {
-      try {
-        const response = await axios.post(
-          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
-          {
-            fullName,
-            email: registerEmail,
-            password: registerPassword,
-          }
-        );
-
-        if (response.status === 201) {
-          const { user, token } = response.data;
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
-
-          setUser({ ...user, isLoggedIn: true });
-          toast.success("Account created successfully!");
-          navigate("/");
-        } else {
-          toast.error("Registration failed. Please try again.");
-        }
-      } catch (error) {
-        toast.error("Error creating account. Please try again!");
-      }
-    } else {
+    // Validate fields first
+    if (!fullName || !registerEmail || !registerPassword) {
       toast.error("Please fill in all fields");
+      return;
+    }
+  
+    try {
+      // Send registration request to the server
+      const response = await axios.post(
+        "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
+        {
+          fullName,
+          email: registerEmail,
+          password: registerPassword,
+        }
+      );
+  
+      // Check if the registration was successful
+      if (response.status === 201) {
+        const { user, token } = response.data;
+        
+        // Store user and token in local storage
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", token);
+  
+        // Set the user context and redirect
+        setUser({ ...user, isLoggedIn: true });
+        toast.success("Account created successfully!");
+        navigate("/");
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Error creating account. Please try again!");
     }
   };
+  
 
 
   const unionLogin = async () => {
@@ -262,6 +271,7 @@ const AccountPage = () => {
                 <button
                   className="text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
                           hover:text-black transform duration-300 border border-black mt-3"
+                          onClick={register}
                 >
                   Create account
                 </button>
