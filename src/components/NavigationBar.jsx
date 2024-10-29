@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faHeadphonesSimple, faMagnifyingGlass, faUser, faCalendar, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../css/NavigationBar.css';
+import { UserContext } from '../main.jsx';
 
 const NavigationBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);

@@ -90,7 +90,6 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white py-2">
-      <Toaster />
       {/* Edit Button */}
       <div className="flex justify-end w-full max-w-4xl mb-4">
         <button
