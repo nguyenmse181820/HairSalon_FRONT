@@ -12,6 +12,7 @@ const ProfilePage = () => {
   const [originalUserInfo, setOriginalUserInfo] = useState({});
   const [isActing, setIsActing] = useState(false);
   const { user, setUser } = useContext(UserContext);
+
   const [userInfo, setUserInfo] = useState(() => {
     const storedUserInfo = localStorage.getItem("user");
     return storedUserInfo ? JSON.parse(storedUserInfo) : {
@@ -40,17 +41,17 @@ const ProfilePage = () => {
     setIsActing(true);
     try {
       const response = await axios.put(
-        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${selectedUser.id}`,
+        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${user.id}`,
         userInfo
       );
-      const updatedUser = userAPI.map((user) =>
-        user.id === selectedUser.id ? response.data : user
-      );
-      console.log(response.data);
+
+      const updatedUserInfo = response.data;
+      setUserInfo(updatedUserInfo);
+      setUser({ ...updatedUserInfo, isLoggedIn: true });
+
+      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
+
       toast.success("User edited successfully");
-      setUserAPI(updatedUser);
-      setUserInfo(response.data);
-      setSelectedUser(null);
       setIsEditModalOpen(false);
     } catch (error) {
       toast.error("Failed to edit user");
