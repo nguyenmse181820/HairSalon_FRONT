@@ -57,7 +57,7 @@ const App = () => {
         { path: "schedule", element: <ScheduleManagement /> },
       ],
     },
-    
+
   ]);
 
   return (
