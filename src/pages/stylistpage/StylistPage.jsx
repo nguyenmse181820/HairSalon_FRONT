@@ -1,25 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import BackGroundStylist from '../../assets/stylist-home-page.jpg';
 
 function StylistPage() {
-    const data = [
-        {
-            id: 1,
-            name: 'John Doe',
-            service: 'Haircut',
-            date: '2023-09-01',
-            time: '35 min',
-            status: 'Completed',
-        },
-        {
-            id: 2,
-            name: 'Jane Smith',
-            service: 'Haircut',
-            date: '2023-09-02',
-            time: '60 min',
-            status: 'Doing',
-        }
-    ]
+    const [appointments, setAppointments] = useState([]);
+    useEffect(() => {
+        axios.get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/appointment').then((res) => {
+            setAppointments(res.data)
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+    })
     return (
         <div>
 
@@ -44,15 +36,15 @@ function StylistPage() {
                     </thead>
                     <tbody className='text-center'>
                         {
-                            data.map((item) => {
+                            appointments.map((item) => {
                                 return (
                                     <tr key={item.id}>
-                                        <td>{item.id}</td>
-                                        <td>{item.name}</td>
-                                        <td className='hidden sm:table-cell'>{item.service}</td>
-                                        <td>{item.date}</td>
-                                        <td className='hidden sm:table-cell'>{item.time}</td>
-                                        <td>{item.status}</td>
+                                        <td className='py-4'>{item.id}</td>
+                                        <td className='py-4'>{item.customerName}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
+                                        <td className='py-4'>{item.date}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.time}</td>
+                                        <td className='py-4'>{item.status}</td>
                                     </tr>
                                 )
                             }

@@ -1,24 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 function ServiceStatus() {
-    const services = [
-        {
-            id: 1,
-            stylistName: 'John Doe',
-            serviceType: 'Haircut',       
-            date: '2023-09-01',
-            time: '30 min',
-            status: 'Completed'
-        },
-        {
-            id: 2,
-            stylistName: 'Jane Smith',
-            serviceType: 'Haircut',
-            date: '2023-09-02',
-            time: '60 min',
-            status: 'Doing'
-        }
-    ]
+    const [services, setServices] = useState([]);
+    useEffect(() => {
+        axios.get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/appointment').then((res) => {
+            setServices(res.data)
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+    })
     return (
         <div>
             <div className='mx-auto py-2 px-2 font-bold text-xl ml-10 text-center'>Service Status</div>
@@ -28,7 +20,7 @@ function ServiceStatus() {
                         <tr>
                             <th>Stt</th>
                             <th>Stylist Name</th>
-                            <th className='hidden sm:table-cell'>Service Type</th>              
+                            <th className='hidden sm:table-cell'>Service Type</th>
                             <th>Date</th>
                             <th className='hidden sm:table-cell'>Time</th>
                             <th>Status</th>
@@ -39,12 +31,12 @@ function ServiceStatus() {
                         {services.map((service) => {
                             return (
                                 <tr key={service.id} className=''>
-                                    <td>{service.id}</td>
-                                    <td>{service.stylistName}</td>
-                                    <td className='hidden sm:table-cell'>{service.serviceType}</td>
-                                    <td>{service.date}</td>
-                                    <td className='hidden sm:table-cell'>{service.time}</td>
-                                    <td>{service.status}</td>
+                                    <td className='py-4'>{service.id}</td>
+                                    <td className='py-4'>{service.customerName}</td>
+                                    <td className='hidden sm:table-cell py-4'>{service.serviceType}</td>
+                                    <td className='py-4'>{service.date}</td>
+                                    <td className='hidden sm:table-cell py-4'>{service.time}</td>
+                                    <td className='py-4'>{service.status}</td>
                                 </tr>
                             )
                         })
