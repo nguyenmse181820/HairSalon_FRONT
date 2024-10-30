@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { toast, Toaster } from 'sonner';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../main.jsx';
+import { fetchUserData } from '../utils/apiUtils.jsx';
 
 const ProfilePage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -8,33 +11,29 @@ const ProfilePage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [originalUserInfo, setOriginalUserInfo] = useState({});
   const [isActing, setIsActing] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    address: '',
-    phone: '',
-    loyaltyPoint: '',
-    birthday: '',
+  const { user, setUser } = useContext(UserContext);
+
+  const [userInfo, setUserInfo] = useState(() => {
+    const storedUserInfo = localStorage.getItem("user");
+    return storedUserInfo ? JSON.parse(storedUserInfo) : {
+      fullName: '',
+      email: '',
+      address: '',
+      phone: '',
+      loyaltyPoint: '',
+      birthday: '',
+    };
   });
 
-  const fetchUserData = async () => {
-    const userId = 1;
-    try {
-      console.log(`Fetching data for user with id: ${userId}...`);
-      const response = await axios.get(
-        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${userId}`
-      );
-      console.log("Fetched user data:", response.data);
-      setUserInfo(response.data);
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-      toast.error("Failed to fetch user data");
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    if (user && user.id) {
+      fetchUserData(user.id)
+        .then((userData) => setUserInfo(userData))
+        .catch((error) => console.error("Failed to load user data:", error));
+    }
+  }, [user]);
 
 
   const handleEdit = async () => {
@@ -42,17 +41,17 @@ const ProfilePage = () => {
     setIsActing(true);
     try {
       const response = await axios.put(
-        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${selectedUser.id}`,
+        `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/UserAccount/${user.id}`,
         userInfo
       );
-      const updatedUser = userAPI.map((user) =>
-        user.id === selectedUser.id ? response.data : user
-      );
-      console.log(response.data);
+
+      const updatedUserInfo = response.data;
+      setUserInfo(updatedUserInfo);
+      setUser({ ...updatedUserInfo, isLoggedIn: true });
+
+      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
+
       toast.success("User edited successfully");
-      setUserAPI(updatedUser);
-      setUserInfo(response.data);
-      setSelectedUser(null);
       setIsEditModalOpen(false);
     } catch (error) {
       toast.error("Failed to edit user");
@@ -77,8 +76,8 @@ const ProfilePage = () => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     navigate('/');
   };
@@ -91,7 +90,6 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-white py-2">
-      <Toaster />
       {/* Edit Button */}
       <div className="flex justify-end w-full max-w-4xl mb-4">
         <button
@@ -107,37 +105,40 @@ const ProfilePage = () => {
         <div>
           <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">NAME</label>
           <div className="w-full border border-gray-300 p-2 text-lg font-light">
-            {userInfo.name}
+            {userInfo.fullName ? userInfo.fullName : "Information needs to be updated"}
           </div>
         </div>
         <div>
           <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">EMAIL</label>
           <div className="w-full border border-gray-300 p-2 text-lg font-light">
-            {userInfo.email}
+            {userInfo.email ? userInfo.email : "Information needs to be updated"}
           </div>
         </div>
         <div>
           <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">LOYALTY POINT</label>
           <div className="w-full border border-gray-300 p-2 text-lg font-light">
-            {userInfo.loyaltyPoint}
+            {userInfo.loyaltyPoint ? userInfo.loyaltyPoint : 0}
           </div>
         </div>
         <div>
           <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">PHONE</label>
           <div className="w-full border border-gray-300 p-2 text-lg font-light">
-            {userInfo.phone}
+            {userInfo.phone ? userInfo.phone : "Information needs to be updated"}
           </div>
         </div>
-      </div>
+        <div>
+          <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">DATE OF BIRTH</label>
+          <div className="w-full border border-gray-300 p-2 text-lg font-light">
+            {userInfo.birthday ? userInfo.birthday : "Information needs to be updated"}
+          </div>
+        </div>
+        <div>
+          <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">ADDRESS</label>
+          <div className="w-full border border-gray-300 p-2 text-lg font-light">
+            {userInfo.address ? userInfo.address : "Information needs to be updated"}
+          </div>
+        </div>
 
-      {/* Date of Birth */}
-      <div className="w-full max-w-4xl mb-4">
-        <label className="block text-gray-700 text-xs mb-1 uppercase tracking-wider">DATE OF BIRTH</label>
-        <input
-          value={userInfo.birthday}
-          className="w-full border border-gray-300 p-2 text-lg font-light"
-          readOnly
-        />
       </div>
 
       {/* Upcoming Appointment Section */}
@@ -200,7 +201,7 @@ const ProfilePage = () => {
               <div>
                 <label className="text-gray-700 block mb-1">Name</label>
                 <input
-                  value={userInfo.name}
+                  value={userInfo.fullName}
                   onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                   className="border border-gray-300 p-2 w-full"
                 />
@@ -228,6 +229,16 @@ const ProfilePage = () => {
                 <input
                   value={userInfo.phone}
                   onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                  className="border border-gray-300 p-2 w-full"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <div>
+                <label className="text-gray-700 block mb-1">Date of birth</label>
+                <input
+                  value={userInfo.birthday}
+                  onChange={(e) => setUserInfo({ ...userInfo, birthday: e.target.value })}
                   className="border border-gray-300 p-2 w-full"
                 />
               </div>

@@ -26,12 +26,14 @@ export const UserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoadingUser(false); 
   }, []);
 
   const router = createBrowserRouter([
@@ -70,7 +72,10 @@ const App = () => {
         {path: "management", element:<StaffManagement/>}
       ]
     }
+
   ]);
+
+  if (loadingUser) return <div>Loading...</div>;
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
@@ -78,6 +83,7 @@ const App = () => {
     </UserContext.Provider>
   );
 };
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 
