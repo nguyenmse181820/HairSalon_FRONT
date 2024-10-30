@@ -16,6 +16,10 @@ import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx
 import Earning from "./pages/stylistpage/Earning.jsx";
 import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import "./index.css";
+import StaffFrame from "./pages/frame/StaffFrame.jsx";
+import Bookings from "./pages/staffpage/Bookings.jsx";
+import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
+import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 
 
 export const UserContext = createContext(null);
@@ -57,7 +61,15 @@ const App = () => {
         { path: "schedule", element: <ScheduleManagement /> },
       ],
     },
-    
+    {
+      path: "staff",
+      element: <StaffFrame />,
+      children: [
+        { path: "bookings", element: <Bookings />},
+        { path: "stylist_assignment", element: <StylistAssignment /> },
+        {path: "management", element:<StaffManagement/>}
+      ]
+    }
   ]);
 
   return (
