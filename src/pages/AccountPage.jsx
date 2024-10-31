@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useContext, useEffect, useState } from "react";
 import useDocumentTitle from "../components/Title.jsx";
 import { toast } from "sonner";
@@ -6,17 +5,21 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../main.jsx";
 
-const LoginPage = () => {
+const AccountPage = () => {
+  // login form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // register form
+  const [fullName, setFullName] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+
   const [isLoginActive, setIsLoginActive] = useState(true);
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useDocumentTitle("My Coiffure Account");
-
-  //   const storedUser = localStorage.getItem("user");
-  //   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -27,12 +30,37 @@ const LoginPage = () => {
     }
   }, [setUser, navigate]);
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const register = async () => {
+    if (fullName && registerEmail && registerPassword) {
+      try {
+        const response = await axios.post(
+          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
+          {
+            fullName,
+            email: registerEmail,
+            password: registerPassword,
+          }
+        );
+  
+        if (response.status === 201) {
+          const { user, token } = response.data;  
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", token);
+  
+          setUser({ ...user, isLoggedIn: true });
+          toast.success("Account created successfully!");
+          navigate("/");
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
+      } catch (error) {
+        toast.error("Error creating account. Please try again!");
+      }
+    } else {
+      toast.error("Please fill in all fields");
+    }
   };
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  };
+  
 
   const unionLogin = async () => {
     if (email && password) {
@@ -80,17 +108,15 @@ const LoginPage = () => {
         <div className="options-section pt-10 pb-10">
           <div className="flex justify-center space-x-16 font-montserrat text-xl">
             <button
-              className={`hover:underline ${
-                isLoginActive ? "font-bold underline" : ""
-              }`}
+              className={`hover:underline ${isLoginActive ? "font-bold underline" : ""
+                }`}
               onClick={() => setIsLoginActive(true)}
             >
               ALREADY REGISTERED?
             </button>
             <button
-              className={`hover:underline ${
-                !isLoginActive ? "font-bold underline" : ""
-              }`}
+              className={`hover:underline ${!isLoginActive ? "font-bold underline" : ""
+                }`}
               onClick={() => setIsLoginActive(false)}
             >
               CREATE NEW ACCOUNT
@@ -109,19 +135,19 @@ const LoginPage = () => {
                     type="text"
                     id="email"
                     value={email}
-                    onChange={handleEmail}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none 
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
+                                    border-b border-black appearance-none 
+                                    focus:outline-none focus:ring-0 focus:text-black peer"
                     placeholder=""
                     required
                   />
                   <label
                     htmlFor="email"
                     className="absolute text-sm duration-300 transform -translate-y-6 scale-75
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
+                                    top-3 left-0 z-9 origin-[0] text-gray-400
+                                    peer-focus:left-0 peer-focus:text-blue-400
+                                    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
                   >
                     Email address*
                   </label>
@@ -132,26 +158,26 @@ const LoginPage = () => {
                     type="password"
                     id="password"
                     value={password}
-                    onChange={handlePassword}
+                    onChange={(e) => setPassword(e.target.value)} 
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
+                                    border-b border-black appearance-none
+                                    focus:outline-none focus:ring-0 focus:text-black peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="password"
                     className="absolute text-sm duration-300 transform -translate-y-6 scale-75 
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
+                                    top-3 left-0 z-9 origin-[0] text-gray-400
+                                    peer-focus:left-0 peer-focus:text-blue-400
+                                    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
                   >
                     Password*
                   </label>
                 </div>
                 <button
                   className="text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
-                            hover:text-black transform duration-300 border border-black mt-3"
+                          hover:text-black transform duration-300 border border-black mt-3"
                   onClick={unionLogin}
                 >
                   Continue
@@ -165,62 +191,47 @@ const LoginPage = () => {
                   This space allows you to manage your personal information,
                   news updates.
                 </p>
-                <div className="first-name relative my-6 pb-5">
+                <div className="name relative my-6 pb-5">
                   <input
                     type="text"
                     id="first"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none 
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
+                                    border-b border-black appearance-none 
+                                    focus:outline-none focus:ring-0 focus:text-black peer"
                     placeholder=""
                     required
                   />
                   <label
                     htmlFor="first"
                     className="absolute text-sm duration-300 transform -translate-y-6 scale-75
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
+                                    top-3 left-0 z-9 origin-[0] text-gray-400
+                                    peer-focus:left-0 peer-focus:text-blue-400
+                                    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
                   >
-                    First Name*
+                    Full Name*
                   </label>
                 </div>
-                <div className="last-name email relative my-6 pb-5">
-                  <input
-                    type="text"
-                    id="last"
-                    className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none 
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
-                    placeholder=""
-                    required
-                  />
-                  <label
-                    htmlFor="last"
-                    className="absolute text-sm duration-300 transform -translate-y-6 scale-75
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1"
-                  >
-                    Last Name*
-                  </label>
-                </div>
+                
                 <div className="email relative my-6 pb-5">
                   <input
                     type="text"
                     id="email-register"
+                    value={registerEmail}
+                    onChange={(e) => setRegisterEmail(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none 
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
+                                    border-b border-black appearance-none 
+                                    focus:outline-none focus:ring-0 focus:text-black peer"
                     placeholder=""
                     required
                   />
                   <label
                     htmlFor="email-register"
                     className="absolute text-sm duration-300 transform -translate-y-6 scale-75
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
+                                    top-3 left-0 z-9 origin-[0] text-gray-400
+                                    peer-focus:left-0 peer-focus:text-blue-400
+                                    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
                   >
                     Email address*
                   </label>
@@ -230,25 +241,27 @@ const LoginPage = () => {
                   <input
                     type="password"
                     id="password-register"
+                    value={registerPassword}
+                    onChange={(e) => setRegisterPassword(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
-                                        border-b border-black appearance-none
-                                        focus:outline-none focus:ring-0 focus:text-black peer"
+                                    border-b border-black appearance-none
+                                    focus:outline-none focus:ring-0 focus:text-black peer"
                     placeholder=" "
                     required
                   />
                   <label
                     htmlFor="password-register"
                     className="absolute text-sm duration-300 transform -translate-y-6 scale-75 
-                                        top-3 left-0 z-9 origin-[0] text-gray-400
-                                        peer-focus:left-0 peer-focus:text-blue-400
-                                        peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
+                                    top-3 left-0 z-9 origin-[0] text-gray-400
+                                    peer-focus:left-0 peer-focus:text-blue-400
+                                    peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1 "
                   >
                     Password*
                   </label>
                 </div>
                 <button
                   className="text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
-                            hover:text-black transform duration-300 border border-black mt-3"
+                          hover:text-black transform duration-300 border border-black mt-3"
                 >
                   Create account
                 </button>
@@ -269,7 +282,7 @@ const LoginPage = () => {
               </p>
             </div>
             <div className="right-container w-1/2 flex flex-col text-center items-center">
-              <p className="uppercase">book an Appoinment</p>
+              <p className="uppercase">book an Appointment</p>
               <p className="w-1/2 pt-4 font-thin">
                 Enjoy priority access to the boutique of your choice at the time
                 and date that suits you.
@@ -282,4 +295,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default AccountPage;
