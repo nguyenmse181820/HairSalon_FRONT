@@ -5,6 +5,9 @@ import Footer from '../../components/Footer'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const CustomerFrame = () => {
+    const location = useLocation().pathname;
+    const navigate = useNavigate();
+
     return (
         <div>
             <Toaster position='top-right' richColors expand={true}></Toaster>

@@ -93,7 +93,8 @@ const AccountPage = () => {
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
-            console.log(user);
+          } else if (user.role === "admin") {
+            navigate("/admin");
           } else {
             toast.error("Unauthorized role");
           }
@@ -101,7 +102,8 @@ const AccountPage = () => {
           toast.error("Invalid credentials. Please try again.");
         }
       } catch (error) {
-        toast.error("Invalid credentials, please try again!");
+        console.log("Login error:", error);
+        toast.error("Invalid input, please try again!");
       }
     } else {
       toast.error("Please fill in all fields");

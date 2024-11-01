@@ -15,8 +15,11 @@ import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
 import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
 import Earning from "./pages/stylistpage/Earning.jsx";
 import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
+import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
+import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
+import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import "./index.css";
-
 
 export const UserContext = createContext(null);
 
@@ -45,6 +48,7 @@ const App = () => {
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
         { path: 'appointment', element: <CustomerAppointment /> },
+        { path: "unauthorized", element: <UnauthorizedAccess /> },
       ],
     },
     {
@@ -59,7 +63,14 @@ const App = () => {
         { path: "schedule", element: <ScheduleManagement /> },
       ],
     },
-    
+    {
+      path: "/admin",
+      element: <SidebarFrame />,
+      children: [
+        { path: "manage-customer", element: <ManageCustomers /> },
+        { path: "manage-staff", element: <ManageStaffs /> },
+      ],
+    },
   ]);
 
   if (loadingUser) return <div>Loading...</div>;
