@@ -7,6 +7,7 @@ import AccountPage from "./pages/AccountPage.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import FeedbackPage from "./pages/FeedbackPage.jsx";
 import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
@@ -29,7 +30,7 @@ const App = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    setLoadingUser(false); 
+    setLoadingUser(false);
   }, []);
 
   const router = createBrowserRouter([
@@ -45,6 +46,7 @@ const App = () => {
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
         { path: 'appointment', element: <CustomerAppointment /> },
+        { path: 'feedback', element: <FeedbackPage /> },
       ],
     },
     {

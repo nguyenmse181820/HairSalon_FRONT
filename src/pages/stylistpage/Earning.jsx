@@ -209,7 +209,7 @@ function Earning() {
                     <p className="text-sm text-gray-500 mt-2">
                         Compared to last month:
                         <span className={`${compare >= 0 ? 'text-green-500' : 'text-red-500'} font-semibold`}>
-                            {compare >= 0 ? `+${compare.toFixed(2)}` : `${compare.toFixed(2)}`}%</span>
+                            {compare >= 0 ? ` +${compare.toFixed(2)}` : `${compare.toFixed(2)}`}%</span>
                     </p>
                     <div className="bg-white rounded-lg p-6  mt-6">
                         <h4 className="text-lg font-semibold mb-4 text-gray-700 uppercase">Earnings by Month</h4>
@@ -221,23 +221,27 @@ function Earning() {
 
             {/* Recent Transactions */}
             <div className="bg-white rounded-lg p-6 shadow-lg">
-                <h4 className="text-lg font-semibold mb-2 text-gray-700">Recent Transactions</h4>
+                <h4 className="text-lg font-semibold text-black mb-2 uppercase">Recent Transactions</h4>
                 <hr />
-                <table className="w-full text-left text-gray-700 mt-1">
+                <table className="w-full text-left mt-1">
                     <thead>
-                        <tr>
-                            <th className="p-2">Type</th>
-                            <th className="p-2">Amount</th>
-                            <th className="p-2">Status</th>
-                            <th className="p-2">Method</th>
+                        <tr className="text-lg font-semibold text-black">
+                            <th className="py-2 px-3">Date</th>
+                            <th className="py-2 px-3">Type</th>
+                            <th className="py-2 px-3">Amount</th>
+                            <th className="py-2 px-3">Status</th>
+                            <th className="py-2 px-3">Method</th>
                         </tr>
-
                     </thead>
-                    <hr className="border-gray-300" />
-
                     <tbody>
+                        <tr>
+                            <td colSpan="5">
+                                <hr className="w-full border-gray-300 my-2" />
+                            </td>
+                        </tr>
                         {appointments.map((appointment) => (
                             <tr key={appointment.id}>
+                                <td className="p-2">{appointment.date}</td>
                                 <td className="p-2">{appointment.serviceType}</td>
                                 <td className="p-2">${appointment.value}</td>
                                 <td
