@@ -22,8 +22,8 @@ const AccountPage = () => {
   useDocumentTitle("My Coiffure Account");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    const storedUser = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
 
     if (storedUser && token) {
       setUser({ ...JSON.parse(storedUser), isLoggedIn: true });
@@ -36,7 +36,7 @@ const AccountPage = () => {
       toast.error("Please fill in all fields");
       return;
     }
-  
+
     try {
       // Send registration request to the server
       const response = await axios.post(
@@ -47,15 +47,15 @@ const AccountPage = () => {
           password: registerPassword,
         }
       );
-  
+
       // Check if the registration was successful
       if (response.status === 201) {
         const { user, token } = response.data;
-        
+
         // Store user and token in local storage
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", token);
-  
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("token", token);
+
         // Set the user context and redirect
         setUser({ ...user, isLoggedIn: true });
         toast.success("Account created successfully!");
@@ -68,7 +68,7 @@ const AccountPage = () => {
       toast.error("Error creating account. Please try again!");
     }
   };
-  
+
 
 
   const unionLogin = async () => {
@@ -83,8 +83,10 @@ const AccountPage = () => {
           const user = response.data.user;
           const token = response.data.token;
 
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
+          if (!sessionStorage.getItem("token") || sessionStorage.getItem("token") !== token) {
+            sessionStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("token", token);
+          }
 
           setUser({ ...user, isLoggedIn: true });
 
@@ -94,7 +96,7 @@ const AccountPage = () => {
           } else if (user.role === "customer") {
             navigate("/");
           } else if (user.role === "admin") {
-            navigate("/admin");
+            navigate("/admin/manage-customer");
           } else {
             toast.error("Unauthorized role");
           }
@@ -273,7 +275,7 @@ const AccountPage = () => {
                 <button
                   className="text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
                           hover:text-black transform duration-300 border border-black mt-3"
-                          onClick={register}
+                  onClick={register}
                 >
                   Create account
                 </button>

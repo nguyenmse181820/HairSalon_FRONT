@@ -1,15 +1,66 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ManageCustomers = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [customers, setCustomers] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const openModal = () => {
-    setIsModalOpen(true)
-  }
+  const openModal = (customer) => {
+    setSelectedCustomer(customer);
+    setIsModalOpen(true);
+  };
 
   const closeModal = () => {
-    setIsModalOpen(false)
-  }
+    setSelectedCustomer(null);
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const response = await axios.get('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers');
+        setCustomers(response.data);
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
+    fetchCustomers();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers/${selectedCustomer.id}`;
+
+      const response = await axios.put(url, selectedCustomer);
+
+      const updatedCustomer = response.data;
+      setCustomers((prev) =>
+        prev.map((customer) =>
+          customer.id === updatedCustomer.id ? updatedCustomer : customer
+        )
+      );
+
+      closeModal();
+    } catch (error) {
+      console.error("Error updating customer:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedCustomer((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const filteredCustomers = customers.filter((customer) =>
+    customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    customer.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className='flex-1 p-5'>
@@ -19,7 +70,9 @@ const ManageCustomers = () => {
           <input
             type="text"
             placeholder="Search for customer"
-            className="border p-2 rounded-lg w-80"
+            className="border p-2 w-80"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button className="ml-2 p-2 rounded-full bg-gray-300">
             <svg
@@ -54,27 +107,33 @@ const ManageCustomers = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="text-center">
-              <td className="px-4 py-2 border-b">1</td>
-              <td className="px-4 py-2 border-b">Moc Nguyen</td>
-              <td className="px-4 py-2 border-b">123 Becker Street</td>
-              <td className="px-4 py-2 border-b">nguyen</td>
-              <td className="px-4 py-2 border-b">nguyen@gmail.com</td>
-              <td className="px-4 py-2 border-b">0909090909</td>
-              <td className="px-4 py-2 border-b">
-                <input type="checkbox" className="toggle-checkbox" />
-              </td>
-              <td className="px-4 py-2 border-b">
-                <button onClick={openModal} className="text-blue-500">Update</button>
-                <button className="ml-2 text-red-500">Delete</button>
-              </td>
-            </tr>
+            {filteredCustomers.map((customer) => (
+              <tr key={customer.id} className="text-center">
+                <td className="px-4 py-2 border-b">{customer.id}</td>
+                <td className="px-4 py-2 border-b">{customer.name}</td>
+                <td className="px-4 py-2 border-b">{customer.address}</td>
+                <td className="px-4 py-2 border-b">{customer.username}</td>
+                <td className="px-4 py-2 border-b">{customer.email}</td>
+                <td className="px-4 py-2 border-b">{customer.phone}</td>
+                <td className="px-4 py-2 border-b">
+                  <input
+                    type="checkbox"
+                    checked={customer.status === "active"}
+                    readOnly
+                  />
+                </td>
+                <td className="px-4 py-2 border-b">
+                  <button onClick={() => openModal(customer)} className="text-blue-500">Update</button>
+                  <button className="ml-2 text-red-500">Delete</button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {isModalOpen && (
+      {isModalOpen && selectedCustomer && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white w-1/3 p-6 rounded-lg shadow-lg">
+          <div className="bg-white w-1/3 p-6 shadow-lg">
             <div className="bg-black text-white text-center py-2 mb-4">
               <h2 className="text-lg font-semibold">UPDATE CUSTOMER</h2>
             </div>
@@ -82,34 +141,81 @@ const ManageCustomers = () => {
               <div className="flex justify-between">
                 <div className="w-1/2 pr-2">
                   <label className="block text-sm font-medium">Full Name</label>
-                  <input type="text" className="w-full border p-2 rounded" value="Moc Nguyen" />
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-full border p-2"
+                    value={selectedCustomer.name || ""}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="w-1/2 pl-2">
-                  <label className="block text-sm font-medium">Email address</label>
-                  <input type="email" className="w-full border p-2 rounded" value="nguyen@gmail.com" />
+                  <label className="block text-sm font-medium">Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    className="w-full border p-2"
+                    value={selectedCustomer.email || ""}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
               <div className="flex justify-between">
                 <div className="w-1/2 pr-2">
                   <label className="block text-sm font-medium">Address</label>
-                  <input type="text" className="w-full border p-2 rounded" value="123 Becker Street" />
-                  <p className="text-red-500 text-xs mt-1">Must be at least 8 characters (excluding whitespace)</p>
+                  <input
+                    type="text"
+                    name="address"
+                    className="w-full border p-2"
+                    value={selectedCustomer.address || ""}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="w-1/2 pl-2">
                   <label className="block text-sm font-medium">Phone</label>
-                  <input type="text" className="w-full border p-2 rounded" value="0909090909" />
+                  <input
+                    type="text"
+                    name="phone"
+                    className="w-full border p-2"
+                    value={selectedCustomer.phone || ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <div className="w-1/2 pr-2">
+                  <label className="block text-sm font-medium">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    className="w-full border p-2"
+                    value={selectedCustomer.username || ""}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="w-1/2 pl-2">
+                  <label className="block text-sm font-medium">Status</label>
+                  <select
+                    name="status"
+                    className="w-full border p-2"
+                    value={selectedCustomer.status || ""}
+                    onChange={handleInputChange}
+                  >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
               <div className="flex justify-end mt-4 space-x-2">
-                <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2 rounded">Cancel</button>
-                <button className="bg-black text-white px-4 py-2 rounded">Save</button>
+                <button onClick={handleSave} className="bg-black text-white px-4 py-2 ">Save</button>
+                <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2">Cancel</button>
               </div>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ManageCustomers
+export default ManageCustomers;

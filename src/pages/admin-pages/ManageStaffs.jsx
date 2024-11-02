@@ -1,22 +1,98 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ManageStaffs = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [staffs, setStaffs] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const openModal = () => setIsModalOpen(true)
-  const closeModal = () => setIsModalOpen(false)
+  const openModal = (staff = null) => {
+    setSelectedStaff(
+      staff || {
+        id: "",
+        name: "",
+        username: "",
+        department: "",
+        email: "",
+        phone: "",
+        salary: "",
+        status: "active",
+      }
+    );
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedStaff(null);
+    setIsModalOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedStaff((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      if (selectedStaff.id) {
+        // Update existing staff
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs/${selectedStaff.id}`;
+        const response = await axios.put(url, selectedStaff);
+        const returnedData = response.data;
+
+        setStaffs((prev) =>
+          prev.map((staff) => (staff.id === returnedData.id ? returnedData : staff))
+        );
+      } else {
+        // Create new staff
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs`;
+        const response = await axios.post(url, selectedStaff);
+        const newStaff = response.data;
+
+        setStaffs((prev) => [...prev, newStaff]);
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error("Error saving staff:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchStaffs = async () => {
+      try {
+        const response = await axios.get('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs');
+        setStaffs(response.data);
+      } catch (error) {
+        console.error("Error fetching staff data:", error);
+      }
+    };
+    fetchStaffs();
+  }, []);
+
+  const filteredStaffs = staffs.filter((staff) =>
+    staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    staff.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    staff.department.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="flex-1 p-5">
-      <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-semibold">Staff Management</h1>
-        <div className="flex items-center">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-5 space-y-4 md:space-y-0">
+        <h1 className="text-xl md:text-2xl font-semibold">Staff Management</h1>
+        <div className="flex items-center w-full md:w-auto space-x-2">
           <input
             type="text"
             placeholder="Search for staff"
-            className="p-2 w-80"
+            className="p-2 w-full md:w-80 border"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="ml-2 p-2 rounded-full bg-gray-300">
+          <button className="p-2 rounded-full bg-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -32,14 +108,17 @@ const ManageStaffs = () => {
               />
             </svg>
           </button>
-          <button onClick={openModal} className="ml-4 bg-black text-white px-4 py-2">
+          <button
+            onClick={() => openModal()}
+            className="w-full py-2 uppercase bg-transparent border-2 border-black text-black hover:bg-black hover:text-white border-solid transform transition-all duration-300 ease-in-out"
+          >
             Create new staff
           </button>
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200">
+      <div className="overflow-x-auto bg-white border border-gray-200">
+        <table className="min-w-full">
           <thead>
             <tr>
               <th className="px-4 py-2 border-b">ID</th>
@@ -54,73 +133,118 @@ const ManageStaffs = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="text-center">
-              <td className="px-4 py-2 border-b">1</td>
-              <td className="px-4 py-2 border-b">Moc Nguyen</td>
-              <td className="px-4 py-2 border-b">manager</td>
-              <td className="px-4 py-2 border-b">Management</td>
-              <td className="px-4 py-2 border-b">nguyen@gmail.com</td>
-              <td className="px-4 py-2 border-b">0909090909</td>
-              <td className="px-4 py-2 border-b">$1000</td>
-              <td className="px-4 py-2 border-b">
-                <input type="checkbox" className="toggle-checkbox" />
-              </td>
-              <td className="px-4 py-2 border-b">
-                <button onClick={openModal} className="text-blue-500">Update</button>
-                <button className="ml-2 text-red-500">Delete</button>
-              </td>
-            </tr>
+            {filteredStaffs.map((staff) => (
+              <tr key={staff.id} className="text-center">
+                <td className="px-4 py-2 border-b">{staff.id}</td>
+                <td className="px-4 py-2 border-b">{staff.name}</td>
+                <td className="px-4 py-2 border-b">{staff.username}</td>
+                <td className="px-4 py-2 border-b">{staff.department}</td>
+                <td className="px-4 py-2 border-b">{staff.email}</td>
+                <td className="px-4 py-2 border-b">{staff.phone}</td>
+                <td className="px-4 py-2 border-b">${staff.salary}</td>
+                <td className="px-4 py-2 border-b">
+                  <input type="checkbox" checked={staff.status === 'active'} readOnly />
+                </td>
+                <td className="px-4 py-2 border-b">
+                  <button onClick={() => openModal(staff)} className="text-blue-500">Update</button>
+                  <button className="ml-2 text-red-500">Delete</button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      {isModalOpen && (
+      {isModalOpen && selectedStaff && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white w-1/3 p-6 rounded-lg shadow-lg">
+          <div className="bg-white w-full lg:w-1/3 p-6">
             <div className="bg-black text-white text-center py-2 mb-4">
-              <h2 className="text-lg font-semibold">UPDATE STAFF</h2>
+              <h2 className="text-lg font-semibold">
+                {selectedStaff.id ? 'UPDATE STAFF' : 'CREATE STAFF'}
+              </h2>
             </div>
             <div className="space-y-4">
-              <div className="flex justify-between">
-                <div className="w-1/2 pr-2">
+              <div className="flex flex-col lg:flex-row justify-between">
+                <div className="w-full lg:w-1/2 lg:pr-2">
                   <label className="block text-sm font-medium">Full Name</label>
-                  <input type="text" className="w-full border p-2 rounded" value="Moc Nguyen" />
+                  <input
+                    type="text"
+                    name="name"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.name || ''}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <div className="w-1/2 pl-2">
+                <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
                   <label className="block text-sm font-medium">Email address</label>
-                  <input type="email" className="w-full border p-2 rounded" value="nguyen@gmail.com" />
+                  <input
+                    type="email"
+                    name="email"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.email || ''}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
-              <div className="flex justify-between">
-                <div className="w-1/2 pr-2">
+              <div className="flex flex-col lg:flex-row justify-between">
+                <div className="w-full lg:w-1/2 lg:pr-2">
                   <label className="block text-sm font-medium">Department</label>
-                  <input type="text" className="w-full border p-2 rounded" value="Management" />
+                  <input
+                    type="text"
+                    name="department"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.department || ''}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <div className="w-1/2 pl-2">
+                <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
                   <label className="block text-sm font-medium">Phone</label>
-                  <input type="text" className="w-full border p-2 rounded" value="0909090909" />
+                  <input
+                    type="text"
+                    name="phone"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.phone || ''}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
-              <div className="flex justify-between">
-                <div className="w-1/2 pr-2">
+              <div className="flex flex-col lg:flex-row justify-between">
+                <div className="w-full lg:w-1/2 lg:pr-2">
                   <label className="block text-sm font-medium">Salary</label>
-                  <input type="text" className="w-full border p-2 rounded" value="$1000" />
+                  <input
+                    type="number"
+                    name="salary"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.salary || ''}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <div className="w-1/2 pl-2">
-                  <label className="block text-sm font-medium">Salary processing on</label>
-                  <input type="date" className="w-full border p-2 rounded" value="2024-02-02" />
+                <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
+                  <label className="block text-sm font-medium">Status</label>
+                  <select
+                    name="status"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.status || ''}
+                    onChange={handleInputChange}
+                  >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
               <div className="flex justify-end mt-4 space-x-2">
-                <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2 rounded">Cancel</button>
-                <button className="bg-black text-white px-4 py-2 rounded">Save</button>
+              <button onClick={handleSave} className="bg-black text-white px-4 py-2">
+                  {selectedStaff.id ? 'Save' : 'Create'}
+                </button>
+                <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2">Cancel</button>
+                
               </div>
             </div>
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ManageStaffs
+export default ManageStaffs;

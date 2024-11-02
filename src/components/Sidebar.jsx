@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Logo from '../assets/coiffure-logo.png'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { UserContext } from '../main'
 
 const Sidebar = () => {
-  const navigate = useNavigate()
-  const location = useLocation()
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { setUser } = useContext(UserContext);
+  const logout = () => {
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    setUser(null);
+    navigate('/');
+  };
   // Check if the current path matches the provided path
   const isActive = (path) => location.pathname === path
 
@@ -28,8 +35,13 @@ const Sidebar = () => {
           Staff Management
         </button>
       </div>
-      <div className="px-4 pb-5">
-        <span className="text-gray-700">Admin</span>
+      <div className="flex justify-start w-full">
+        <button
+          className="w-full py-2 font-montserrat font-bold italic bg-transparent border-2 border-black text-black hover:bg-black hover:text-white border-solid hover:scale-95 transform transition-all duration-300 ease-in-out"
+          onClick={logout}
+        >
+          LOG OUT
+        </button>
       </div>
     </div>
   )
