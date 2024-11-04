@@ -48,7 +48,7 @@ function NavBarStaff() {
                 </div>
 
                 <div className='middle-header-row flex items-center justify-center'>
-                    <a className='flex justify-center  ' href="/stylist"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
+                    <a className='flex justify-center  ' href="/staff/bookings"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
                 </div>
 
                 <div className="menustylist-bar">
@@ -80,9 +80,9 @@ function NavBarStaff() {
                             <li className='flex flex-col items-center relative'>
                                 <button onClick={() => setIsOpen((prev) => !prev)} type='button' className='nav-link font-semibold text-xl uppercase '>Appointment</button>
                                 {isOpen && (
-                                    <ul className='absolute flex flex-col items-center bg-black text-white w-[220px] my-10 '>
-                                        <li className='py-2 px-[46px] font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >View Appointment</a></li>
-                                        <li className='py-2 px-[14px] font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >Management Appointment</a></li>
+                                    <ul className='absolute flex flex-col text-center items-center bg-black text-white w-[280px] my-10 '>
+                                        <li className='py-2 px-[46px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >View Appointment</a></li>
+                                        <li className='py-2 px-[14px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >Management Appointment</a></li>
                                     </ul>
                                 )
                                 }

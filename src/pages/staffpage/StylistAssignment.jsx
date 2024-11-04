@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 
 function StylistAssignment() {
     const [formData, setFormData] = useState({
+        userName: '',
+        password: '',
         stylistName: '',
         email: '',
         phone: '',
@@ -18,6 +20,19 @@ function StylistAssignment() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const validationErrors = {}
+
+        // valid userName
+        if (!formData.userName.trim()) {
+            validationErrors.userName = 'User name is required';
+        } else if (formData.userName.length < 3) {
+            validationErrors.userName = 'User name must be at least 3 characters';
+        }
+        // valid password
+        if (!formData.password.trim()) {
+            validationErrors.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            validationErrors.password = 'Password must be at least 6 characters';
+        }
         // valid stylistName
         if (!formData.stylistName.trim()) {
             validationErrors.stylistName = 'Stylist name is required';
@@ -58,6 +73,8 @@ function StylistAssignment() {
 
     const handleReset = () => {
         setFormData({
+            userName: '',
+            password: '',
             stylistName: '',
             email: '',
             phone: '',
@@ -73,6 +90,27 @@ function StylistAssignment() {
             <div className='flex justify-center items-center'>
                 <form action="" className='bg-white shadow-lg border border-solid mt-10 mb-10 lg:mx-10 text-sm lg:text-lg w-[80%] md:w-[50%] lg:w-[35%] mx-auto'>
                     <div className='py-9'>
+                        <div className='mb-4 mx-10'>
+                            <label className='py-2'>User Name</label> <br />
+                            <input type="text"
+                                name='userName'
+                                placeholder='Enter user name'
+                                value={formData.userName}
+                                className='w-full border border-solid hover:border-black p-2'
+                                onChange={handleChange}
+                            />
+                            {errors.userName && <span className='text-red-500 text-sm italic'>{errors.userName}</span>}
+                        </div>
+                        <div className='mb-4 mx-10'>
+                            <label className='py-2'>Passworwd</label> <br />
+                            <input type="password"
+                                name='password'
+                                placeholder='Enter password' value={formData.password}
+                                className='w-full border border-solid hover:border-black p-2'
+                                onChange={handleChange}
+                            />
+                            {errors.password && <span className='text-red-500 text-sm italic'>{errors.password}</span>}
+                        </div>
                         <div className='mb-4 mx-10'>
                             <label className='py-2'>Stylist Name</label> <br />
                             <input type="text"
