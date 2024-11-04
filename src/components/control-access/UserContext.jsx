@@ -4,15 +4,15 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
+    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    const token = sessionStorage.getItem("token");
     return storedUser && token ? { ...storedUser, isLoggedIn: true } : null;
   });
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      const token = localStorage.getItem("token");
+      const storedUser = JSON.parse(sessionStorage.getItem("user"));
+      const token = sessionStorage.getItem("token");
       setUser(storedUser && token ? { ...storedUser, isLoggedIn: true } : null);
     };
 
