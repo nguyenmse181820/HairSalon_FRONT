@@ -31,6 +31,7 @@ import { AppointmentProvider } from "./context/AppointmentContext";
 
 
 import "./index.css";
+import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 
 export const UserContext = createContext(null);
 
@@ -80,6 +81,7 @@ const App = () => {
       children: [
         { path: "bookings", element: <Bookings />},
         { path: "stylist_assignment", element: <StylistAssignment /> },
+        {path: "management", element: <StaffManagement />},
       ]
     },
     {
