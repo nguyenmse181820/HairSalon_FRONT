@@ -75,8 +75,16 @@ const NavigationBar = () => {
 
         <div className="menubar">
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
-            {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
-              <li key={i} className="nav-link font-normal text-sm cursor-pointer">{menuItem}</li>
+            {[
+              { name: 'SERVICES', link: '/booking/service' },
+              { name: 'BOOKING', link: '/booking' },
+              { name: 'PRODUCTS', link: '/products' },
+              { name: 'CONTACT', link: '/contact' },
+              { name: 'ABOUT US', link: '/about-us' }
+            ].map((menuItem, i) => (
+              <li key={i} className="nav-link font-normal text-sm cursor-pointer">
+                <a href={menuItem.link}>{menuItem.name}</a>
+              </li>
             ))}
           </ul>
 
@@ -85,9 +93,8 @@ const NavigationBar = () => {
           </div>
 
           <div
-            className={`fixed inset-0 bg-white p-8 transform ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            } transition-transform duration-500 ease-in-out`}
+            className={`fixed inset-0 bg-white p-8 transform ${menuOpen ? "translate-x-0" : "translate-x-full"
+              } transition-transform duration-500 ease-in-out`}
           >
             <div className="flex justify-end">
               <FontAwesomeIcon
@@ -104,8 +111,16 @@ const NavigationBar = () => {
             </div>
             <ul className="flex flex-col items-center space-y-8 text-xl">
 
-              {['SERVICES', 'BOOKING', 'PRODUCTS', 'CONTACT', 'ABOUT US'].map((menuItem, i) => (
-                <li key={i} className="nav-link font-semibold cursor-pointer">{menuItem}</li>
+              {[
+                { name: 'SERVICES', link: '/booking/service' },
+                { name: 'BOOKING', link: '/booking' },
+                { name: 'PRODUCTS', link: '/products' },
+                { name: 'CONTACT', link: '/contact' },
+                { name: 'ABOUT US', link: '/about-us' }
+              ].map((menuItem, i) => (
+                <li key={i} className="nav-link font-normal text-sm cursor-pointer">
+                  <a href={menuItem.link}>{menuItem.name}</a>
+                </li>
               ))}
 
             </ul>

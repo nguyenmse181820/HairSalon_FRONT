@@ -2,7 +2,7 @@ import React from 'react';
 
 const ContactPage = () => {
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-white mt-0">
+        <div className="flex flex-col justify-center items-center bg-white mt-0">
             <form className="w-full max-w-md bg-white">
 
                 {/* Title */}
@@ -65,7 +65,7 @@ const ContactPage = () => {
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex justify-center">
+                <div className="flex justify-center py-10">
                     <button
                         className="px-6 py-2 bg-black text-white font-bold hover:bg-gray-800 transition-all"
                         type="submit"
