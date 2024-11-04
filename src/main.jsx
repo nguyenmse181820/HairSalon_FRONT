@@ -1,12 +1,13 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import React, { createContext, useState, useEffect, StrictMode } from "react";
+import { createContext, useState, useEffect, StrictMode } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import FeedbackPage from "./pages/FeedbackPage.jsx";
 import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
@@ -15,25 +16,33 @@ import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
 import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
 import Earning from "./pages/stylistpage/Earning.jsx";
 import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
-import "./index.css";
 import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
-import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
+import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
+import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
+import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
+import BookingService from "./pages/BookingService";
+import BookingStylist from "./pages/BookingStylist";
+import BookingSchedule from "./pages/BookingSchedule";
+import Checkout from "./pages/Checkout";
+import { AppointmentProvider } from "./context/AppointmentContext";
 
+
+import "./index.css";
 
 export const UserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
-
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-    setLoadingUser(false); 
+    setLoadingUser(false);
   }, []);
 
   const router = createBrowserRouter([
@@ -49,6 +58,8 @@ const App = () => {
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
         { path: 'appointment', element: <CustomerAppointment /> },
+        { path: 'feedback', element: <FeedbackPage /> },
+        { path: "unauthorized", element: <UnauthorizedAccess /> },
       ],
     },
     {
@@ -69,9 +80,54 @@ const App = () => {
       children: [
         { path: "bookings", element: <Bookings />},
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        {path: "management", element:<StaffManagement/>}
       ]
-    }
+    },
+    {
+      path: "/admin",
+      element: <SidebarFrame />,
+      children: [
+        { path: "manage-customer", element: <ManageCustomers /> },
+        { path: "manage-staff", element: <ManageStaffs /> },
+      ],
+    },
+    {
+      path: "/booking",
+      children: [
+        {
+          path: "service",
+          element: (
+            <AppointmentProvider>
+              <BookingService />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "stylist",
+          element: (
+            <AppointmentProvider>
+              <BookingStylist />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "schedule",
+          element: (
+            <AppointmentProvider>
+              <BookingSchedule />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "checkout",
+          element: (
+            <AppointmentProvider>
+              <Checkout />
+            </AppointmentProvider>
+          ),
+        },
+      ],
+    },
+
 
   ]);
 
