@@ -7,28 +7,37 @@ import AccountPage from "./pages/AccountPage.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
-import StylistPage from "./pages/stylist-page/StylistPage.jsx";
-import ServiceStatus from "./pages/stylist-page/ServiceStatus.jsx";
-import AppointmentView from "./pages/stylist-page/AppointmentView.jsx";
-import ManagementAppointment from "./pages/stylist-page/ManagementAppointment.jsx";
-import Earning from "./pages/stylist-page/Earning.jsx";
+import StylistPage from "./pages/stylistpage/StylistPage.jsx";
+import ServiceStatus from "./pages/stylistpage/ServiceStatus.jsx";
+import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
+import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
+import Earning from "./pages/stylistpage/Earning.jsx";
+import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
+import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
+import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
+import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import BookingService from "./pages/BookingService";
 import BookingStylist from "./pages/BookingStylist";
 import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
 import { AppointmentProvider } from "./context/AppointmentContext";
+
 import "./index.css";
 
 export const UserContext = createContext(null);
 
 const App = () => {
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+    setLoadingUser(false); 
   }, []);
 
   const router = createBrowserRouter([
@@ -43,6 +52,8 @@ const App = () => {
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
+        { path: 'appointment', element: <CustomerAppointment /> },
+        { path: "unauthorized", element: <UnauthorizedAccess /> },
       ],
     },
     {
@@ -51,9 +62,18 @@ const App = () => {
       children: [
         { path: "home", element: <StylistPage /> },
         { path: "services", element: <ServiceStatus /> },
-        { path: "appointmentView", element: <AppointmentView /> },
-        { path: "appointmentManagement", element: <ManagementAppointment /> },
+        { path: "appointment_view", element: <AppointmentView /> },
+        { path: "appointment_management", element: <ManagementAppointment /> },
         { path: "earning", element: <Earning /> },
+        { path: "schedule", element: <ScheduleManagement /> },
+      ],
+    },
+    {
+      path: "/admin",
+      element: <SidebarFrame />,
+      children: [
+        { path: "manage-customer", element: <ManageCustomers /> },
+        { path: "manage-staff", element: <ManageStaffs /> },
       ],
     },
     {
@@ -95,15 +115,18 @@ const App = () => {
     },
   ]);
 
+  if (loadingUser) return <div>Loading...</div>;
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <RouterProvider router={router} />
     </UserContext.Provider>
   );
 };
+
 const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
-    <App />
+  <App />
 );

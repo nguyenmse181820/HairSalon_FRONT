@@ -25,13 +25,10 @@ function NavBarStylist() {
 
     return (
         <header>
-            <div className='sticky-container sticky z-10'>
+            <div className='sticky-container fixed w-full z-10 bg-white'>
                 <div className='top-header-row flex items-center px-4 pt-3'>
                     <div className='left-container w-1/2 flex space-x-5 font-montserrat text-sm'>
-                        <div className='flex items-center'>
-                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faHeadphonesSimple} />
-                            <a className='hidden lg:inline-block' href=""> Contact us</a>
-                        </div>
+
                         <div>
                             <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faMagnifyingGlass} />
                             <a className='hidden lg:inline-block' href="">Search</a>
@@ -46,10 +43,7 @@ function NavBarStylist() {
                             <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faUser} />
                             <a className='hidden lg:inline-block' href="">My Account</a>
                         </div>
-                        <div className='flex items-center'>
-                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faCalendar} />
-                            <a className='hidden lg:inline-block' href="">My Appoinment</a>
-                        </div>
+
                     </div>
                 </div>
 
@@ -67,12 +61,13 @@ function NavBarStylist() {
                             <button onClick={() => setIsOpen((prev) => !prev)} type='button' className='nav-link font-semibold text-sm uppercase'>Appointment</button>
                             {isOpen && (
                                 <ul className='absolute bg-white text-black w-[220px] border'>
-                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white'><a href="/stylist/appointmentView" >View Appointment</a></li>
-                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white'><a href="/stylist/appointmentManagement" >Management Appointment</a></li>
+                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500'><a href="/stylist/appointment_view" >View Appointment</a></li>
+                                    <li className='py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500'><a href="/stylist/appointment_management" >Management Appointment</a></li>
                                 </ul>
                             )
                             }
                         </li>
+                        <li><a href="/stylist/schedule" className="nav-link font-semibold text-sm uppercase">Schedule</a></li>
 
                     </ul>
 

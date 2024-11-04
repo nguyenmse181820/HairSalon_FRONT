@@ -22,8 +22,8 @@ const AccountPage = () => {
   useDocumentTitle("My Coiffure Account");
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    const storedUser = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
 
     if (storedUser && token) {
       setUser({ ...JSON.parse(storedUser), isLoggedIn: true });
@@ -31,36 +31,45 @@ const AccountPage = () => {
   }, [setUser, navigate]);
 
   const register = async () => {
-    if (fullName && registerEmail && registerPassword) {
-      try {
-        const response = await axios.post(
-          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
-          {
-            fullName,
-            email: registerEmail,
-            password: registerPassword,
-          }
-        );
-  
-        if (response.status === 201) {
-          const { user, token } = response.data;  
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
-  
-          setUser({ ...user, isLoggedIn: true });
-          toast.success("Account created successfully!");
-          navigate("/");
-        } else {
-          toast.error("Registration failed. Please try again.");
-        }
-      } catch (error) {
-        toast.error("Error creating account. Please try again!");
-      }
-    } else {
+    // Validate fields first
+    if (!fullName || !registerEmail || !registerPassword) {
       toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      // Send registration request to the server
+      const response = await axios.post(
+        "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
+        {
+          fullName,
+          email: registerEmail,
+          password: registerPassword,
+        }
+      );
+
+      // Check if the registration was successful
+      if (response.status === 201) {
+        const { user, token } = response.data;
+
+        // Store user and token in local storage
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("token", token);
+
+        // Set the user context and redirect
+        setUser({ ...user, isLoggedIn: true });
+        toast.success("Account created successfully!");
+        navigate("/");
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Error creating account. Please try again!");
     }
   };
-  
+
+
 
   const unionLogin = async () => {
     if (email && password) {
@@ -74,8 +83,10 @@ const AccountPage = () => {
           const user = response.data.user;
           const token = response.data.token;
 
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
+          if (!sessionStorage.getItem("token") || sessionStorage.getItem("token") !== token) {
+            sessionStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("token", token);
+          }
 
           setUser({ ...user, isLoggedIn: true });
 
@@ -84,7 +95,8 @@ const AccountPage = () => {
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
-            console.log(user);
+          } else if (user.role === "admin") {
+            navigate("/admin/manage-customer");
           } else {
             toast.error("Unauthorized role");
           }
@@ -92,7 +104,8 @@ const AccountPage = () => {
           toast.error("Invalid credentials. Please try again.");
         }
       } catch (error) {
-        toast.error("Invalid credentials, please try again!");
+        console.log("Login error:", error);
+        toast.error("Invalid input, please try again!");
       }
     } else {
       toast.error("Please fill in all fields");
@@ -158,7 +171,7 @@ const AccountPage = () => {
                     type="password"
                     id="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} 
+                    onChange={(e) => setPassword(e.target.value)}
                     className="block w-full py-2 px-0 text-sm text-black bg-transparent border-0 
                                     border-b border-black appearance-none
                                     focus:outline-none focus:ring-0 focus:text-black peer"
@@ -213,7 +226,7 @@ const AccountPage = () => {
                     Full Name*
                   </label>
                 </div>
-                
+
                 <div className="email relative my-6 pb-5">
                   <input
                     type="text"
@@ -262,6 +275,7 @@ const AccountPage = () => {
                 <button
                   className="text-white uppercase font-montserrat bg-black w-full py-3 hover:bg-transparent
                           hover:text-black transform duration-300 border border-black mt-3"
+                  onClick={register}
                 >
                   Create account
                 </button>
