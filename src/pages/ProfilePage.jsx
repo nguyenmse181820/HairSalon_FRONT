@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const { user, setUser } = useContext(UserContext);
 
   const [userInfo, setUserInfo] = useState(() => {
-    const storedUserInfo = localStorage.getItem("user");
+    const storedUserInfo = sessionStorage.getItem("user");
     return storedUserInfo ? JSON.parse(storedUserInfo) : {
       fullName: '',
       email: '',
@@ -49,7 +49,7 @@ const ProfilePage = () => {
       setUserInfo(updatedUserInfo);
       setUser({ ...updatedUserInfo, isLoggedIn: true });
 
-      localStorage.setItem("user", JSON.stringify(updatedUserInfo));
+      sessionStorage.setItem("user", JSON.stringify(updatedUserInfo));
 
       toast.success("User edited successfully");
       setIsEditModalOpen(false);
@@ -76,8 +76,8 @@ const ProfilePage = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
     setUser(null);
     navigate('/');
   };
