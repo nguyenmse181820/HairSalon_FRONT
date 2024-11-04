@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../../css/ScheduleManagement.css';
 
 function ScheduleManagement() {
     const [showModal, setShowmodal] = useState(false);
     const [showDetail, setShowdetail] = useState(false);
 
-    const schedule = [
-        {
-            stt: 1,
-            customerName: 'John',
-            serviceType: 'Haircut',
-            date: '10:00 AM, 2023-06-01',
-            note: 'Profesional',
+    const [schedules, setSchedules] = useState([]);
 
-        },
-        {
-            stt: 2,
-            customerName: 'John',
-            serviceType: 'Haircut',
-            date: '14:00 PM, 2023-06-01',
-            note: 'Profesional',
-        }
-    ]
+    useEffect(() => {
+        axios
+            .get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/schedule')
+            .then((response) => {
+                setSchedules(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
     const toggleModal = () => {
+
         setShowmodal(!showModal);
     };
 
@@ -52,7 +49,7 @@ function ScheduleManagement() {
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
                     <thead className=''>
                         <tr>
-                            <th>Stt</th>
+                            <th>Id</th>
                             <th>Customer Name</th>
                             <th className='hidden sm:table-cell'>Service Type</th>
                             <th>Date</th>
@@ -62,15 +59,15 @@ function ScheduleManagement() {
                     </thead>
                     <tbody className='text-center'>
                         {
-                            schedule.map((item) => {
+                            schedules.map((item) => {
                                 return (
-                                    <tr key={item.stt} className=''>
-                                        <td>{item.stt}</td>
-                                        <td>{item.customerName}</td>
-                                        <td className='hidden sm:table-cell'>{item.serviceType}</td>
-                                        <td>{item.date}</td>
-                                        <td className='hidden sm:table-cell'>{item.note}</td>
-                                        <td className='flex flex-col justify-center items-center'>
+                                    <tr key={item.id} className=''>
+                                        <td className='py-4'>{item.id}</td>
+                                        <td className='py-4'>{item.customerName}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
+                                        <td className='py-4'>{item.date}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.note}</td>
+                                        <td className='flex flex-col justify-center items-center py-4'>
                                             <div className='flex gap-2 sm:flex-row flex-col'>
                                                 <button type='submit' className='bg-blue-600 text-white py-1 px-4 hover:bg-blue-500 hover:opacity-85 transition-all ease-in-out duration-500' onClick={toggleDetail}>Detail</button>
                                                 <button type='submit' className='bg-red-600  text-white py-1 px-4 hover:bg-red-500 hover:opacity-85 transition-all ease-in-out duration-500' onClick={toggleModal}>Cancel</button>

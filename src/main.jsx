@@ -16,6 +16,10 @@ import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
 import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
 import Earning from "./pages/stylistpage/Earning.jsx";
 import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
+import StaffFrame from "./pages/frame/StaffFrame.jsx";
+import Bookings from "./pages/staffpage/Bookings.jsx";
+import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
+import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
 import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
@@ -25,6 +29,7 @@ import BookingStylist from "./pages/BookingStylist";
 import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
 import { AppointmentProvider } from "./context/AppointmentContext";
+
 
 import "./index.css";
 
@@ -71,6 +76,14 @@ const App = () => {
       ],
     },
     {
+      path: "staff",
+      element: <StaffFrame />,
+      children: [
+        { path: "bookings", element: <Bookings />},
+        { path: "stylist_assignment", element: <StylistAssignment /> },
+        {path: "management", element:<StaffManagement/>}
+      ]
+    }
       path: "/admin",
       element: <SidebarFrame />,
       children: [
@@ -115,6 +128,7 @@ const App = () => {
         },
       ],
     },
+
 
   ]);
 

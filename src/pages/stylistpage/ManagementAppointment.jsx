@@ -1,22 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 function ManagementAppointment() {
-    const appointments = [
-        {
-            stt: 1,
-            CustomertName: 'John Doe',
-            serviceType: 'Haircut',           
-            date: '10:00 AM, 2023-06-01',
-            time: '30 mins',
-        },
-        {
-            stt: 2,
-            CustomertName: 'John Doe',
-            serviceType: 'Haircut',           
-            date: '10:00 AM, 2023-06-01',
-            time: '30 mins',
-        },
-    ]
+    const [appointments, setAppointments] = useState([]);
+    useEffect(() => {
+        axios.get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/appointment').then((res) => {
+            setAppointments(res.data)
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+    })
 
     return (
         <div>
@@ -41,15 +35,15 @@ function ManagementAppointment() {
                     </thead>
                     <tbody className='text-center'>
                         {
-                            appointments.map((item) =>{
-                                return(
-                                    <tr key={item.stt} className=''>
-                                        <td>{item.stt}</td>
-                                        <td>{item.CustomertName}</td>
-                                        <td className='hidden sm:table-cell'>{item.serviceType}</td>
-                                        <td>{item.date}</td>
-                                        <td className='hidden sm:table-cell'>{item.time}</td>
-                                        <td>
+                            appointments.map((item) => {
+                                return (
+                                    <tr key={item.id} className=''>
+                                        <td className='py-4'>{item.id}</td>
+                                        <td className='py-4'>{item.customerName}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
+                                        <td className='py-4'>{item.date}</td>
+                                        <td className='hidden sm:table-cell py-4'>{item.time}</td>
+                                        <td className='py-4'>
                                             <select name="" id="" className='w-[100px]'>
                                                 <option className=' bg-black text-white' value="" >Approved</option>
                                                 <option className=' bg-black text-white' value="">Reject</option>
@@ -59,7 +53,7 @@ function ManagementAppointment() {
                                 )
                             })
                         }
-                                               
+
                     </tbody>
                 </table>
             </div>
