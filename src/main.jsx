@@ -19,7 +19,6 @@ import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
-import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
 import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
@@ -81,9 +80,9 @@ const App = () => {
       children: [
         { path: "bookings", element: <Bookings />},
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        {path: "management", element:<StaffManagement/>}
       ]
-    }
+    },
+    {
       path: "/admin",
       element: <SidebarFrame />,
       children: [
