@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import React, { createContext, useState, useEffect, StrictMode } from "react";
+import { createContext, useState, useEffect, StrictMode } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
@@ -19,6 +19,12 @@ import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
 import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
+import BookingService from "./pages/BookingService";
+import BookingStylist from "./pages/BookingStylist";
+import BookingSchedule from "./pages/BookingSchedule";
+import Checkout from "./pages/Checkout";
+import { AppointmentProvider } from "./context/AppointmentContext";
+
 import "./index.css";
 
 export const UserContext = createContext(null);
@@ -26,7 +32,6 @@ export const UserContext = createContext(null);
 const App = () => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
-
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
@@ -69,6 +74,43 @@ const App = () => {
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
+      ],
+    },
+    {
+      path: "/booking",
+      children: [
+        {
+          path: "service",
+          element: (
+            <AppointmentProvider>
+              <BookingService />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "stylist",
+          element: (
+            <AppointmentProvider>
+              <BookingStylist />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "schedule",
+          element: (
+            <AppointmentProvider>
+              <BookingSchedule />
+            </AppointmentProvider>
+          ),
+        },
+        {
+          path: "checkout",
+          element: (
+            <AppointmentProvider>
+              <Checkout />
+            </AppointmentProvider>
+          ),
+        },
       ],
     },
   ]);
