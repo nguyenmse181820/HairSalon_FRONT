@@ -101,9 +101,9 @@ function StaffManagement() {
 
   return (
     <div>
-      <div className='mx-auto text-center font-bold text-xl mt-10'>Appointment List</div>
+      <div className='mx-auto text-center font-bold text-xl mt-10 uppercase'>Appointment List</div>
       <div className='flex sm:justify-start justify-center'>
-        <button onClick={toggleCreateModal} className='mt-10 ml-10 border w-max px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Create new appointment</button>
+        <button onClick={toggleCreateModal} className='flex justify-center mt-10 sm:ml-6 md:ml-6 lg:ml-10 ml-0 border w-max px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Create new appointment</button>
       </div>
       <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm sm:text-lg'>
         <table className='table-auto border border-solid border-l-0 border-r-0'>

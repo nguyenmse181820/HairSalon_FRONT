@@ -24,30 +24,30 @@ function Bookings() {
 
   return (
     <div>
-      <div className='ml-10 shadow-lg w-1/4'>
+      <div className='sm:ml-10 mx-5 shadow-lg sm:w-1/4 w-3/4 '>
         <div className='p-4'>
           <label htmlFor="" className='block text-gray-700 text-sm font-bold mb-1'>Summary</label>
           <div>Total Booking: 2</div>
           <div>Total Stylist available: 2</div>
         </div>
       </div>
-      <div className='mx-auto text-center font-bold text-xl mt-10'>Booking List</div>
+      <div className=' text-center font-bold text-xl mt-10'>Booking List</div>
       {/* filter day, month,year */}
-      <div className='mt-10 flex flex-row'>
-        <div className='p-4 flex flex-col'>
-          <label className='block text-gray-700 text-sm font-bold mb-1 ml-10'>Filter</label>
-          <div className='flex flex-row gap-6  items-center'>
-            <input type='date' className='mx-auto ml-10 py-2 px-6 border-2 border-gray-400'></input>
+      <div className='mt-10 sm:ml-6 ml-2 flex flex-row'>
+        <div className='p-4 flex flex-col '>
+          <label className='block text-gray-700 text-sm font-bold mb-1'>Filter</label>
+          <div className='flex flex-col sm:flex-row gap-6 sm:items-center justify-start'>
+            <input type='date' className='mx-auto  py-2 px-6 border-2 border-gray-400'></input>
             <div className=''>
-              <select name="" id="">
+              <select className='w-[100px]' name="" id="">
                 <option value="">Stylist 1</option>
                 <option value="">Stylist 2</option>
                 <option value="">Stylist 3</option>
                 <option value="">Stylist 4</option>
               </select>
             </div>
-            <div>
-              <select name="" id="">
+            <div className=''>
+              <select className='w-[100px]' name="" id="">
                 <option value="">Service 1</option>
                 <option value="">Service 2</option>
                 <option value="">Service 3</option>
