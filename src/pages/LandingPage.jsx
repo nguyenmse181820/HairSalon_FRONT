@@ -62,10 +62,10 @@ const LandingPage = () => {
                     <div className='flex relative justify-center w-full'>
                         <img className='w-3/4 lg:w-full h-auto' src={BookingBanner} alt="Booking Banner" />
                         <div className='hidden lg:flex absolute top-24 left-20'>
-                            <p className='text-xl font-bold font-montserrat italic'>Since Your Hair Deserves the Best Care!</p>
+                            <p className='text-2xl font-bold font-montserrat italic'>Since Your Hair Deserves the Best Care!</p>
                         </div>
                         <div className='absolute top-1/2 lg:top-36 lg:left-20'>
-                            <button className='px-5 py-1 font-montserrat font-bold italic bg-transparent border-2
+                            <button className='px-6 py-2 font-montserrat font-bold italic bg-transparent border-2
                          border-black text-black hover:bg-black hover:text-white border-solid hover:scale-95 
                          transform transition-all duration-300 ease-in-out'>
                                 BOOK NOW
