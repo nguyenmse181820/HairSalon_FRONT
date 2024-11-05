@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useState, useEffect, StrictMode } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
@@ -20,7 +21,7 @@ import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
 import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
-import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx";
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import BookingService from "./pages/BookingService";
