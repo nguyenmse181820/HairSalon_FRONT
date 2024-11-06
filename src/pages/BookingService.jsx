@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import React from "react";
 import { useAppointment } from "../context/AppointmentContext";
 import ServiceCard from "../components/booking/ServiceCard";
 import AppointmentSummary from "../components/booking/AppointmentSummary";

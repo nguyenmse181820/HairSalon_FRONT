@@ -1,3 +1,4 @@
+import React from "react";
 function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
   const parsePrice = (priceString) => {
     if (!priceString) return 0;

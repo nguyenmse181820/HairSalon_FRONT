@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useState, useEffect, StrictMode } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
