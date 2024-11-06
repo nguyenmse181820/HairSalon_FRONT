@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useState, useEffect } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
@@ -19,15 +20,15 @@ import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
-import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
-import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
-import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import ManageCustomers from "./pages/manager-pages/ManageCustomers.jsx";
+import ManageStaffs from "./pages/manager-pages/ManageStaffs.jsx"; // Add ManageStaffs import
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import BookingService from "./pages/BookingService";
 import BookingStylist from "./pages/BookingStylist";
 import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/manager-pages/Dashboard.jsx";
 import { AppointmentProvider } from "./context/AppointmentContext";
 
 import "./index.css";
@@ -60,6 +61,43 @@ const App = () => {
         { path: "appointment", element: <CustomerAppointment /> },
         { path: "feedback", element: <FeedbackPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
+        {
+          path: "/booking",
+          children: [
+            {
+              path: "service",
+              element: (
+                <AppointmentProvider>
+                  <BookingService />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "stylist",
+              element: (
+                <AppointmentProvider>
+                  <BookingStylist />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "schedule",
+              element: (
+                <AppointmentProvider>
+                  <BookingSchedule />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "checkout",
+              element: (
+                <AppointmentProvider>
+                  <Checkout />
+                </AppointmentProvider>
+              ),
+            },
+          ],
+        },
       ],
     },
     {
@@ -80,52 +118,15 @@ const App = () => {
       children: [
         { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        { path: "management", element: <StaffManagement /> },
       ],
     },
     {
-      path: "/admin",
+      path: "/manager",
       element: <SidebarFrame />,
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
-      ],
-    },
-    {
-      path: "/booking",
-      children: [
-        {
-          path: "service",
-          element: (
-            <AppointmentProvider>
-              <BookingService />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "stylist",
-          element: (
-            <AppointmentProvider>
-              <BookingStylist />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "schedule",
-          element: (
-            <AppointmentProvider>
-              <BookingSchedule />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "checkout",
-          element: (
-            <AppointmentProvider>
-              <Checkout />
-            </AppointmentProvider>
-          ),
-        },
+        { path: "dashboard", element: <Dashboard /> },
       ],
     },
   ]);
