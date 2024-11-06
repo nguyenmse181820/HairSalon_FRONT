@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { createContext, useState, useEffect, StrictMode } from "react";
+import { createContext, useState, useEffect } from "react";
 import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
@@ -8,7 +8,7 @@ import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedbackPage from "./pages/FeedbackPage.jsx";
-import CustomerAppointment from './pages/CustomerAppointment.jsx';
+import CustomerAppointment from "./pages/CustomerAppointment.jsx";
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
 import ServiceStatus from "./pages/stylistpage/ServiceStatus.jsx";
@@ -29,7 +29,6 @@ import BookingStylist from "./pages/BookingStylist";
 import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
 import { AppointmentProvider } from "./context/AppointmentContext";
-
 
 import "./index.css";
 
@@ -58,8 +57,8 @@ const App = () => {
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
-        { path: 'appointment', element: <CustomerAppointment /> },
-        { path: 'feedback', element: <FeedbackPage /> },
+        { path: "appointment", element: <CustomerAppointment /> },
+        { path: "feedback", element: <FeedbackPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
       ],
     },
@@ -79,11 +78,12 @@ const App = () => {
       path: "staff",
       element: <StaffFrame />,
       children: [
-        { path: "bookings", element: <Bookings />},
+        { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        {path: "management", element:<StaffManagement/>}
-      ]
-    }
+        { path: "management", element: <StaffManagement /> },
+      ],
+    },
+    {
       path: "/admin",
       element: <SidebarFrame />,
       children: [
@@ -128,8 +128,6 @@ const App = () => {
         },
       ],
     },
-
-
   ]);
 
   if (loadingUser) return <div>Loading...</div>;
@@ -144,6 +142,4 @@ const App = () => {
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-root.render(
-  <App />
-);
+root.render(<App />);
