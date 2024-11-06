@@ -61,6 +61,43 @@ const App = () => {
         { path: 'appointment', element: <CustomerAppointment /> },
         { path: 'feedback', element: <FeedbackPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
+        {
+          path: "/booking",
+          children: [
+            {
+              path: "service",
+              element: (
+                <AppointmentProvider>
+                  <BookingService />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "stylist",
+              element: (
+                <AppointmentProvider>
+                  <BookingStylist />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "schedule",
+              element: (
+                <AppointmentProvider>
+                  <BookingSchedule />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "checkout",
+              element: (
+                <AppointmentProvider>
+                  <Checkout />
+                </AppointmentProvider>
+              ),
+            },
+          ],
+        },
       ],
     },
     {
@@ -92,43 +129,7 @@ const App = () => {
         { path: "dashboard", element: <Dashboard /> },
       ],
     },
-    {
-      path: "/booking",
-      children: [
-        {
-          path: "service",
-          element: (
-            <AppointmentProvider>
-              <BookingService />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "stylist",
-          element: (
-            <AppointmentProvider>
-              <BookingStylist />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "schedule",
-          element: (
-            <AppointmentProvider>
-              <BookingSchedule />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "checkout",
-          element: (
-            <AppointmentProvider>
-              <Checkout />
-            </AppointmentProvider>
-          ),
-        },
-      ],
-    },
+    
 
 
   ]);
