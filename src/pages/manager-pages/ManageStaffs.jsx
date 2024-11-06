@@ -17,6 +17,7 @@ const ManageStaffs = () => {
         email: "",
         phone: "",
         salary: "",
+        salaryDate: "", // New field for salary date
         status: "active",
       }
     );
@@ -61,7 +62,6 @@ const ManageStaffs = () => {
   const handleSave = async () => {
     try {
       if (selectedStaff.id) {
-        // update staff
         const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs/${selectedStaff.id}`;
         const response = await axios.put(url, selectedStaff);
         const returnedData = response.data;
@@ -76,7 +76,6 @@ const ManageStaffs = () => {
           closeModal();
         }
       } else {
-        // create staff
         const newId = Math.max(...staffs.map(staff => parseInt(staff.id, 10))) + 1;
         const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs`;
         const response = await axios.post(url, {
@@ -125,19 +124,8 @@ const ManageStaffs = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button className="p-2 rounded-full bg-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
             </svg>
           </button>
           <button
@@ -160,6 +148,7 @@ const ManageStaffs = () => {
               <th className="px-4 py-2 border-b">Email</th>
               <th className="px-4 py-2 border-b">Phone</th>
               <th className="px-4 py-2 border-b">Salary</th>
+              <th className="px-4 py-2 border-b">Salary Date</th> {/* New column */}
               <th className="px-4 py-2 border-b">Status</th>
               <th className="px-4 py-2 border-b">Action</th>
             </tr>
@@ -174,6 +163,7 @@ const ManageStaffs = () => {
                 <td className="px-4 py-2 border-b">{staff.email}</td>
                 <td className="px-4 py-2 border-b">{staff.phone}</td>
                 <td className="px-4 py-2 border-b">${staff.salary}</td>
+                <td className="px-4 py-2 border-b">{staff.salaryDate}</td> {/* Display Salary Date */}
                 <td className="px-4 py-2 border-b">
                   <input type="checkbox" checked={staff.status === 'active'} readOnly />
                 </td>
@@ -184,7 +174,6 @@ const ManageStaffs = () => {
               </tr>
             ))}
           </tbody>
-
         </table>
       </div>
 
@@ -258,6 +247,7 @@ const ManageStaffs = () => {
                   />
                 </div>
               </div>
+              
               <div className="flex flex-col lg:flex-row justify-between">
                 <div className="w-full lg:w-1/2 lg:pr-2">
                   <label className="block text-sm font-medium">Salary</label>
@@ -270,6 +260,19 @@ const ManageStaffs = () => {
                   />
                 </div>
                 <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
+                  <label className="block text-sm font-medium">Salary Date</label> {/* New input for Salary Date */}
+                  <input
+                    type="date"
+                    name="salaryDate"
+                    className="w-full border p-2 rounded"
+                    value={selectedStaff.salaryDate || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              
+              <div className="flex flex-col lg:flex-row justify-between">
+                <div className="w-full">
                   <label className="block text-sm font-medium">Status</label>
                   <select
                     name="status"
@@ -282,6 +285,7 @@ const ManageStaffs = () => {
                   </select>
                 </div>
               </div>
+
               <div className="flex justify-end mt-4 space-x-2">
                 <button onClick={handleSave} className="bg-black text-white px-4 py-2">
                   {selectedStaff.id ? 'Save' : 'Create'}
@@ -292,7 +296,6 @@ const ManageStaffs = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
