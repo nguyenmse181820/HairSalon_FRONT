@@ -1,5 +1,6 @@
 // src/context/AppointmentContext.jsx
 import { createContext, useContext, useState } from "react";
+import React from "react";
 
 // Create the AppointmentContext
 const AppointmentContext = createContext();

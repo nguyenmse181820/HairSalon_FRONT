@@ -13,7 +13,7 @@ const ManageStaffs = () => {
         id: "",
         name: "",
         username: "",
-        department: "",
+        position: "",
         email: "",
         phone: "",
         salary: "",
@@ -28,6 +28,28 @@ const ManageStaffs = () => {
     setIsModalOpen(false);
   };
 
+  const handleDelete = async (staffId) => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete this staff?");
+      if (!confirmDelete) return;
+
+      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs/${staffId}`;
+      const response = await axios.delete(url);
+      const updatedStaffs = response.data;
+      const isDeleted = !updatedStaffs.some((staff) => staff.id === staffId);
+
+      if (isDeleted) {
+        setStaffs(updatedStaffs);
+      } else {
+        alert("Failed to delete staff. Please try again.");
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error("Error deleting staff:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedStaff((prev) => ({
@@ -39,18 +61,28 @@ const ManageStaffs = () => {
   const handleSave = async () => {
     try {
       if (selectedStaff.id) {
-        // Update existing staff
+        // update staff
         const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs/${selectedStaff.id}`;
         const response = await axios.put(url, selectedStaff);
         const returnedData = response.data;
 
-        setStaffs((prev) =>
-          prev.map((staff) => (staff.id === returnedData.id ? returnedData : staff))
-        );
+        if (returnedData.id === selectedStaff.id) {
+          setStaffs((prev) =>
+            prev.map((staff) => (staff.id === returnedData.id ? returnedData : staff))
+          );
+          closeModal();
+        } else {
+          alert("Failed to update staff. Please try again.");
+          closeModal();
+        }
       } else {
-        // Create new staff
+        // create staff
+        const newId = Math.max(...staffs.map(staff => parseInt(staff.id, 10))) + 1;
         const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs`;
-        const response = await axios.post(url, selectedStaff);
+        const response = await axios.post(url, {
+          ...selectedStaff,
+          id: newId,
+        });
         const newStaff = response.data;
 
         setStaffs((prev) => [...prev, newStaff]);
@@ -75,9 +107,9 @@ const ManageStaffs = () => {
   }, []);
 
   const filteredStaffs = staffs.filter((staff) =>
-    staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    staff.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    staff.department.toLowerCase().includes(searchTerm.toLowerCase())
+    (staff.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (staff.username?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (staff.position?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -124,7 +156,7 @@ const ManageStaffs = () => {
               <th className="px-4 py-2 border-b">ID</th>
               <th className="px-4 py-2 border-b">Full Name</th>
               <th className="px-4 py-2 border-b">Username</th>
-              <th className="px-4 py-2 border-b">Department</th>
+              <th className="px-4 py-2 border-b">Position</th>
               <th className="px-4 py-2 border-b">Email</th>
               <th className="px-4 py-2 border-b">Phone</th>
               <th className="px-4 py-2 border-b">Salary</th>
@@ -138,7 +170,7 @@ const ManageStaffs = () => {
                 <td className="px-4 py-2 border-b">{staff.id}</td>
                 <td className="px-4 py-2 border-b">{staff.name}</td>
                 <td className="px-4 py-2 border-b">{staff.username}</td>
-                <td className="px-4 py-2 border-b">{staff.department}</td>
+                <td className="px-4 py-2 border-b">{staff.position}</td>
                 <td className="px-4 py-2 border-b">{staff.email}</td>
                 <td className="px-4 py-2 border-b">{staff.phone}</td>
                 <td className="px-4 py-2 border-b">${staff.salary}</td>
@@ -147,11 +179,12 @@ const ManageStaffs = () => {
                 </td>
                 <td className="px-4 py-2 border-b">
                   <button onClick={() => openModal(staff)} className="text-blue-500">Update</button>
-                  <button className="ml-2 text-red-500">Delete</button>
+                  <button onClick={() => handleDelete(staff.id)} className="ml-2 text-red-500">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
@@ -186,17 +219,34 @@ const ManageStaffs = () => {
                   />
                 </div>
               </div>
+
+              <div className="w-full">
+                <label className="block text-sm font-medium">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  className="w-full border p-2 rounded"
+                  value={selectedStaff.username || ''}
+                  onChange={handleInputChange}
+                />
+              </div>
+
               <div className="flex flex-col lg:flex-row justify-between">
                 <div className="w-full lg:w-1/2 lg:pr-2">
-                  <label className="block text-sm font-medium">Department</label>
-                  <input
-                    type="text"
-                    name="department"
+                  <label className="block text-sm font-medium">Position</label>
+                  <select
+                    name="position"
                     className="w-full border p-2 rounded"
-                    value={selectedStaff.department || ''}
+                    value={selectedStaff.position || ''}
                     onChange={handleInputChange}
-                  />
+                  >
+                    <option value="">Select Position</option>
+                    <option value="Stylist">Stylist</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Manager">Manager</option>
+                  </select>
                 </div>
+
                 <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
                   <label className="block text-sm font-medium">Phone</label>
                   <input
@@ -233,16 +283,16 @@ const ManageStaffs = () => {
                 </div>
               </div>
               <div className="flex justify-end mt-4 space-x-2">
-              <button onClick={handleSave} className="bg-black text-white px-4 py-2">
+                <button onClick={handleSave} className="bg-black text-white px-4 py-2">
                   {selectedStaff.id ? 'Save' : 'Create'}
                 </button>
                 <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2">Cancel</button>
-                
               </div>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
