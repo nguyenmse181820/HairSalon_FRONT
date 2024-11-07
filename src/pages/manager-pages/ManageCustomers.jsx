@@ -36,17 +36,42 @@ const ManageCustomers = () => {
       const response = await axios.put(url, selectedCustomer);
 
       const updatedCustomer = response.data;
-      setCustomers((prev) =>
-        prev.map((customer) =>
-          customer.id === updatedCustomer.id ? updatedCustomer : customer
-        )
-      );
-
-      closeModal();
+      if(updatedCustomer.id === selectedCustomer.id) {
+        setCustomers((prev) =>
+          prev.map((customer) =>
+            customer.id === updatedCustomer.id ? updatedCustomer : customer
+          )
+        );
+  
+        closeModal();
+      } else {
+        alert("Failed to update customer. Please try again.");
+        closeModal();
+      }
     } catch (error) {
       console.error("Error updating customer:", error);
     }
   };
+
+  const handleDelete = async (customerId) => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
+      if (!confirmDelete) return;
+  
+      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers/${customerId}`;
+      const response = await axios.delete(url);
+      const updatedCustomers = response.data;
+      const isDeleted = !updatedCustomers.some((customer) => customer.id === customerId);
+      if(isDeleted) {
+        setCustomers(updatedCustomers);
+      } else {
+        alert("Failed to delete customer. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
+  };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -124,7 +149,7 @@ const ManageCustomers = () => {
                 </td>
                 <td className="px-4 py-2 border-b">
                   <button onClick={() => openModal(customer)} className="text-blue-500">Update</button>
-                  <button className="ml-2 text-red-500">Delete</button>
+                  <button onClick={() => handleDelete(customer.id)} className="ml-2 text-red-500">Delete</button>
                 </td>
               </tr>
             ))}

@@ -1,3 +1,4 @@
+import React from "react";
 function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
   const parsePrice = (priceString) => {
     if (!priceString) return 0;
@@ -27,7 +28,7 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold pb-3">Appointment Summary</h2>
+      <h2 className="text-2xl font-bold pb-8">Appointment Summary</h2>
       <div className="border p-4 rounded-lg">
         {service || stylist ? (
           <>
