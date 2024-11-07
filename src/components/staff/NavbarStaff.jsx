@@ -74,19 +74,10 @@ function NavBarStaff() {
                             </div>
                         </div>
                         <ul className="flex flex-col items-center space-y-8 text-xl">
-                            {['DATE', 'SERVICE STATUS', 'EARNING'].map((menuItem, i) => (
-                                <li key={i} className="nav-link font-semibold cursor-pointer">{menuItem}</li>
-                            ))}
-                            <li className='flex flex-col items-center relative'>
-                                <button onClick={() => setIsOpen((prev) => !prev)} type='button' className='nav-link font-semibold text-xl uppercase '>Appointment</button>
-                                {isOpen && (
-                                    <ul className='absolute flex flex-col text-center items-center bg-black text-white w-[280px] my-10 '>
-                                        <li className='py-2 px-[46px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >View Appointment</a></li>
-                                        <li className='py-2 px-[14px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >Management Appointment</a></li>
-                                    </ul>
-                                )
-                                }
-                            </li>
+                            <li><a href="/staff/bookings" className="nav-link font-semibold uppercase">Bookings</a></li>
+                            <li><a href="/staff/stylist_assignment" className="nav-link font-semibold  uppercase">Stylist Assignment</a></li>
+                            <li><a href="/staff/management" className="nav-link font-semibold  uppercase">Appointment Management</a></li>
+                           
                         </ul>
                     </div>
                 </div>

@@ -19,8 +19,8 @@ function StylistPage() {
                 <img className='bg-no-repeat bg-cover bg-center w-3/4 lg:w-full' src={BackGroundStylist} alt="" />
             </div>
 
-            <div className='mx-auto mt-10 py-2 px-2 font-bold text-xl text-center'>Daily Appointments</div>
-            <input type='date' className='mx-auto sm:ml-6 md:ml-6 lg:ml-10 mt-10 py-2 px-6 border-2 border-gray-400'></input>
+            <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Daily Appointments</div>
+            <input type='date' className='mx-auto ml-5 sm:ml-6 md:ml-6 lg:ml-10 mt-10 py-2 px-6 border-2 border-gray-400'></input>
             <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm lg:text-lg'>
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
                     <thead className=''>

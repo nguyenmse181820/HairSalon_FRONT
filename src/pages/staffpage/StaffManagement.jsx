@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../../css/ScheduleManagement.css'
 
 function StaffManagement() {
@@ -9,6 +11,7 @@ function StaffManagement() {
       stylistName: 'Stylist 1',
       serviceType: 'Type 1',
       date: '2024-01-09',
+      status: 'Doing'
     },
     {
       Id: 2,
@@ -16,6 +19,7 @@ function StaffManagement() {
       stylistName: 'Stylist 1',
       serviceType: 'Type 2',
       date: '2024-01-09',
+      status: 'Done'
     },
   ]);
 
@@ -26,11 +30,12 @@ function StaffManagement() {
     date: '',
   });
 
+
   const [EditModal, setEditModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [DeleteModal, setDeleteModal] = useState(false);
   const [createModal, setCreateModal] = useState(false);
-
+  const [filterModal, setFilterModal] = useState(false);
   // handle edit modal
   const toggleEditModal = (item) => {
     setSelectedItem(item);
@@ -43,11 +48,13 @@ function StaffManagement() {
     setDeleteModal(!DeleteModal);
   }
 
-
-
   // handle create modal
   const toggleCreateModal = () => {
     setCreateModal(!createModal);
+  }
+
+  const toggleFilterModal = () => {
+    setFilterModal(!filterModal);
   }
 
   if (EditModal || createModal || DeleteModal) {
@@ -57,12 +64,17 @@ function StaffManagement() {
   }
 
   //handle change
-  const handleChange = (event) => {
+  const handleEditChange = (event) => {
     setSelectedItem({
       ...selectedItem,
       [event.target.name]: event.target.value,
     });
   };
+
+  const handleCreateChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
 
   //validation 
   const [errors, setErrors] = useState({});
@@ -82,10 +94,7 @@ function StaffManagement() {
     } else if (formData.stylistName.length < 3) {
       validationErrors.stylistName = 'Stylist name must be at least 3 characters';
     }
-    // valid serviceType
-    if (!formData.serviceType.trim()) {
-      validationErrors.serviceType = 'Service type is required';
-    }
+
     // valid date
     if (!formData.date.trim()) {
       validationErrors.date = 'Date is required';
@@ -101,11 +110,76 @@ function StaffManagement() {
 
   return (
     <div>
-      <div className='mx-auto text-center font-bold text-xl mt-10 uppercase'>Appointment List</div>
-      <div className='flex sm:justify-start justify-center'>
-        <button onClick={toggleCreateModal} className='flex justify-center mt-10 sm:ml-6 md:ml-6 lg:ml-10 ml-0 border w-max px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Create new appointment</button>
+      <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Appointment List</div>
+      <div className='flex flex-col sm:flex-row gap-4 mt-10 sm:ml-6 lg:ml-10 ml-6'>
+        {/* create button */}
+        <div className='text-sm sm:text-base flex justify-center border w-max px-4 py-2 transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>
+          <button onClick={toggleCreateModal} className='font-semibold'>Create new appointment</button>
+        </div>
+        {/* filter button  */}
+        <div className='text-sm sm:text-base border text-center w-[100px] sm:w-[150px] py-2 flex items-center justify-center trasform hover:scale-110 duration-500 hover:shadow hover:bg-black hover:text-white' onClick={toggleFilterModal}>
+          <FontAwesomeIcon className='cursor-pointer' icon={faFilter} />
+          <button className='w-[60px] font-semibold '>Filter</button>
+        </div>
       </div>
-      <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm sm:text-lg'>
+      {/* Filter modal */}
+      <div className={
+        `inset-0 fixed z-50 transform 
+        ${filterModal ? "trasnslate-x-0" : "-translate-x-full"}  
+        transition-transform duration-700 ease-in-out`
+      }
+      >
+
+        <div className='bg-white opacity-70 top-0 left-0 right-0 bottom-0 w-full h-full fixed' onClick={toggleFilterModal} ></div>
+        <div className='shadow-lg bg-white top-0  bottom-0 fixed z-50 xs:w-[340px]'>
+          <div className='ml-5'>
+            <div className='my-10'>
+              <div className='flex justify-between items-center mb-5'>
+                <div className='text-3xl uppercase'>Filter</div>
+                <button className='close-modal mr-10 text-2xl' onClick={toggleFilterModal}><FontAwesomeIcon icon={faXmark} /></button>
+              </div>
+              <div className='lg:w-full h-[1px] bg-black'></div>
+            </div>
+            <div className='flex flex-col'>
+              <div className='flex gap-2 items-center justify-between mb-6'>
+                <div>Date</div>
+                <input className='border mr-10 p-2 w-[155px]' type="date" />
+              </div>
+              <div className='flex gap-2 items-center justify-between mb-6'>
+                <div>Stylist Name</div>
+                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                  <option value="">Stylist 1</option>
+                  <option value="">Stylist 2</option>
+                  <option value="">Stylist 3</option>
+                  <option value="">Stylist 4</option>
+                  <option value="">Stylist 5</option>
+                </select>
+              </div>
+              <div className='flex gap-2 items-center justify-between mb-6'>
+                <div>Service Type</div>
+                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                  <option value="">Service 1</option>
+                  <option value="">Service 2</option>
+                  <option value="">Service 3</option>
+                  <option value="">Service 4</option>
+                  <option value="">Service 5</option>
+                </select>
+              </div>
+              <div className='flex gap-2 items-center justify-between'>
+                <div>Status</div>
+                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                  <option value="">All</option>
+                  <option value="">Doing</option>
+                  <option value="">Completed 1</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div >
+
+      <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm sm:text-sm md:text-sm lg:text-lg'>
         <table className='table-auto border border-solid border-l-0 border-r-0'>
           <thead className=''>
             <tr>
@@ -114,6 +188,7 @@ function StaffManagement() {
               <th>Stylist Name</th>
               <th className='hidden sm:table-cell'>Service Type</th>
               <th>Date</th>
+              <th className='hidden sm:table-cell'>Status</th>
               <th>Actions</th>
             </tr>
 
@@ -125,11 +200,12 @@ function StaffManagement() {
                   <td className='py-4'>{item.Id}</td>
                   <td className='py-4'>{item.customerName}</td>
                   <td className='py-4'>{item.stylistName}</td>
-                  <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
+                  <td className='py-4 hidden sm:table-cell'>{item.serviceType}</td>
                   <td className='py-4'>{item.date}</td>
-                  <td className='flex justify-center items-center gap-4 py-4 sm:flex-row flex-col'>
-                    <button onClick={() => toggleEditModal(item)} className='border hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[70%] sm:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
-                    <button onClick={() => toggleDeleteModal(item)} className='border bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[70%] sm:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
+                  <td className='py-4 hidden sm:table-cell'>{item.status}</td>
+                  <td className='flex justify-center items-center gap-1 sm:gap-2 py-4 sm:flex-row flex-col'>
+                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[70%] md:w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
+                    <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[70%] md:w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
                   </td>
                 </tr>
               )
@@ -153,7 +229,7 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.customerName}
                     name='customerName'
-                    onChange={handleChange}
+                    onChange={handleEditChange}
                   />
                   {errors.customerName && <span className='text-red-500 italic text-sm'>{errors.customerName}</span>}
                 </div>
@@ -163,7 +239,7 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.stylistName}
                     name='stylistName'
-                    onChange={handleChange}
+                    onChange={handleEditChange}
                   />
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
@@ -171,7 +247,7 @@ function StaffManagement() {
                   <label htmlFor="">Service Type</label> <br />
                   <select
                     name='serviceType'
-                    id="" onChange={handleChange}
+                    id="" onChange={handleEditChange}
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.serviceType}
                   >
@@ -189,13 +265,13 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.date}
                     name='date'
-                    onChange={handleChange}
+                    onChange={handleEditChange}
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
                 <div className='flex justify-center items-center gap-4 mt-10'>
-                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
-                  <button onClick={toggleEditModal} className='bg-black text-white border px-4 py-2 w-[100px] hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
+                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
+                  <button onClick={toggleEditModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
                 </div>
               </form>
             </div>
@@ -213,8 +289,8 @@ function StaffManagement() {
             <div>
               <p className='text-center text-lg'>Are you sure you want to delete this appointment?</p>
               <div className='flex justify-center items-center gap-4 mt-10'>
-                <button className='bg-white text-black border px-4 py-2 w-[100px] hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Yes</button>
-                <button onClick={toggleDeleteModal} className='bg-black text-white border px-4 py-2 w-[100px] hover:bg-white hover:text-black transition-all ease-in-out duration-500' >No</button>
+                <button className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Yes</button>
+                <button onClick={toggleDeleteModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >No</button>
               </div>
             </div>
           </div>
@@ -235,7 +311,7 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={formData.customerName}
                     name='customerName'
-                    onChange={handleChange}
+                    onChange={handleCreateChange}
                   />
                   {errors.customerName && <span className='text-red-500 italic text-sm'>{errors.customerName}</span>}
                 </div>
@@ -245,13 +321,13 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={formData.stylistName}
                     name='stylistName'
-                    onChange={handleChange}
+                    onChange={handleCreateChange}
                   />
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
                 <div className='mb-4'>
                   <label htmlFor="">Service Type</label> <br />
-                  <select name='serviceType' id="" onChange={handleChange} className='w-full border border-gray-400 p-2 hover:border-black'>
+                  <select name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
                     <option value={formData.serviceType}>Type 1</option>
                     <option value={formData.serviceType}>Type 2</option>
                     <option value={formData.serviceType}>Type 3</option>
@@ -267,13 +343,13 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={formData.date}
                     name='date'
-                    onChange={handleChange}
+                    onChange={handleCreateChange}
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
                 <div className='flex justify-center items-center gap-4 mt-20'>
-                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
-                  <button onClick={toggleCreateModal} className='bg-black text-white border px-4 py-2 w-[100px] hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
+                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
+                  <button onClick={toggleCreateModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
                 </div>
               </form>
             </div>

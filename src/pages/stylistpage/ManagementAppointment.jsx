@@ -14,7 +14,7 @@ function ManagementAppointment() {
 
     return (
         <div>
-            <div className='mx-auto py-2 px-2 font-bold text-xl ml-10 text-center'>Appointment Management</div>
+            <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Appointment Management</div>
             <div className='flex flex-col lg:flex-row items-start mt-6  lg:items-center ml-10'>
                 <div className='mr-10 font-bold' >Sort: </div>
                 <div className='mr-10'><button className='border-solid border bg-black text-white hover:bg-white hover:text-black transition-all ease-in-out duration-500 py-2 px-6 mt-4'>Date</button></div>

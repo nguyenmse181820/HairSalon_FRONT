@@ -86,7 +86,7 @@ function StylistAssignment() {
 
     return (
         <div>
-            <div className='mx-auto text-center font-bold text-xl mt-10'>Stylist Assignment</div>
+            <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Stylist Assignment</div>
             <div className='flex justify-center items-center'>
                 <form action="" className='bg-white shadow-lg border border-solid mt-10 mb-10 lg:mx-10 text-sm lg:text-lg w-[80%] md:w-[50%] lg:w-[35%] mx-auto'>
                     <div className='py-9'>
@@ -163,8 +163,8 @@ function StylistAssignment() {
                             {errors.age && <span className='text-red-500 text-sm italic'>{errors.age}</span>}
                         </div>
                         <div className='flex flex-col md:flex-row lg:flex-row justify-center items-center  mt-10 px-4 mb-7 gap-7'>
-                            <button onClick={handleSubmit} className='bg-black text-white hover:bg-white hover:text-black border transion-all ease-in-out duration-300 py-2 px-4 w-[100px]'>Submit</button>
-                            <button onClick={handleReset} className='bg-white text-black hover:bg-black hover:text-white border transion-all ease-in-out duration-300 py-2 px-4 w-[100px]'>Clear</button>
+                            <button onClick={handleSubmit} className='bg-black text-white trasform hover:scale-110  hover:bg-white hover:text-black border transion-all ease-in-out duration-500 py-2 px-4 w-[100px]'>Submit</button>
+                            <button onClick={handleReset} className='bg-white text-black  trasform hover:scale-110 hover:bg-black hover:text-white border transion-all ease-in-out duration-500 py-2 px-4 w-[100px]'>Clear</button>
                         </div>
                     </div>
                 </form>
