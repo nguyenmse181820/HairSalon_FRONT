@@ -81,25 +81,30 @@ function StylistPage() {
                     </div>
                 </div>
             </div >
-            
-            <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm lg:text-lg'>
-                <table className='table-auto border border-solid border-l-0 border-r-0'>
+            {/* table */}
+            <div className='xs:p-6 p-2'>
+                <table className='w-full border-collapse text-center'>
                     <thead className=''>
-                        <tr>
-                            <th>Stt</th>
-                            <th>Customer Name</th>
+                        <tr className='sm:text-base text-sm'>
+                            <th className='py-2 px-3 font-semibold text-center uppercase'>Stt</th>
+                            <th className='py-2 px-3 font-semibold text-center uppercase'>Customer Name</th>
                             <th className='hidden sm:table-cell'>Service Type</th>
-                            <th>Date</th>
+                            <th className='py-2 px-3 font-semibold text-center uppercase'>Date</th>
                             <th className='hidden sm:table-cell'>Time</th>
-                            <th>Status</th>
+                            <th className='py-2 px-3 font-semibold text-center uppercase'>Status</th>
                         </tr>
 
                     </thead>
                     <tbody className='text-center'>
+                        <tr>
+                            <td colSpan="6">
+                                <hr className="w-full border-gray-300 my-2" />
+                            </td>
+                        </tr>
                         {
                             appointments.map((item) => {
                                 return (
-                                    <tr key={item.id}>
+                                    <tr key={item.id} className='sm:text-base text-sm'>
                                         <td className='py-4'>{item.id}</td>
                                         <td className='py-4'>{item.customerName}</td>
                                         <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>

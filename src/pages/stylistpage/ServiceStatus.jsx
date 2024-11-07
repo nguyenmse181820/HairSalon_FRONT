@@ -31,8 +31,8 @@ function ServiceStatus() {
             {/* ** FILTER MODAL ** */}
             <div className={
                 `inset-0 fixed z-50 transform 
-        ${filterModal ? "trasnslate-x-0" : "-translate-x-full"}  
-        transition-transform duration-700 ease-in-out`
+                ${filterModal ? "trasnslate-x-0" : "-translate-x-full"}  
+                transition-transform duration-700 ease-in-out`
             }
             >
 
@@ -84,23 +84,29 @@ function ServiceStatus() {
                     </div>
                 </div>
             </div >
-            <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm lg:text-lg'>
-                <table className='table-auto border border-solid border-l-0 border-r-0'>
+            {/* table */}
+            <div className='xs:p-6 p-2'>
+                <table className='w-full border-collapse text-center'>
                     <thead className=''>
-                        <tr>
-                            <th>Stt</th>
-                            <th>Stylist Name</th>
-                            <th className='hidden sm:table-cell'>Service Type</th>
-                            <th>Date</th>
-                            <th className='hidden sm:table-cell'>Time</th>
-                            <th>Status</th>
+                        <tr className='xs:text-base text-sm'>
+                            <th className="py-2 px-3 font-semibold text-center uppercase" >Stt</th>
+                            <th className="py-2 px-3 font-semibold text-center uppercase" >Stylist Name</th>
+                            <th className='hidden sm:table-cell py-2 px-3 font-semibold text-center uppercase'>Service Type</th>
+                            <th className='p-4 font-semibold uppercase cursor-pointer'>Date</th>
+                            <th className='hidden sm:table-cell py-2 px-3 font-semibold text-center uppercase'>Time</th>
+                            <th className="py-2 px-3 font-semibold text-center uppercase">Status</th>
                         </tr>
 
                     </thead>
                     <tbody className='text-center'>
+                        <tr>
+                            <td colSpan="6">
+                                <hr className="w-full border-gray-300 my-2" />
+                            </td>
+                        </tr>
                         {services.map((service) => {
                             return (
-                                <tr key={service.id} className=''>
+                                <tr key={service.id} className='xs:text-base text-sm'>
                                     <td className='py-4'>{service.id}</td>
                                     <td className='py-4'>{service.customerName}</td>
                                     <td className='hidden sm:table-cell py-4'>{service.serviceType}</td>

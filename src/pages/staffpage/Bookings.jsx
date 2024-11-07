@@ -40,7 +40,7 @@ function Bookings() {
         </div>
       </div>
       <div className='my-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Booking List</div>
-      
+
       {/* **FILTER BUTTON** */}
       <div className='ml-6 lg:ml-10 text-sm sm:text-base border text-center w-[100px] sm:w-[150px] py-2 sm:py-4 flex items-center justify-center trasform hover:scale-110 duration-500 hover:shadow hover:bg-black hover:text-white' onClick={toggleFilterModal}>
         <FontAwesomeIcon className='cursor-pointer' icon={faFilter} />
@@ -105,31 +105,36 @@ function Bookings() {
       </div >
 
       {/* **TABLE** */}
-      <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm lg:text-lg'>
-        <table className='table-auto border border-solid border-l-0 border-r-0'>
+      <div className='mt-5 xs:p-6 p-0'>
+        <table className='w-full border-collapse'>
           <thead className=''>
-            <tr>
-              <th>Stt</th>
-              <th>Customer Name</th>
-              <th>Stylist Name</th>
-              <th className='hidden sm:table-cell'>Service Type</th>
-              <th>Date</th>
-              <th className='hidden sm:table-cell'>Time</th>
-              <th>Status</th>
+            <tr className='sm:text-base text-sm'>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Stt</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Customer Name</th>
+              <th className="hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase">Stylist Name</th>
+              <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Service Type</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Date</th>
+              <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Time</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Status</th>
             </tr>
 
           </thead>
-          <tbody className='text-center  '>
+          <tbody className='text-center'>
+            <tr>
+              <td colSpan="6">
+                <hr className="w-full border-gray-300 my-2" />
+              </td>
+            </tr>
             {bookings.map((item) => {
               return (
-                <tr key={item.stt} className=''>
-                  <td className='py-4'>{item.stt}</td>
-                  <td className='py-4'>{item.customerName}</td>
-                  <td className='py-4'>{item.stylistName}</td>
-                  <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
-                  <td className='py-4'>{item.date}</td>
-                  <td className='hidden sm:table-cell py-4'>{item.time}</td>
-                  <td className='flex justify-center py-4'>
+                <tr key={item.stt} className='sm:text-base text-sm'>
+                  <td className='py-3 px-2'>{item.stt}</td>
+                  <td className='py-3 px-2'>{item.customerName}</td>
+                  <td className='hidden sm:table-cell py-3 px-2'>{item.stylistName}</td>
+                  <td className='hidden sm:table-cell py-3 px-2'>{item.serviceType}</td>
+                  <td className='py-3 px-2'>{item.date}</td>
+                  <td className='hidden sm:table-cell py-3 px-2'>{item.time}</td>
+                  <td className='flex justify-center py-3 px-2'>
                     <div className=''>{item.status}</div>
                   </td>
                 </tr>

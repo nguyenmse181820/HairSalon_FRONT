@@ -9,6 +9,7 @@ import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedbackPage from "./pages/FeedbackPage.jsx";
+import RewardPage from "./pages/RewardPage.jsx";
 import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
@@ -62,6 +63,7 @@ const App = () => {
         { path: "contact", element: <ContactPage /> },
         { path: 'appointment', element: <CustomerAppointment /> },
         { path: 'feedback', element: <FeedbackPage /> },
+        { path: 'reward', element: <RewardPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
         {
           path: "/booking",
@@ -118,7 +120,7 @@ const App = () => {
       path: "staff",
       element: <StaffFrame />,
       children: [
-        { path: "bookings", element: <Bookings />},
+        { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
         {path: "management", element: <StaffManagement />},
       ]
