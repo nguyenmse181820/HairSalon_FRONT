@@ -95,8 +95,8 @@ const AccountPage = () => {
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
-          } else if (user.role === "admin") {
-            navigate("/admin/manage-customer");
+          } else if (user.role === "manager") {
+            navigate("/manager/dashboard");
           } else {
             toast.error("Unauthorized role");
           }

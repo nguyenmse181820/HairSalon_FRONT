@@ -133,6 +133,8 @@ function BookingSchedule() {
         <AppointmentSummary
           service={selectedService}
           stylist={selectedStylist}
+          selectedDate={selectedDate.format("MMM D, YYYY")}
+          selectedTime={selectedTime}
         />
 
         <div className="mt-4 p-4 border rounded">

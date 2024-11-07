@@ -43,7 +43,7 @@ function ScheduleManagement() {
     return (
         <div>
             <div>
-                <div className='mx-auto py-2 px-2 font-bold text-xl ml-10 text-center'>Schedule Management</div>
+                <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Schedule Management</div>
             </div>
             <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 md:mx-10 text-sm md:text-lg'>
                 <table className='table-auto border border-solid border-l-0 border-r-0'>
@@ -92,7 +92,7 @@ function ScheduleManagement() {
                             <input type="text" className='h-full w-full border border-solid' />
                         </div>
                         <div className='flex gap-2 justify-center'>
-                            <button className='bg-blue-600 text-white py-1 px-4 hover:bg-blue-500 hover:opacity-85 transition-all ease-in-out duration-500' onClick={toggleModal}>Submit</button>
+                            <button className='bg-blue-600 text-white py-1 px-4 hover:bg-blue-500 hover:opacity-85 transition-all ease-in-out duration-500'>Submit</button>
                             <button className='bg-red-600 text-white py-1 px-4 hover:bg-red-500 hover:opacity-85 transition-all ease-in-out duration-500' onClick={toggleModal}>Cancel</button>
                         </div>
                     </div>
