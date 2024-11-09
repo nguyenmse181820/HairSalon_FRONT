@@ -48,7 +48,7 @@ function NavBarStylist() {
                 </div>
 
                 <div className='middle-header-row flex items-center justify-center'>
-                    <a className='flex justify-center  ' href="/stylist"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
+                    <a className='flex justify-center  ' href="/stylist/home"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
                 </div>
 
                 <div className="menustylist-bar">

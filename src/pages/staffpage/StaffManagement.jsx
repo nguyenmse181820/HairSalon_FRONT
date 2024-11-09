@@ -178,34 +178,39 @@ function StaffManagement() {
           </div>
         </div>
       </div >
-
-      <div className='shadow-lg flex flex-col mt-10 mb-10 mx-6 lg:mx-10 text-sm sm:text-sm md:text-sm lg:text-lg'>
-        <table className='table-auto border border-solid border-l-0 border-r-0'>
+      {/* table */}
+      <div className='mt-5 xs:p-6 p-0'>
+        <table className='w-full'>
           <thead className=''>
-            <tr>
-              <th>Id</th>
-              <th>Customer Name</th>
-              <th>Stylist Name</th>
-              <th className='hidden sm:table-cell'>Service Type</th>
-              <th>Date</th>
-              <th className='hidden sm:table-cell'>Status</th>
-              <th>Actions</th>
+            <tr className='sm:text-base text-sm'>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Id</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Customer Name</th>
+              <th className="hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase">Stylist Name</th>
+              <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Service Type</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Date</th>
+              <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Status</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Actions</th>
             </tr>
 
           </thead>
           <tbody className='text-center'>
+            <tr>
+              <td colSpan="6">
+                <hr className="w-full border-gray-300 my-2" />
+              </td>
+            </tr>
             {AppointmentList.map((item) => {
               return (
-                <tr key={item.Id} className=''>
-                  <td className='py-4'>{item.Id}</td>
-                  <td className='py-4'>{item.customerName}</td>
-                  <td className='py-4'>{item.stylistName}</td>
-                  <td className='py-4 hidden sm:table-cell'>{item.serviceType}</td>
-                  <td className='py-4'>{item.date}</td>
-                  <td className='py-4 hidden sm:table-cell'>{item.status}</td>
-                  <td className='flex justify-center items-center gap-1 sm:gap-2 py-4 sm:flex-row flex-col'>
-                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[70%] md:w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
-                    <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[70%] md:w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
+                <tr key={item.Id} className='sm:text-base text-sm'>
+                  <td className='py-3 px-2'>{item.Id}</td>
+                  <td className='py-3 px-2'>{item.customerName}</td>
+                  <td className='hidden sm:table-cell py-3 px-2'>{item.stylistName}</td>
+                  <td className='py-3 px-2 hidden sm:table-cell'>{item.serviceType}</td>
+                  <td className='py-3 px-2'>{item.date}</td>
+                  <td className='py-3 px-2 hidden sm:table-cell'>{item.status}</td>
+                  <td className='flex justify-center items-center gap-1 sm:gap-2 py-3 px-2 sm:flex-row flex-col'>
+                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[80%]  lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
+                    <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
                   </td>
                 </tr>
               )
@@ -219,8 +224,8 @@ function StaffManagement() {
       {EditModal && (
         <div className='modal'>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleEditModal}></div>
-          <div className='modal-content fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-16 w-[80%] md:w-[50%] lg:w-[35%]'>
-            <div>
+          <div className='modal-content z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white pb-16  w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
+            <div className='w-[80%]'>
               <div className='text-center font-bold text-xl uppercase tracking-wider my-10 '>Edit Form</div>
               <form action="">
                 <div className='mb-4 mx-10'>
@@ -301,8 +306,8 @@ function StaffManagement() {
       {createModal && (
         <div className='modal '>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' ></div>
-          <div className='modal-content fixed  top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-12 mt-10 md:mt-16 lg:mt-[100px] w-[80%] md:w-[50%] lg:w-[35%]'>
-            <div>
+          <div className='modal-content fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white py-16 mt-10 md:mt-16 lg:mt-[100px] w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
+            <div className='w-[80%]'>
               <form action="">
                 <div className='text-lg text-center font-bold uppercase tracking-wider mb-10'>Create New Appointment</div>
                 <div className='mb-4'>

@@ -36,40 +36,45 @@ function ScheduleManagement() {
     return (
         <div>
             {/* Title */}
-            <div className="mt-5 font-bold text-2xl text-center uppercase tracking-wider">
+            <div className="mt-5 font-bold text-lg xs:text-2xl text-center uppercase tracking-wider">
                 Schedule Management
             </div>
 
             {/* Table */}
-            <div className=" flex flex-col mt-10 mb-10 mx-6 md:mx-10 text-sm md:text-lg">
-                <table className="table-auto w-full border border-gray-300 text-center">
+            <div className="mt-5 xs:p-6 p-2">
+                <table className="w-full border-collapse">
                     <thead>
-                        <tr>
+                        <tr className='sm:text-base text-sm'>
                             <th className="py-3 px-2 font-semibold text-center uppercase">Id</th>
                             <th className="py-3 px-2 font-semibold text-center uppercase">Customer Name</th>
-                            <th className="py-3 px-2 font-semibold text-center uppercase">Service Type</th>
+                            <th className="py-3 px-2 font-semibold text-center uppercase hidden sm:table-cell">Service Type</th>
                             <th className="py-3 px-2 font-semibold text-center uppercase">Date</th>
-                            <th className="py-3 px-2 font-semibold text-center uppercase">Note</th>
+                            <th className="py-3 px-2 font-semibold text-center uppercase hidden sm:table-cell">Note</th>
                             <th className="py-3 px-2 font-semibold text-center uppercase">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <tr>
+                            <td colSpan="6">
+                                <hr className="w-full border-gray-300 my-2" />
+                            </td>
+                        </tr>
                         {schedules.map((item) => (
-                            <tr key={item.id} className="border-t">
+                            <tr key={item.id} className="text-center">
                                 <td className="py-3 px-2">{item.id}</td>
                                 <td className="py-3 px-2">{item.customerName}</td>
                                 <td className="hidden sm:table-cell py-3 px-2">{item.serviceType}</td>
                                 <td className="py-3 px-2">{item.date}</td>
                                 <td className="hidden sm:table-cell py-2 px-2">{item.note}</td>
-                                <td className="py-3 px-2 flex justify-center items-center gap-2">
+                                <td className="py-3 px-2 flex flex-col xs:flex-row justify-center items-center gap-2">
                                     <button
-                                        className="bg-blue-600 text-white py-1 px-4 hover:bg-blue-500 transition duration-300"
+                                        className="bg-blue-600 text-white w-[70px] xs:w-max py-1 px-4 hover:bg-blue-500 transition duration-300"
                                         onClick={toggleDetail}
                                     >
                                         Detail
                                     </button>
                                     <button
-                                        className="bg-red-600 text-white py-1 px-4 hover:bg-red-500 transition duration-300"
+                                        className="bg-red-600 text-white w-[70px] xs:w-max py-1 px-4 hover:bg-red-500 transition duration-300"
                                         onClick={toggleModal}
                                     >
                                         Cancel

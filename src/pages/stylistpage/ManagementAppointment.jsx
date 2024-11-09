@@ -29,14 +29,14 @@ function ManagementAppointment() {
 
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold text-center mb-8 uppercase">Appointment Management</h1>
+        <div className="xs:p-6 p-2">
+            <h1 className="sm:text-2xl text-lg font-bold text-center mb-8 uppercase">Appointment Management</h1>
             <table className="w-full border-collapse text-center">
                 <thead>
-                    <tr >
+                    <tr className='sm:text-base text-sm'>
                         <th className="py-2 px-3 font-semibold text-center uppercase"   >ID</th>
                         <th className="py-2 px-3 font-semibold text-center uppercase">Customer Name</th>
-                        <th className="py-2 px-3 font-semibold text-center uppercase">Service Type</th>
+                        <th className="py-2 px-3 font-semibold text-center uppercase hidden sm:table-cell">Service Type</th>
                         <th
                             className="p-4 font-semibold uppercase cursor-pointer"
                             onClick={handleSortDate}
@@ -56,10 +56,10 @@ function ManagementAppointment() {
                         </td>
                     </tr>
                     {appointments.map((item) => (
-                        <tr>
+                        <tr key={item.id} className='sm:text-base text-sm'>
                             <td className="p-2">{item.id}</td>
                             <td className="p-2">{item.customerName}</td>
-                            <td className="p-2">{item.serviceType}</td>
+                            <td className="p-2 hidden sm:table-cell">{item.serviceType}</td>
                             <td className="p-2">{item.date}</td>
                             <td className="p-2">
                                 <select className="border p-2 rounded">
@@ -68,13 +68,11 @@ function ManagementAppointment() {
                                 </select>
                             </td>
                         </tr>
-
-
                     ))}
                 </tbody>
             </table>
             {/* <div>pagination</div> */}
-            <div className="flex justify-end mt-10 mb-5 space-x-4">
+            <div className="flex justify-end mt-10 mb-5 space-x-4 mr-10">
                 <button className="bg-red-600 text-white py-2 px-4 rounded border border-red-600 hover:bg-white hover:text-red-600 transition duration-300">
                     Reset
                 </button>
@@ -83,8 +81,6 @@ function ManagementAppointment() {
                     Save
                 </button>
             </div>
-
-
         </div>
     );
 }
