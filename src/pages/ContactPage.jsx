@@ -9,13 +9,13 @@ const ContactPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const formData = {
             name: e.target.name.value,
             email: e.target.email.value,
             message: e.target.message.value,
         };
-    
+
         try {
             const response = await fetch('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/submit-contact-form', {
                 method: 'POST',
@@ -24,7 +24,7 @@ const ContactPage = () => {
                 },
                 body: JSON.stringify(formData),
             });
-    
+
             if (response.ok) {
                 setIsSubmitted(true);
             } else {
@@ -34,7 +34,7 @@ const ContactPage = () => {
             console.error('Error submitting form:', error);
         }
     };
-    
+
 
     const handleBackToLanding = () => {
         navigate('/');
@@ -84,7 +84,7 @@ const ContactPage = () => {
                             MESSAGE*
                         </label>
                         <textarea
-                            className="w-full border border-gray-400 p-2 h-32"
+                            className="w-full border border-gray-400 p-2 h-32 "
                             id="message"
                             placeholder="Message*"
                             required
@@ -105,9 +105,9 @@ const ContactPage = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-center py-10">
+                    <div className="flex justify-center pt-4">
                         <button
-                            className="px-5 py-2 font-montserrat font-bold italic bg-transparent border-2 border-black text-black hover:bg-black hover:text-white border-solid transform transition-all duration-300 ease-in-out"
+                            className="px-4 py-2 font-montserrat font-bold italic bg-transparent border-2 border-black text-black hover:bg-black hover:text-white border-solid transform transition-all duration-300 ease-in-out"
                             type="submit"
                         >
                             SEND
