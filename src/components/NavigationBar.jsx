@@ -78,7 +78,7 @@ const NavigationBar = () => {
             {[
               { name: 'SERVICES', link: '/booking/service' },
               { name: 'BOOKING', link: '/booking' },
-              { name: 'PRODUCTS', link: '/products' },
+              { name: 'REWARD', link: '/reward' },
               { name: 'CONTACT', link: '/contact' },
               { name: 'ABOUT US', link: '/about-us' }
             ].map((menuItem, i) => (
@@ -114,7 +114,7 @@ const NavigationBar = () => {
               {[
                 { name: 'SERVICES', link: '/booking/service' },
                 { name: 'BOOKING', link: '/booking' },
-                { name: 'PRODUCTS', link: '/products' },
+                { name: 'REWARD', link: '/reward' },
                 { name: 'CONTACT', link: '/contact' },
                 { name: 'ABOUT US', link: '/about-us' }
               ].map((menuItem, i) => (

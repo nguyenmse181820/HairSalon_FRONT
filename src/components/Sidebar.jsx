@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import Logo from '../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faUser, faUsers } from '@fortawesome/free-solid-svg-icons'; 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../main';
+import PropTypes from 'prop-types';
 
-const Sidebar = () => {
+const Sidebar = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setUser } = useContext(UserContext);
@@ -25,33 +25,18 @@ const Sidebar = () => {
         <div className="flex justify-center mb-6">
           <img src={Logo} alt="Logo" className="w-full h-auto hidden lg:block" />
         </div>
-        <button
-          onClick={() => navigate('/manager/dashboard')}
-          className={`w-full text-left px-4 py-2 text-lg font-semibold mb-4 flex items-center ${
-            isActive('/manager/dashboard') ? 'bg-blue-500 text-white' : 'bg-white'
-          } ${!isActive('/manager/dashboard') ? 'xl:justify-start justify-center' : ''}`}
-        >
-          <FontAwesomeIcon icon={faChartLine} className="mr-2 lg:mr-2" />
-          <span className="hidden xl:inline">Dashboard</span>
-        </button>
-        <button
-          onClick={() => navigate('/manager/manage-customer')}
-          className={`w-full text-left px-4 py-2 text-lg font-semibold mb-4 flex items-center ${
-            isActive('/manager/manage-customer') ? 'bg-blue-500 text-white' : 'bg-white'
-          } ${!isActive('/manager/manage-customer') ? 'xl:justify-start justify-center' : ''}`}
-        >
-          <FontAwesomeIcon icon={faUser} className="mr-2 lg:mr-2" />
-          <span className="hidden xl:inline">Customer Management</span>
-        </button>
-        <button
-          onClick={() => navigate('/manager/manage-staff')}
-          className={`w-full text-left px-4 py-2 text-lg font-semibold flex items-center ${
-            isActive('/manager/manage-staff') ? 'bg-blue-500 text-white' : 'bg-white'
-          } ${!isActive('/manager/manage-staff') ? 'xl:justify-start justify-center' : ''}`}
-        >
-          <FontAwesomeIcon icon={faUsers} className="mr-2 lg:mr-2" />
-          <span className="hidden xl:inline">Staff Management</span>
-        </button>
+        {items.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => navigate(item.path)}
+            className={`w-full text-left px-4 py-2 text-lg font-semibold mb-4 flex items-center ${
+              isActive(item.path) ? 'bg-blue-500 text-white' : 'bg-white'
+            } ${!isActive(item.path) ? 'xl:justify-start justify-center' : ''}`}
+          >
+            <FontAwesomeIcon icon={item.icon} className="mr-2 lg:mr-2" />
+            <span className="hidden xl:inline">{item.title}</span>
+          </button>
+        ))}
       </div>
       <div className="flex justify-start w-full">
         <button
@@ -63,6 +48,16 @@ const Sidebar = () => {
       </div>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      icon: PropTypes.object.isRequired, 
+    })
+  ).isRequired,
 };
 
 export default Sidebar;

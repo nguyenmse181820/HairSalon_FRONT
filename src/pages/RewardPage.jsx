@@ -5,12 +5,15 @@ export default function RewardPage() {
     return (
         <div className="reward-page bg-gray-100 font-sans">
             {/* Header Section */}
-            <div className="relative w-full h-64">
+            <div className="flex relative w-full h-auto">
                 <img
                     src={RewardBanner} // Use the imported variable without quotes
                     alt="Reward Banner"
                     className="object-cover w-full h-full"
                 />
+                <div className='flex absolute inset-0 justify-center items-center'>
+                    <h1 className='absolute inset-0 text-black flex items-center font-bold italic justify-center text-4xl font-montserrat w-full uppercase text-center'>reward</h1>
+                </div>
 
             </div>
 
