@@ -1,7 +1,18 @@
-import React from 'react';
-import { Chart as ChartJS, ArcElement, LineElement, BarElement, PointElement, CategoryScale, LinearScale, Title, Tooltip, Legend } from 'chart.js';
-import { Pie, Line, Bar } from 'react-chartjs-2';
-import { services } from '../../constant/index.jsx';
+import React from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  LineElement,
+  BarElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Pie, Line, Bar } from "react-chartjs-2";
+import { services } from "../../constant/index.jsx";
 
 // Register chart components
 ChartJS.register(
@@ -19,11 +30,17 @@ ChartJS.register(
 const Dashboard = () => {
   // Mock data for charts
   const pieData = {
-    labels: ['5 ★', '4 ★', '3 ★', '2 ★', '1 ★'],
+    labels: ["5 ★", "4 ★", "3 ★", "2 ★", "1 ★"],
     datasets: [
       {
         data: [1259, 374, 159, 55, 29],
-        backgroundColor: ['#4CAF50', '#2196F3', '#FFC107', '#FF5722', '#9C27B0'],
+        backgroundColor: [
+          "#4CAF50",
+          "#2196F3",
+          "#FFC107",
+          "#FF5722",
+          "#9C27B0",
+        ],
       },
     ],
   };
@@ -32,9 +49,12 @@ const Dashboard = () => {
     labels: Array.from({ length: 12 }, (_, i) => i + 1),
     datasets: [
       {
-        label: 'Bookings',
-        data: [5000, 7000, 6080, 7800, 7590, 7500, 8200, 6500, 6780, 7000, 8000, 8590],
-        borderColor: '#FF5733',
+        label: "Bookings",
+        data: [
+          5000, 7000, 6080, 7800, 7590, 7500, 8200, 6500, 6780, 7000, 8000,
+          8590,
+        ],
+        borderColor: "#FF5733",
         fill: false,
         tension: 0.4,
       },
@@ -42,31 +62,43 @@ const Dashboard = () => {
   };
 
   const barData = {
-    labels: services.map(service => service.title),
+    labels: services.map((service) => service.title),
     datasets: [
       {
-        label: 'Revenue',
-        data: [2500, 8000, 2000, 6000, 1500, 4000, 5500, ],
-        backgroundColor: '#616161',
+        label: "Revenue",
+        data: [2500, 8000, 2000, 6000, 1500, 4000, 5500],
+        backgroundColor: "#616161",
       },
     ],
   };
 
   const revenueData = {
     labels: [
-      '01/01/2024', '01/02/2024', '01/03/2024', '01/04/2024', '01/05/2024',
-      '01/06/2024', '01/07/2024', '01/08/2024', '01/09/2024', '01/10/2024',
-      '01/11/2024', '01/12/2024',
+      "01/01/2024",
+      "01/02/2024",
+      "01/03/2024",
+      "01/04/2024",
+      "01/05/2024",
+      "01/06/2024",
+      "01/07/2024",
+      "01/08/2024",
+      "01/09/2024",
+      "01/10/2024",
+      "01/11/2024",
+      "01/12/2024",
     ],
     datasets: [
       {
-        label: 'Revenue',
-        data: [6500, 7200, 6400, 8200, 7600, 8400, 7900, 8700, 9100, 8600, 9500, 10220],
-        borderColor: '#48AAAD',
-        backgroundColor: '#48AAAD',
+        label: "Revenue",
+        data: [
+          6500, 7200, 6400, 8200, 7600, 8400, 7900, 8700, 9100, 8600, 9500,
+          10220,
+        ],
+        borderColor: "#48AAAD",
+        backgroundColor: "#48AAAD",
         borderWidth: 2,
-        pointBackgroundColor: '#48AAAD',
-        pointBorderColor: '#fff',
+        pointBackgroundColor: "#48AAAD",
+        pointBorderColor: "#fff",
         tension: 0.3,
       },
     ],
@@ -97,7 +129,9 @@ const Dashboard = () => {
         </div>
         <div className="bg-white shadow-md p-5 mb-10">
           <h2 className="text-xl font-semibold mb-4">Best services</h2>
-          <div className="h-80"> {/* Increased height for better view */}
+          <div className="h-80">
+            {" "}
+            {/* Increased height for better view */}
             <Bar data={barData} options={chartOptions} />
           </div>
         </div>
