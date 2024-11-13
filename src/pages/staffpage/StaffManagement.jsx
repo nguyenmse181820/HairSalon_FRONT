@@ -196,7 +196,7 @@ function StaffManagement() {
           </thead>
           <tbody className='text-center'>
             <tr>
-              <td colSpan="6">
+              <td colSpan="7">
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
@@ -225,7 +225,7 @@ function StaffManagement() {
       {EditModal && (
         <div className='modal'>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleEditModal}></div>
-          <div className='modal-content z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white pb-16  w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
+          <div className='modal-content rounded border shadow-md z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white pb-16  w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
             <div className='w-[80%]'>
               <div className='text-center font-bold text-xl uppercase tracking-wider my-10 '>Edit Form</div>
               <form action="">
@@ -291,7 +291,7 @@ function StaffManagement() {
       {DeleteModal && (
         <div className='modal'>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleDeleteModal}></div>
-          <div className='modal-content fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-16 w-[80%] md:w-[50%] lg:w-[35%]'>
+          <div className='modal-content rounded border shadow-md fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-16 py-16 w-[80%] md:w-[50%] lg:w-[35%]'>
             <div>
               <p className='text-center text-lg'>Are you sure you want to delete this appointment?</p>
               <div className='flex justify-center items-center gap-4 mt-10'>
@@ -306,8 +306,8 @@ function StaffManagement() {
 
       {createModal && (
         <div className='modal '>
-          <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' ></div>
-          <div className='modal-content fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white py-16 mt-10 md:mt-16 lg:mt-[100px] w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
+          <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleCreateModal} ></div>
+          <div className='modal-content rounded border shadow-md fixed z-50 top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white py-16 my-10 md:mt-16 lg:mt-[100px] w-[80%] md:w-[60%] lg:w-[45%] flex justify-center'>
             <div className='w-[80%]'>
               <form action="">
                 <div className='text-lg text-center font-bold uppercase tracking-wider mb-10'>Create New Appointment</div>
@@ -353,7 +353,7 @@ function StaffManagement() {
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
-                <div className='flex justify-center items-center gap-4 mt-20'>
+                <div className='flex justify-center items-center gap-4 mt-10'>
                   <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
                   <button onClick={toggleCreateModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
                 </div>

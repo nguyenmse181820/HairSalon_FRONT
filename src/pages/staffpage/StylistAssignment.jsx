@@ -89,7 +89,7 @@ function StylistAssignment() {
         <div>
             <div className='mt-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Stylist Assignment</div>
             <div className='flex justify-center items-center'>
-                <form action="" className='bg-white shadow-lg border border-solid mt-10 mb-10 lg:mx-10 text-sm lg:text-lg w-[80%] md:w-[50%] lg:w-[35%] mx-auto'>
+                <form action="" className='bg-white rounded border shadow-md mt-10 mb-10 lg:mx-10 text-sm lg:text-lg w-[80%] md:w-[50%] lg:w-[35%] mx-auto'>
                     <div className='py-9'>
                         <div className='mb-4 mx-10'>
                             <label className='py-2'>User Name</label> <br />

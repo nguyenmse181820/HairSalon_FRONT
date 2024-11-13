@@ -121,7 +121,7 @@ function Bookings() {
           </thead>
           <tbody className='text-center'>
             <tr>
-              <td colSpan="6">
+              <td colSpan="7">
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
