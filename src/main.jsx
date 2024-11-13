@@ -32,8 +32,6 @@ import Dashboard from "./pages/manager-pages/Dashboard.jsx";
 import { AppointmentProvider } from "./context/AppointmentContext";
 import ManageService from "./pages/admin-pages/ManageService.jsx";
 import ManageStylist from "./pages/admin-pages/ManageStylist.jsx";
-
-
 import "./index.css";
 import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 
@@ -143,9 +141,6 @@ const App = () => {
         { path: "manage-stylist", element: <ManageStylist /> },
       ],
     },
-    
-
-
   ]);
 
   if (loadingUser) return <div>Loading...</div>;
