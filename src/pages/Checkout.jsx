@@ -71,7 +71,7 @@ function Checkout() {
                 <option value="+44">UK +44</option>
                 <option value="+61">AU +61</option>
                 <option value="+84">VN +84</option>
-                {/* Add other country codes here */}
+                {/* Add country codes */}
               </select>
               <input
                 type="tel"

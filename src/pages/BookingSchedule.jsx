@@ -8,6 +8,8 @@ function BookingSchedule() {
   const {
     selectedService,
     selectedStylist,
+    appointmentDate,
+    appointmentTime,
     setAppointmentDate,
     setAppointmentTime,
   } = useAppointment();
@@ -23,13 +25,15 @@ function BookingSchedule() {
 
   const handleDayClick = (day) => {
     const newDate = currentDate.date(day);
-    setSelectedDate(newDate);
     setAppointmentDate(newDate.format("YYYY-MM-DD")); // Save to context
+    setSelectedDate(newDate);
+    console.log(appointmentDate);
   };
 
   const handleTimeClick = (time) => {
-    setSelectedTime(time);
     setAppointmentTime(time); // Save to context
+    setSelectedTime(time);
+    console.log(appointmentTime);
   };
 
   const handleSubmit = (e) => {

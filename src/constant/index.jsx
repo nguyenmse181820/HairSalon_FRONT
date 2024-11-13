@@ -45,26 +45,3 @@ export const services = [
     time: "2 hr+",
   },
 ];
-
-export const stylists = [
-  {
-    name: "Ellie",
-    price: "$75.00",
-    time: "45 min+",
-  },
-  {
-    name: "Haily",
-    price: "$85.00",
-    time: "45 min+",
-  },
-  {
-    name: "Laura",
-    price: "$60.00",
-    time: "45 min+",
-  },
-  {
-    name: "Susi",
-    price: "$85.00",
-    time: "45 min+",
-  },
-];
