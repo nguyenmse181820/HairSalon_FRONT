@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { services } from '../../constant/index.jsx'; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ManageService = () => {
-  const [serviceList, setServiceList] = useState(services); 
+  const [services, setServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,7 +10,6 @@ const ManageService = () => {
   const openModal = (service = null) => {
     setSelectedService(
       service || {
-        id: serviceList.length + 1,
         title: "",
         description: "",
         price: "",
@@ -25,35 +24,70 @@ const ManageService = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get('https://667c07dd3c30891b865b026d.mockapi.io/ass2/services');
+        setServices(response.data);
+      } catch (error) {
+        console.error("Error fetching service data:", error);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      if (selectedService.id) {
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/services/${selectedService.id}`;
+        const response = await axios.put(url, selectedService);
+        const returnedData = response.data;
+
+        if (returnedData.id === selectedService.id) {
+          setServices((prev) =>
+            prev.map((service) => (service.id === returnedData.id ? returnedData : service))
+          );
+          closeModal();
+        } else {
+          alert("Failed to update service. Please try again.");
+          closeModal();
+        }
+      } else {
+        const newId = Math.max(...services.map((service) => parseInt(service.id, 10))) + 1;
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/services`;
+        const response = await axios.post(url, {
+          ...selectedService,
+          id: newId
+        });
+        setServices((prev) => [...prev, response.data]);
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error("Error saving service:", error);
+    }
+  };
+
+  const handleDelete = async (serviceId) => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete this service?");
+      if (!confirmDelete) return;
+
+      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/services/${serviceId}`;
+      await axios.delete(url);
+      //cannot check for it deleted or not because it should fetch the data again to check the id in that array
+      setServices((prev) => prev.filter((service) => service.id !== serviceId));
+    } catch (error) {
+      console.error("Error deleting service:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedService((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSelectedService((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    if (selectedService.id) {
-      // Update existing service
-      setServiceList((prev) =>
-        prev.map((service) => (service.id === selectedService.id ? selectedService : service))
-      );
-    } else {
-      // Add new service
-      setServiceList((prev) => [...prev, { ...selectedService, id: serviceList.length + 1 }]);
-    }
-    closeModal();
-  };
-
-  const handleDelete = (serviceId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this service?");
-    if (!confirmDelete) return;
-
-    setServiceList(serviceList.filter((service) => service.id !== serviceId));
-  };
-
-  const filteredServices = serviceList.filter((service) =>
+  const filteredServices = services.filter((service) =>
     (service.title?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
     (service.description?.toLowerCase() || '').includes(searchTerm.toLowerCase())
   );
@@ -104,6 +138,7 @@ const ManageService = () => {
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
 
