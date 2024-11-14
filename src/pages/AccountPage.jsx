@@ -97,6 +97,8 @@ const AccountPage = () => {
             navigate("/");
           } else if (user.role === "manager") {
             navigate("/manager/dashboard");
+          } else if (user.role === "admin") {
+            navigate("/admin/manage-service");
           } else {
             toast.error("Unauthorized role");
           }

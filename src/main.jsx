@@ -31,6 +31,8 @@ import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
 import Dashboard from "./pages/manager-pages/Dashboard.jsx";
 import { AppointmentProvider } from "./context/AppointmentContext";
+import ManageService from "./pages/admin-pages/ManageService.jsx";
+import ManageStylist from "./pages/admin-pages/ManageStylist.jsx";
 
 
 import "./index.css";
@@ -127,11 +129,19 @@ const App = () => {
     },
     {
       path: "/manager",
-      element: <SidebarFrame />,
+      element: <SidebarFrame role='manager'/>,
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
         { path: "dashboard", element: <Dashboard /> },
+      ],
+    },
+    {
+      path: "/admin",
+      element: <SidebarFrame role='admin'/>,
+      children: [
+        { path: "manage-service", element: <ManageService /> },
+        { path: "manage-stylist", element: <ManageStylist /> },
       ],
     },
     

@@ -76,9 +76,8 @@ const NavigationBar = () => {
         <div className="menubar">
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
             {[
-              { name: 'SERVICES', link: '/booking/service' },
-              { name: 'BOOKING', link: '/booking' },
-              { name: 'PRODUCTS', link: '/products' },
+              { name: 'BOOKING', link: '/booking/service' },
+              { name: 'REWARD', link: '/reward' },
               { name: 'CONTACT', link: '/contact' },
               { name: 'ABOUT US', link: '/about-us' }
             ].map((menuItem, i) => (
@@ -112,9 +111,8 @@ const NavigationBar = () => {
             <ul className="flex flex-col items-center space-y-8 text-xl">
 
               {[
-                { name: 'SERVICES', link: '/booking/service' },
-                { name: 'BOOKING', link: '/booking' },
-                { name: 'PRODUCTS', link: '/products' },
+                { name: 'BOOKING', link: '/booking/service' },
+                { name: 'REWARD', link: '/reward' },
                 { name: 'CONTACT', link: '/contact' },
                 { name: 'ABOUT US', link: '/about-us' }
               ].map((menuItem, i) => (
