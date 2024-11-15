@@ -158,8 +158,25 @@ function ScheduleManagement() {
                             </button>
                         </div>
                     </div>
+
                 </div>
             )}
+            {/* pagination */}
+            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                </div>
+                <div className='flex gap-1'>
+                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                </div>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                </div>
+            </div>
         </div>
     );
 }

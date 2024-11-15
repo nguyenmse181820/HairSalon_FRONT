@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 function ServiceStatus() {
-    const [services, setServices] = useState([]);
-    useEffect(() => {
-        axios.get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/appointment').then((res) => {
-            setServices(res.data)
-        })
-            .catch((err) => {
-                console.log(err)
-            })
-    })
+    const services = [
+        {
+            id: 1,
+            stylistName: "Phong",
+            serviceType: "Haircut",
+            date: "2023-06-01",
+            time: "60 min",
+            status: "Done",
+        },
+        {
+            id: 2,
+            stylistName: "Joel Doe",
+            serviceType: "Haircut, Massage",
+            date: "2023-06-01",
+            time: "30 min",
+            status: "Doing",
+        }
+    ];
+
 
     const [filterModal, setFilterModal] = useState(false);
     const toggleFilterModal = () => {
@@ -31,8 +40,8 @@ function ServiceStatus() {
             {/* ** FILTER MODAL ** */}
             <div className={
                 `inset-0 fixed z-50 transform 
-                ${filterModal ? "trasnslate-x-0" : "-translate-x-full"}  
-                transition-transform duration-700 ease-in-out`
+        ${filterModal ? "trasnslate-x-0" : "-translate-x-full"}  
+        transition-transform duration-700 ease-in-out`
             }
             >
 
@@ -53,30 +62,32 @@ function ServiceStatus() {
                             </div>
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Stylist Name</div>
-                                <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">Stylist 1</option>
-                                    <option value="">Stylist 2</option>
-                                    <option value="">Stylist 3</option>
-                                    <option value="">Stylist 4</option>
-                                    <option value="">Stylist 5</option>
+                                <select className='border p-2 w-[155px] mr-10'>
+                                    {services.map((option, index) => (
+                                        <option key={index} value={option.stylistName}>
+                                            {option.stylistName}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Service Type</div>
                                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">Service 1</option>
-                                    <option value="">Service 2</option>
-                                    <option value="">Service 3</option>
-                                    <option value="">Service 4</option>
-                                    <option value="">Service 5</option>
+                                    {services.map((option, index) => (
+                                        <option key={index} value={option.serviceType}>
+                                            {option.serviceType}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className='flex gap-2 items-center justify-between'>
                                 <div>Status</div>
                                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">All</option>
-                                    <option value="">Doing</option>
-                                    <option value="">Completed 1</option>
+                                    {services.map((option, index) => (
+                                        <option key={index} value={option.status}>
+                                            {option.status}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -84,6 +95,7 @@ function ServiceStatus() {
                     </div>
                 </div>
             </div >
+
             {/* table */}
             <div className='xs:p-6 p-2'>
                 <table className='w-full border-collapse text-center'>
@@ -108,7 +120,7 @@ function ServiceStatus() {
                             return (
                                 <tr key={service.id} className='xs:text-base text-sm'>
                                     <td className='py-4'>{service.id}</td>
-                                    <td className='py-4'>{service.customerName}</td>
+                                    <td className='py-4'>{service.stylistName}</td>
                                     <td className='hidden sm:table-cell py-4'>{service.serviceType}</td>
                                     <td className='py-4'>{service.date}</td>
                                     <td className='hidden sm:table-cell py-4'>{service.time}</td>
@@ -121,6 +133,22 @@ function ServiceStatus() {
                     </tbody>
 
                 </table>
+            </div>
+            {/* pagination */}
+            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                </div>
+                <div className='flex gap-1'>
+                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                </div>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                </div>
             </div>
         </div>
     )

@@ -61,19 +61,23 @@ function StylistPage() {
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Service Type</div>
                                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">Service 1</option>
-                                    <option value="">Service 2</option>
-                                    <option value="">Service 3</option>
-                                    <option value="">Service 4</option>
-                                    <option value="">Service 5</option>
+                                    {appointments.map((item, index) => (
+                                        <option key={{ index }} value={item.serviceType}>
+                                            {item.serviceType}
+                                        </option>
+                                    ))}
+
+
                                 </select>
                             </div>
                             <div className='flex gap-2 items-center justify-between'>
                                 <div>Status</div>
-                                <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">All</option>
-                                    <option value="">Doing</option>
-                                    <option value="">Completed 1</option>
+                                <select className='border p-2 w-[155px] mr-10'>
+                                    {appointments.map((item, index) => (
+                                        <option key={index} value={item.status}>
+                                            {item.status}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -119,6 +123,23 @@ function StylistPage() {
 
                     </tbody>
                 </table>
+            </div>
+
+            {/* pagination */}
+            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                </div>
+                <div className='flex gap-1'>
+                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                </div>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                </div>
             </div>
         </div>
     )
