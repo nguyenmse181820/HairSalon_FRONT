@@ -1,28 +1,91 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppointment } from "../context/AppointmentContext";
 import StylistCard from "../components/booking/StylistCard";
-import { stylists } from "../constant/index";
+import AppointmentSummary from "../components/booking/AppointmentSummary";
+import { toast } from "sonner";
 
 function BookingStylist() {
-  const { setSelectedStylist } = useAppointment();
+  const { setSelectedStylist, selectedService, selectedStylist, appointmentDate, appointmentTime } =
+    useAppointment();
+  const [stylists, setStylists] = useState([]);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios
+      .get("https://667c07dd3c30891b865b026d.mockapi.io/ass2/stylists")
+      .then((response) => {
+        setStylists(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching stylists:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    setIsUserLoggedIn(!!user);
+  }, []);
+
   const handleStylistSelect = (stylist) => {
-    setSelectedStylist(stylist); // Save stylist data in context
-    navigate("/booking/schedule"); // Redirect to schedule page
+    setSelectedStylist(stylist);
   };
 
+  const handleSignIn = () => { 
+    navigate("/account");
+  };
+
+  const handleNext = () => {
+    if(!selectedStylist) {
+      toast.error("Please select a stylist first.");
+      return;
+    }
+    navigate("/booking/schedule");
+  }
+
   return (
-    <div className="p-8">
-      <h2 className="text-xl font-semibold mb-4">Select Your Stylist</h2>
-      <div className="space-y-4">
+    <div className="flex flex-row p-8">
+      <div className="w-3/5 space-y-4">
+        <h2 className="text-2xl font-bold mb-4">Select Your Stylist</h2>
         {stylists.map((stylist) => (
           <StylistCard
-            key={stylist.name}
+            key={stylist.id}
             stylist={stylist}
             onSelect={() => handleStylistSelect(stylist)}
           />
         ))}
+      </div>
+      <div className="w-2/5 px-4">
+        <AppointmentSummary
+          service={selectedService}
+          stylist={selectedStylist}
+          selectedDate={appointmentDate}
+          selectedTime={appointmentTime}
+        />
+        
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-gray-200 text-black w-1/2 py-2 mr-2"
+          >
+            Back
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-black text-white w-1/2 py-2 ml-2"
+          >
+            Next
+          </button>
+        </div>
+
+        {!isUserLoggedIn && (
+          <button className="bg-black text-white w-full py-2 mt-4"
+          onClick={handleSignIn}
+          >
+          Sign in
+          </button>)}
       </div>
     </div>
   );

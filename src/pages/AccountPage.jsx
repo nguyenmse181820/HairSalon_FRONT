@@ -6,11 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../main.jsx";
 
 const AccountPage = () => {
-  // login form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // register form
   const [fullName, setFullName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -31,14 +29,12 @@ const AccountPage = () => {
   }, [setUser, navigate]);
 
   const register = async () => {
-    // Validate fields first
     if (!fullName || !registerEmail || !registerPassword) {
       toast.error("Please fill in all fields");
       return;
     }
 
     try {
-      // Send registration request to the server
       const response = await axios.post(
         "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/register",
         {
@@ -48,15 +44,10 @@ const AccountPage = () => {
         }
       );
 
-      // Check if the registration was successful
       if (response.status === 201) {
         const { user, token } = response.data;
-
-        // Store user and token in local storage
         sessionStorage.setItem("user", JSON.stringify(user));
         sessionStorage.setItem("token", token);
-
-        // Set the user context and redirect
         setUser({ ...user, isLoggedIn: true });
         toast.success("Account created successfully!");
         navigate("/");
@@ -95,8 +86,10 @@ const AccountPage = () => {
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
+          } else if (user.role === "manager") {
+            navigate("/manager/dashboard");
           } else if (user.role === "admin") {
-            navigate("/admin/manage-customer");
+            navigate("/admin/manage-service");
           } else {
             toast.error("Unauthorized role");
           }

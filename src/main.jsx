@@ -9,6 +9,7 @@ import AboutUs from "./pages/AboutUsPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedbackPage from "./pages/FeedbackPage.jsx";
+import RewardPage from "./pages/RewardPage.jsx";
 import CustomerAppointment from './pages/CustomerAppointment.jsx';
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
@@ -20,18 +21,20 @@ import ScheduleManagement from "./pages/stylistpage/ScheduleManagement.jsx";
 import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
-import ManageCustomers from "./pages/admin-pages/ManageCustomers.jsx";
-import ManageStaffs from "./pages/admin-pages/ManageStaffs.jsx";
+import ManageCustomers from "./pages/manager-pages/ManageCustomers.jsx";
+import ManageStaffs from "./pages/manager-pages/ManageStaffs.jsx";
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import BookingService from "./pages/BookingService";
 import BookingStylist from "./pages/BookingStylist";
 import BookingSchedule from "./pages/BookingSchedule";
 import Checkout from "./pages/Checkout";
+import Dashboard from "./pages/manager-pages/Dashboard.jsx";
 import { AppointmentProvider } from "./context/AppointmentContext";
-
-
+import ManageService from "./pages/admin-pages/ManageService.jsx";
+import ManageStylist from "./pages/admin-pages/ManageStylist.jsx";
 import "./index.css";
+import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 
 export const UserContext = createContext(null);
 
@@ -60,7 +63,45 @@ const App = () => {
         { path: "contact", element: <ContactPage /> },
         { path: 'appointment', element: <CustomerAppointment /> },
         { path: 'feedback', element: <FeedbackPage /> },
+        { path: 'reward', element: <RewardPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
+        {
+          path: "/booking",
+          children: [
+            {
+              path: "service",
+              element: (
+                <AppointmentProvider>
+                  <BookingService />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "stylist",
+              element: (
+                <AppointmentProvider>
+                  <BookingStylist />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "schedule",
+              element: (
+                <AppointmentProvider>
+                  <BookingSchedule />
+                </AppointmentProvider>
+              ),
+            },
+            {
+              path: "checkout",
+              element: (
+                <AppointmentProvider>
+                  <Checkout />
+                </AppointmentProvider>
+              ),
+            },
+          ],
+        },
       ],
     },
     {
@@ -79,57 +120,28 @@ const App = () => {
       path: "staff",
       element: <StaffFrame />,
       children: [
-        { path: "bookings", element: <Bookings />},
+        { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
+        {path: "management", element: <StaffManagement />},
       ]
     },
     {
-      path: "/admin",
-      element: <SidebarFrame />,
+      path: "/manager",
+      element: <SidebarFrame role='manager'/>,
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
+        { path: "dashboard", element: <Dashboard /> },
       ],
     },
     {
-      path: "/booking",
+      path: "/admin",
+      element: <SidebarFrame role='admin'/>,
       children: [
-        {
-          path: "service",
-          element: (
-            <AppointmentProvider>
-              <BookingService />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "stylist",
-          element: (
-            <AppointmentProvider>
-              <BookingStylist />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "schedule",
-          element: (
-            <AppointmentProvider>
-              <BookingSchedule />
-            </AppointmentProvider>
-          ),
-        },
-        {
-          path: "checkout",
-          element: (
-            <AppointmentProvider>
-              <Checkout />
-            </AppointmentProvider>
-          ),
-        },
+        { path: "manage-service", element: <ManageService /> },
+        { path: "manage-stylist", element: <ManageStylist /> },
       ],
     },
-
-
   ]);
 
   if (loadingUser) return <div>Loading...</div>;

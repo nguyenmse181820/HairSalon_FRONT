@@ -48,7 +48,7 @@ function NavBarStylist() {
                 </div>
 
                 <div className='middle-header-row flex items-center justify-center'>
-                    <a className='flex justify-center  ' href="/stylist"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
+                    <a className='flex justify-center  ' href="/stylist/home"><img className='w-1/4 lg:w-1/5' src={Logo} alt="Logo Coiffure" /></a>
                 </div>
 
                 <div className="menustylist-bar">
@@ -85,15 +85,15 @@ function NavBarStylist() {
                             </div>
                         </div>
                         <ul className="flex flex-col items-center space-y-8 text-xl">
-                            {['DATE', 'SERVICE STATUS', 'EARNING'].map((menuItem, i) => (
-                                <li key={i} className="nav-link font-semibold cursor-pointer">{menuItem}</li>
-                            ))}
+                            <li><a href="/stylist/home" className="nav-link font-semibold  uppercase">HOME</a></li>
+                            <li><a href="/stylist/services" className="nav-link font-semibold uppercase">SERVICE STATUS</a></li>
+                            <li><a href="/stylist/earning" className="nav-link font-semibold uppercase">EARNING</a></li>
                             <li className='flex flex-col items-center relative'>
                                 <button onClick={() => setIsOpen((prev) => !prev)} type='button' className='nav-link font-semibold text-xl uppercase '>Appointment</button>
                                 {isOpen && (
-                                    <ul className='absolute flex flex-col items-center bg-black text-white w-[220px] my-10 '>
-                                        <li className='py-2 px-[46px] font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >View Appointment</a></li>
-                                        <li className='py-2 px-[14px] font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="" >Management Appointment</a></li>
+                                    <ul className='absolute flex flex-col text-center justify-center items-center bg-black text-white w-[280px] my-10 '>
+                                        <li className='py-2 px-[46px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="/stylist/appointment_view" >View Appointment</a></li>
+                                        <li className='py-2 px-[14px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30'><a href="/stylist/appointment_management" >Management Appointment</a></li>
                                     </ul>
                                 )
                                 }
