@@ -29,7 +29,7 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
   return (
     <div>
       <h2 className="text-2xl font-bold pb-8">Appointment Summary</h2>
-      <div className="border p-4 rounded-lg">
+      <div className="p-4">
         {service || stylist ? (
           <>
             {service && (
@@ -49,7 +49,7 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
                 </p>
               </>
             )}
-            <div className="mt-4 border-t pt-2">
+            <div className="mt-4 pt-2">
               <p className="font-semibold">Total Price: ${totalPrice}</p>
               <p className="font-semibold">Total Time: {totalTimeString}</p>
               <p className="font-semibold">
@@ -63,6 +63,18 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
         ) : (
           <p className="text-gray-500 mt-2">No services added yet</p>
         )}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold mb-2">General Information</h3>
+          <p>
+            <strong>Address</strong>: 55 Nguyen Dinh Chieu, Ho Chi Minh
+          </p>
+          <p>
+            <strong>Phone</strong>: 0339383282
+          </p>
+          <p>
+            <strong>Hours</strong>: Mon - Sat, 9:00 AM - 10:00 PM
+          </p>
+        </div>
       </div>
     </div>
   );

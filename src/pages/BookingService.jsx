@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useAppointment } from "../context/AppointmentContext";
 import ServiceCard from "../components/booking/ServiceCard";
 import AppointmentSummary from "../components/booking/AppointmentSummary";
+import { toast } from "sonner";
 
 function BookingService() {
-  const { setSelectedService, selectedStylist, selectedService } =
-    useAppointment();
+  const { setSelectedService, selectedStylist, selectedService, appointmentDate, appointmentTime } = useAppointment();
   const [services, setServices] = useState([]);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,10 +23,26 @@ function BookingService() {
       });
   }, []);
 
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    setIsUserLoggedIn(!!user);
+  }, []);
+
   const handleServiceSelect = (service) => {
     setSelectedService(service);
+  };
+
+  const handleNext = () => {
+    if(!selectedService) {
+      toast.error("Please select a service first.");
+      return;
+    }
     navigate("/booking/stylist");
   };
+
+  const handleSignIn = () => {
+    navigate("/account");
+  }
 
   return (
     <div className="flex flex-row p-8">
@@ -43,23 +60,27 @@ function BookingService() {
         <AppointmentSummary
           service={selectedService}
           stylist={selectedStylist}
+          selectedDate = {appointmentDate}
+          selectedTime = {appointmentTime}
         />
-        <div className="mt-4 p-4 border rounded">
-          <h3 className="text-lg font-semibold mb-2">General Information</h3>
-          <p>
-            <strong>Address</strong>: 55 Nguyen Dinh Chieu, Ho Chi Minh
-          </p>
-          <p>
-            <strong>Phone</strong>: 0339383282
-          </p>
-          <p>
-            <strong>Hours</strong>: Mon - Sat, 11:00 AM - 7:00 PM
-          </p>
+        
+        <div className="mt-4">
+          <button
+            onClick={handleNext}
+            className="bg-black text-white w-full py-2"
+          >
+            Next
+          </button>
         </div>
 
-        <button className="bg-black text-white w-full py-2 mt-4 rounded">
-          Sign in
-        </button>
+        {!isUserLoggedIn && (
+          <button
+            onClick={handleSignIn}
+            className="bg-black text-white w-full py-2 mt-4"
+          >
+            Sign in
+          </button>
+        )}
       </div>
     </div>
   );

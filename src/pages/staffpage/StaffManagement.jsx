@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
 import '../../css/ScheduleManagement.css'
+import { toast } from 'sonner';
 
 function StaffManagement() {
   const [AppointmentList, setAppointmentList] = useState([
@@ -102,7 +103,7 @@ function StaffManagement() {
 
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
-      alert('Form submitted successfully');
+      toast.error('Form submitted successfully');
       console.log(formData);
     }
   };

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import { toast } from 'sonner';
 
 function StylistAssignment() {
     const [formData, setFormData] = useState({
@@ -66,7 +67,7 @@ function StylistAssignment() {
 
         setErrors(validationErrors);
         if (Object.keys(validationErrors).length === 0) {
-            alert('Form submitted successfully');
+            toast.error('Form submitted successfully');
             console.log(formData);
         }
     };

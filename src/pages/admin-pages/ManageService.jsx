@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 const ManageService = () => {
   const [services, setServices] = useState([]);
@@ -49,7 +50,7 @@ const ManageService = () => {
           );
           closeModal();
         } else {
-          alert("Failed to update service. Please try again.");
+          toast.error("Failed to update service. Please try again.");
           closeModal();
         }
       } else {

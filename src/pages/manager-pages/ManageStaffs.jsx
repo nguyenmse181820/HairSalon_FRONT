@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 const ManageStaffs = () => {
   const [staffs, setStaffs] = useState([]);
@@ -64,7 +65,7 @@ const ManageStaffs = () => {
           );
           closeModal();
         } else {
-          alert("Failed to update staff. Please try again.");
+          toast.error("Failed to update staff. Please try again.");
           closeModal();
         }
       } else {
