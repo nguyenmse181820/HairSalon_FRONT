@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <div className="bg-black text-white py-16">
             <div className="flex flex-col md:flex-row justify-between items-center px-8 max-w-6xl mx-auto">
-                {/* ocial Icons */}
+                {/* Social Icons */}
                 <div className="flex flex-col items-start justify-start mb-8 md:mb-0">
                     <div className="flex space-x-8 text-sm">
                         <a href="#salons" className="hover:text-gray-400">SALONS</a>
@@ -26,7 +26,6 @@ const Footer = () => {
                         <p className="text-gray-400">&copy; 2024 Coiffure Ho Chi Minh</p>
                         <a href="#terms" className="text-gray-400 hover:text-gray-500">Terms & Privacy</a>
                     </div>
-
                 </div>
 
                 {/*  Logo */}
