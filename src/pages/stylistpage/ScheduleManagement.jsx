@@ -90,7 +90,7 @@ function ScheduleManagement() {
             {showModal && (
                 <div className="modal">
                     <div className="bg-black opacity-50 fixed w-full h-full left-0 top-0" onClick={toggleModal}></div>
-                    <div className="modal-content fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg">
+                    <div className="modal-content border fixed top-1/2 z-50 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg">
                         <div className="text-xl font-semibold mb-6 uppercase tracking-wider text-center">
                             Are you sure you want to cancel this appointment?
                         </div>
@@ -117,7 +117,7 @@ function ScheduleManagement() {
             {showDetail && (
                 <div className="modal">
                     <div className="bg-black opacity-50 fixed w-full h-full left-0 top-0" onClick={toggleDetail}></div>
-                    <div className="modal-content fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg">
+                    <div className="modal-content z-50 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded border shadow-lg">
                         <div className="text-xl font-semibold mb-6 uppercase tracking-wider text-center">
                             Customer Booking Information
                         </div>
@@ -158,8 +158,25 @@ function ScheduleManagement() {
                             </button>
                         </div>
                     </div>
+
                 </div>
             )}
+            {/* pagination */}
+            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                </div>
+                <div className='flex gap-1'>
+                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                </div>
+                <div className='w-24 text-center'>
+                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                </div>
+            </div>
         </div>
     );
 }

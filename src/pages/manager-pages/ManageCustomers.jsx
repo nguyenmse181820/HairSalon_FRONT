@@ -7,8 +7,10 @@ const ManageCustomers = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const openModal = (customer) => {
-    setSelectedCustomer(customer);
+  const openModal = (customer = null) => {
+    setSelectedCustomer(
+      customer || { name: "", address: "", username: "", email: "", phone: "", status: "active" }
+    );
     setIsModalOpen(true);
   };
 
@@ -31,25 +33,26 @@ const ManageCustomers = () => {
 
   const handleSave = async () => {
     try {
-      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers/${selectedCustomer.id}`;
+      if (selectedCustomer.id) {
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers/${selectedCustomer.id}`;
+        const response = await axios.put(url, selectedCustomer);
+        const updatedCustomer = response.data;
 
-      const response = await axios.put(url, selectedCustomer);
-
-      const updatedCustomer = response.data;
-      if(updatedCustomer.id === selectedCustomer.id) {
         setCustomers((prev) =>
-          prev.map((customer) =>
-            customer.id === updatedCustomer.id ? updatedCustomer : customer
-          )
+          prev.map((customer) => (customer.id === updatedCustomer.id ? updatedCustomer : customer))
         );
-  
-        closeModal();
       } else {
-        alert("Failed to update customer. Please try again.");
-        closeModal();
+        const newId = Math.max(...customers.map((customer) => parseInt(customer.id, 10))) + 1;
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers`;
+        const response = await axios.post(url, {
+          ...selectedCustomer,
+          id: newId
+        });
+        setCustomers((prev) => [...prev, response.data]);
       }
+      closeModal();
     } catch (error) {
-      console.error("Error updating customer:", error);
+      console.error("Error saving customer:", error);
     }
   };
 
@@ -57,28 +60,18 @@ const ManageCustomers = () => {
     try {
       const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
       if (!confirmDelete) return;
-  
+
       const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/customers/${customerId}`;
-      const response = await axios.delete(url);
-      const updatedCustomers = response.data;
-      const isDeleted = !updatedCustomers.some((customer) => customer.id === customerId);
-      if(isDeleted) {
-        setCustomers(updatedCustomers);
-      } else {
-        alert("Failed to delete customer. Please try again.");
-      }
+      await axios.delete(url);
+      setCustomers((prev) => prev.filter((customer) => customer.id !== customerId));
     } catch (error) {
       console.error("Error deleting customer:", error);
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedCustomer((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSelectedCustomer((prev) => ({ ...prev, [name]: value }));
   };
 
   const filteredCustomers = customers.filter((customer) =>
@@ -99,21 +92,11 @@ const ManageCustomers = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="ml-2 p-2 rounded-full bg-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"
-              />
-            </svg>
+          <button
+            onClick={() => openModal()}
+            className="ml-4 py-2 px-4 bg-black text-white rounded"
+          >
+            Create New Customer
           </button>
         </div>
       </div>
@@ -141,11 +124,7 @@ const ManageCustomers = () => {
                 <td className="px-4 py-2 border-b">{customer.email}</td>
                 <td className="px-4 py-2 border-b">{customer.phone}</td>
                 <td className="px-4 py-2 border-b">
-                  <input
-                    type="checkbox"
-                    checked={customer.status === "active"}
-                    readOnly
-                  />
+                  <input type="checkbox" checked={customer.status === "active"} readOnly />
                 </td>
                 <td className="px-4 py-2 border-b">
                   <button onClick={() => openModal(customer)} className="text-blue-500">Update</button>
@@ -160,7 +139,9 @@ const ManageCustomers = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white w-1/3 p-6 shadow-lg">
             <div className="bg-black text-white text-center py-2 mb-4">
-              <h2 className="text-lg font-semibold">UPDATE CUSTOMER</h2>
+              <h2 className="text-lg font-semibold">
+                {selectedCustomer.id ? "UPDATE CUSTOMER" : "CREATE CUSTOMER"}
+              </h2>
             </div>
             <div className="space-y-4">
               <div className="flex justify-between">
@@ -185,54 +166,8 @@ const ManageCustomers = () => {
                   />
                 </div>
               </div>
-              <div className="flex justify-between">
-                <div className="w-1/2 pr-2">
-                  <label className="block text-sm font-medium">Address</label>
-                  <input
-                    type="text"
-                    name="address"
-                    className="w-full border p-2"
-                    value={selectedCustomer.address || ""}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="w-1/2 pl-2">
-                  <label className="block text-sm font-medium">Phone</label>
-                  <input
-                    type="text"
-                    name="phone"
-                    className="w-full border p-2"
-                    value={selectedCustomer.phone || ""}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between">
-                <div className="w-1/2 pr-2">
-                  <label className="block text-sm font-medium">Username</label>
-                  <input
-                    type="text"
-                    name="username"
-                    className="w-full border p-2"
-                    value={selectedCustomer.username || ""}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="w-1/2 pl-2">
-                  <label className="block text-sm font-medium">Status</label>
-                  <select
-                    name="status"
-                    className="w-full border p-2"
-                    value={selectedCustomer.status || ""}
-                    onChange={handleInputChange}
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
               <div className="flex justify-end mt-4 space-x-2">
-                <button onClick={handleSave} className="bg-black text-white px-4 py-2 ">Save</button>
+                <button onClick={handleSave} className="bg-black text-white px-4 py-2">Save</button>
                 <button onClick={closeModal} className="bg-gray-300 text-black px-4 py-2">Cancel</button>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 const ManageStaffs = () => {
   const [staffs, setStaffs] = useState([]);
@@ -17,7 +18,7 @@ const ManageStaffs = () => {
         email: "",
         phone: "",
         salary: "",
-        salaryDate: "", // New field for salary date
+        salaryDate: "", 
         status: "active",
       }
     );
@@ -35,16 +36,8 @@ const ManageStaffs = () => {
       if (!confirmDelete) return;
 
       const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/staffs/${staffId}`;
-      const response = await axios.delete(url);
-      const updatedStaffs = response.data;
-      const isDeleted = !updatedStaffs.some((staff) => staff.id === staffId);
-
-      if (isDeleted) {
-        setStaffs(updatedStaffs);
-      } else {
-        alert("Failed to delete staff. Please try again.");
-      }
-
+      await axios.delete(url);
+      setStaffs((prev) => prev.filter((staff) => staff.id !== staffId));
       closeModal();
     } catch (error) {
       console.error("Error deleting staff:", error);
@@ -72,7 +65,7 @@ const ManageStaffs = () => {
           );
           closeModal();
         } else {
-          alert("Failed to update staff. Please try again.");
+          toast.error("Failed to update staff. Please try again.");
           closeModal();
         }
       } else {
@@ -148,7 +141,7 @@ const ManageStaffs = () => {
               <th className="px-4 py-2 border-b">Email</th>
               <th className="px-4 py-2 border-b">Phone</th>
               <th className="px-4 py-2 border-b">Salary</th>
-              <th className="px-4 py-2 border-b">Salary Date</th> {/* New column */}
+              <th className="px-4 py-2 border-b">Salary Date</th>
               <th className="px-4 py-2 border-b">Status</th>
               <th className="px-4 py-2 border-b">Action</th>
             </tr>
@@ -163,7 +156,7 @@ const ManageStaffs = () => {
                 <td className="px-4 py-2 border-b">{staff.email}</td>
                 <td className="px-4 py-2 border-b">{staff.phone}</td>
                 <td className="px-4 py-2 border-b">${staff.salary}</td>
-                <td className="px-4 py-2 border-b">{staff.salaryDate}</td> {/* Display Salary Date */}
+                <td className="px-4 py-2 border-b">{staff.salaryDate}</td>
                 <td className="px-4 py-2 border-b">
                   <input type="checkbox" checked={staff.status === 'active'} readOnly />
                 </td>
@@ -260,7 +253,7 @@ const ManageStaffs = () => {
                   />
                 </div>
                 <div className="w-full lg:w-1/2 lg:pl-2 mt-4 lg:mt-0">
-                  <label className="block text-sm font-medium">Salary Date</label> {/* New input for Salary Date */}
+                  <label className="block text-sm font-medium">Salary Date</label>
                   <input
                     type="date"
                     name="salaryDate"

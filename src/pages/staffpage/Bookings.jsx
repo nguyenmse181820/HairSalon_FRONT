@@ -11,16 +11,16 @@ function Bookings() {
       customerName: 'John Doe',
       stylistName: 'Stylist 1',
       serviceType: 'Haircut',
-      date: '10:00 AM, 2023-06-01',
+      date: '09-10-2023',
       time: '30 mins',
       status: 'Completed',
     },
     {
       stt: 2,
       customerName: 'John Doe',
-      stylistName: 'Stylist 1',
-      serviceType: 'Haircut',
-      date: '10:00 AM, 2023-06-01',
+      stylistName: 'Stylist 2',
+      serviceType: 'Massage',
+      date: '12-12-2024',
       time: '30 mins',
       status: 'Doing',
     }
@@ -72,30 +72,32 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Stylist Name</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
-                  <option value="">Stylist 1</option>
-                  <option value="">Stylist 2</option>
-                  <option value="">Stylist 3</option>
-                  <option value="">Stylist 4</option>
-                  <option value="">Stylist 5</option>
+                <select className='border p-2 w-[155px] mr-10'>
+                  {bookings.map((option, index) => (
+                    <option key={index} value={option.stylistName}>
+                      {option.stylistName}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Service Type</div>
                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                  <option value="">Service 1</option>
-                  <option value="">Service 2</option>
-                  <option value="">Service 3</option>
-                  <option value="">Service 4</option>
-                  <option value="">Service 5</option>
+                  {bookings.map((option, index) => (
+                    <option key={index} value={option.serviceType}>
+                      {option.serviceType}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className='flex gap-2 items-center justify-between'>
                 <div>Status</div>
                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                  <option value="">All</option>
-                  <option value="">Doing</option>
-                  <option value="">Completed 1</option>
+                  {bookings.map((option, index) => (
+                    <option key={index} value={option.status}>
+                      {option.status}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -121,7 +123,7 @@ function Bookings() {
           </thead>
           <tbody className='text-center'>
             <tr>
-              <td colSpan="6">
+              <td colSpan="7">
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
@@ -144,6 +146,23 @@ function Bookings() {
 
           </tbody>
         </table>
+      </div>
+
+      {/* pagination */}
+      <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
+        <div className='w-24 text-center'>
+          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+        </div>
+        <div className='flex gap-1'>
+          <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+        </div>
+        <div className='w-24 text-center'>
+          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+        </div>
       </div>
     </div >
   )

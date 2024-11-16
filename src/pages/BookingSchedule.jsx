@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner"; // Import toast from sonner
 import { useAppointment } from "../context/AppointmentContext";
 import AppointmentSummary from "../components/booking/AppointmentSummary";
 import dayjs from "dayjs";
@@ -8,14 +9,17 @@ function BookingSchedule() {
   const {
     selectedService,
     selectedStylist,
+    appointmentDate,
+    appointmentTime,
     setAppointmentDate,
     setAppointmentTime,
   } = useAppointment();
   const navigate = useNavigate();
 
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const [selectedDate, setSelectedDate] = useState(currentDate);
-  const [selectedTime, setSelectedTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState(appointmentDate ? dayjs(appointmentDate) : dayjs(currentDate));
+  const [selectedTime, setSelectedTime] = useState(appointmentTime || "");
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const handleMonthChange = (direction) => {
     setCurrentDate(currentDate.add(direction, "month"));
@@ -23,19 +27,35 @@ function BookingSchedule() {
 
   const handleDayClick = (day) => {
     const newDate = currentDate.date(day);
+    setAppointmentDate(newDate.format("YYYY-MM-DD")); 
     setSelectedDate(newDate);
-    setAppointmentDate(newDate.format("YYYY-MM-DD")); // Save to context
   };
 
   const handleTimeClick = (time) => {
+    setAppointmentTime(time);
     setSelectedTime(time);
-    setAppointmentTime(time); // Save to context
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    if (!isUserLoggedIn) {
+      toast.error("Please log in to book an appointment");
+      return;
+    }
+    if (!selectedTime) {
+      toast.error("Please select a time first!");
+      return;
+    }
     navigate("/booking/checkout");
   };
+
+  const handleSignIn = () => { 
+    navigate("/account");
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    setIsUserLoggedIn(!!user);
+  }, []);
 
   const daysInMonth = currentDate.daysInMonth();
   const weekdayLabels = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -48,7 +68,6 @@ function BookingSchedule() {
 
   return (
     <div className="flex flex-col md:flex-row p-8 gap-8">
-      {/* Left Side: Calendar and Time Selection */}
       <div className="flex flex-col md:w-2/3">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">
@@ -70,7 +89,6 @@ function BookingSchedule() {
           </div>
         </div>
 
-        {/* Calendar */}
         <div className="grid grid-cols-7 gap-2 mb-4 text-center">
           {weekdayLabels.map((label) => (
             <span key={label}>{label}</span>
@@ -95,7 +113,6 @@ function BookingSchedule() {
           {selectedDate.format("dddd, MMM D, YYYY")}
         </h3>
 
-        {/* Time Selection */}
         <div className="mb-4">
           {["morning", "afternoon", "evening"].map((period) => (
             <div key={period}>
@@ -118,17 +135,7 @@ function BookingSchedule() {
             </div>
           ))}
         </div>
-
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="bg-black text-white w-full py-2 rounded text-lg"
-        >
-          Finish
-        </button>
       </div>
-
-      {/* Right Side: Appointment Summary */}
       <div className="md:w-1/3">
         <AppointmentSummary
           service={selectedService}
@@ -136,23 +143,27 @@ function BookingSchedule() {
           selectedDate={selectedDate.format("MMM D, YYYY")}
           selectedTime={selectedTime}
         />
-
-        <div className="mt-4 p-4 border rounded">
-          <h3 className="text-lg font-semibold mb-2">General Information</h3>
-          <p>
-            <strong>Address</strong>: 55 Nguyen Dinh Chieu, Ho Chi Minh
-          </p>
-          <p>
-            <strong>Phone</strong>: 0339383282
-          </p>
-          <p>
-            <strong>Hours</strong>: Mon - Sat, 11:00 AM - 7:00 PM
-          </p>
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-gray-200 text-black w-1/2 py-2 rounded mr-2"
+          >
+            Back
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="bg-black text-white w-1/2 py-2 rounded ml-2"
+          >
+            Finish
+          </button>
         </div>
 
-        <button className="bg-black text-white w-full py-2 mt-4 rounded">
+        {!isUserLoggedIn && (
+          <button className="bg-black text-white w-full py-2 mt-4"
+          onClick={handleSignIn}
+          >
           Sign in
-        </button>
+          </button>)}
       </div>
     </div>
   );

@@ -77,8 +77,8 @@ const ProfilePage = () => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
+    sessionStorage.clear();
+    localStorage.clear();
     setUser(null);
     navigate('/');
   };

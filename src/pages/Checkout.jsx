@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { useAppointment } from "../context/AppointmentContext";
+import { UserContext } from "../main.jsx";
+import { fetchUserData } from "../utils/apiUtils.jsx";
 import AppointmentSummary from "../components/booking/AppointmentSummary";
 
 function Checkout() {
   const navigate = useNavigate();
-  const { selectedService, selectedStylist, selectedDate, selectedTime } =
-    useAppointment();
+  const { selectedService, selectedStylist, appointmentDate, appointmentTime, setSelectedService, setSelectedStylist, setAppointmentDate, setAppointmentTime } = useAppointment();
+  const { user } = useContext(UserContext);
 
-  const [countdown, setCountdown] = useState(600); // 10 minutes in seconds
+  const [countdown, setCountdown] = useState(1200);
   const [form, setForm] = useState({
     phone: "",
-    firstName: "",
-    lastName: "",
+    fullName: "",
     email: "",
     hairHistory: "",
     note: "",
@@ -21,13 +23,32 @@ function Checkout() {
     cvv: "",
   });
 
-  // Countdown logic
+  useEffect(() => {
+    const fetchAndPrefillUserData = async () => {
+      try {
+        if (user?.id) {
+          const userData = await fetchUserData(user.id);
+          setForm((prevForm) => ({
+            ...prevForm,
+            phone: userData.phone || "",
+            fullName: userData.fullName || "",
+            email: userData.email || "",
+          }));
+        }
+      } catch (error) {
+        console.error("Error fetching user data for Checkout:", error);
+      }
+    };
+
+    fetchAndPrefillUserData();
+  }, [user]);
+
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
-      navigate("/"); // Redirect to home page when time runs out
+      navigate("/");
     }
   }, [countdown, navigate]);
 
@@ -38,8 +59,19 @@ function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Process payment and submit appointment details
-    console.log("Payment and appointment confirmed:", form);
+
+    sessionStorage.removeItem("selectedService");
+    sessionStorage.removeItem("selectedStylist");
+    sessionStorage.removeItem("appointmentDate");
+    sessionStorage.removeItem("appointmentTime");
+
+    setSelectedService(null);
+    setSelectedStylist(null);
+    setAppointmentDate("");
+    setAppointmentTime("");
+
+    toast.success("Appointment successfully booked!");
+    navigate("/");
   };
 
   const formatTime = (seconds) => {
@@ -51,12 +83,11 @@ function Checkout() {
   return (
     <div>
       <h2 className="text-2xl font-semibold text-center mt-10">Checkout</h2>
-      <p className="text-gray-500 text-center">
+      <p className="text-gray-500 text-center uppercase">
         appointment held for {formatTime(countdown)}
       </p>
       <div className="flex flex-col md:flex-row p-8 gap-8">
         <form onSubmit={handleSubmit} className="md:w-2/3 space-y-6">
-          {/* Contact Info */}
           <div>
             <h3 className="font-semibold">Contact info</h3>
             <div className="flex items-center mb-4">
@@ -71,7 +102,6 @@ function Checkout() {
                 <option value="+44">UK +44</option>
                 <option value="+61">AU +61</option>
                 <option value="+84">VN +84</option>
-                {/* Add other country codes here */}
               </select>
               <input
                 type="tel"
@@ -83,26 +113,15 @@ function Checkout() {
                 className="flex-grow p-2 border-t border-r border-b rounded-r"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                type="text"
-                name="firstName"
-                value={form.firstName}
-                onChange={handleInputChange}
-                placeholder="First name"
-                required
-                className="p-2 border rounded"
-              />
-              <input
-                type="text"
-                name="lastName"
-                value={form.lastName}
-                onChange={handleInputChange}
-                placeholder="Last name"
-                required
-                className="p-2 border rounded"
-              />
-            </div>
+            <input
+              type="text"
+              name="fullName"
+              value={form.fullName}
+              onChange={handleInputChange}
+              placeholder="Full name"
+              required
+              className="w-full p-2 border rounded"
+            />
             <input
               type="email"
               name="email"
@@ -121,19 +140,17 @@ function Checkout() {
             />
           </div>
 
-          {/* Appointment Note */}
           <div>
             <h3 className="font-semibold">Appointment note</h3>
             <textarea
               name="note"
               value={form.note}
               onChange={handleInputChange}
-              placeholder="write your note here"
+              placeholder="Write your note here"
               className="w-full p-2 border rounded mt-4"
             />
           </div>
 
-          {/* Card on File */}
           <div>
             <h3 className="font-semibold">Card on file</h3>
             <div className="flex items-center border p-2 rounded">
@@ -175,14 +192,21 @@ function Checkout() {
           </button>
         </form>
 
-        {/* Right Side: Appointment Summary */}
-        <div className="md:w-1/3 border rounded p-4">
+        <div className="md:w-1/3 p-4">
           <AppointmentSummary
             service={selectedService}
             stylist={selectedStylist}
-            selectedDate={selectedDate}
-            selectedTime={selectedTime}
+            selectedDate={appointmentDate}
+            selectedTime={appointmentTime}
           />
+          <div className="mt-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="bg-gray-200 w-full text-black py-2 rounded"
+            >
+              Back To Schedule
+            </button>
+          </div>
         </div>
       </div>
     </div>

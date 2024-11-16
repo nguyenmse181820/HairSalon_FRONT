@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { stylists } from '../../constant/index.jsx'; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ManageStylist = () => {
-  const [stylistList, setStylistList] = useState(stylists);
+  const [stylists, setStylists] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStylist, setSelectedStylist] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,7 +10,7 @@ const ManageStylist = () => {
   const openModal = (stylist = null) => {
     setSelectedStylist(
       stylist || {
-        id: stylistList.length + 1,
+        id: "",
         name: "",
         price: "",
         time: "",
@@ -24,36 +24,64 @@ const ManageStylist = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const fetchStylists = async () => {
+      try {
+        const response = await axios.get('https://667c07dd3c30891b865b026d.mockapi.io/ass2/stylists');
+        setStylists(response.data);
+      } catch (error) {
+        console.error("Error fetching stylist data:", error);
+      }
+    };
+    fetchStylists();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      if (selectedStylist.id) {
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/stylists/${selectedStylist.id}`;
+        const response = await axios.put(url, selectedStylist);
+        const updatedStylist = response.data;
+
+        setStylists((prev) =>
+          prev.map((stylist) => (stylist.id === updatedStylist.id ? updatedStylist : stylist))
+        );
+      } else {
+        const newId = Math.max(...stylists.map((stylist) => parseInt(stylist.id, 10))) + 1;
+        const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/stylists`;
+        const response = await axios.post(url, {
+          ...selectedStylist,
+          id: newId.toString(),
+        });
+        setStylists((prev) => [...prev, response.data]);
+      }
+
+      closeModal();
+    } catch (error) {
+      console.error("Error saving stylist:", error);
+    }
+  };
+
+  const handleDelete = async (stylistId) => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete this stylist?");
+      if (!confirmDelete) return;
+
+      const url = `https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/stylists/${stylistId}`;
+      await axios.delete(url);
+      setStylists((prev) => prev.filter((stylist) => stylist.id !== stylistId));
+    } catch (error) {
+      console.error("Error deleting stylist:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedStylist((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setSelectedStylist((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    if (selectedStylist.id) {
-      // Update existing stylist
-      setStylistList((prev) =>
-        prev.map((stylist) => (stylist.id === selectedStylist.id ? selectedStylist : stylist))
-      );
-    } else {
-      // Add new stylist
-      setStylistList((prev) => [...prev, { ...selectedStylist, id: stylistList.length + 1 }]);
-    }
-    closeModal();
-  };
-
-  const handleDelete = (stylistId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this stylist?");
-    if (!confirmDelete) return;
-
-    setStylistList(stylistList.filter((stylist) => stylist.id !== stylistId));
-  };
-
-  const filteredStylists = stylistList.filter((stylist) =>
-    (stylist.name?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+  const filteredStylists = stylists.filter((stylist) =>
+    stylist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -81,6 +109,7 @@ const ManageStylist = () => {
         <table className="min-w-full">
           <thead>
             <tr>
+              <th className="px-4 py-2 border-b">ID</th>
               <th className="px-4 py-2 border-b">Name</th>
               <th className="px-4 py-2 border-b">Price</th>
               <th className="px-4 py-2 border-b">Time</th>
@@ -90,6 +119,7 @@ const ManageStylist = () => {
           <tbody>
             {filteredStylists.map((stylist) => (
               <tr key={stylist.id} className="text-center">
+                <td className="px-4 py-2 border-b">{stylist.id}</td>
                 <td className="px-4 py-2 border-b">{stylist.name}</td>
                 <td className="px-4 py-2 border-b">{stylist.price}</td>
                 <td className="px-4 py-2 border-b">{stylist.time}</td>
@@ -108,7 +138,7 @@ const ManageStylist = () => {
           <div className="bg-white w-full lg:w-1/3 p-6">
             <div className="bg-black text-white text-center py-2 mb-4">
               <h2 className="text-lg font-semibold">
-                {selectedStylist.id ? 'UPDATE STYLIST' : 'CREATE STYLIST'}
+                {selectedStylist.id ? 'Update Stylist' : 'Create Stylist'}
               </h2>
             </div>
             <div className="space-y-4">

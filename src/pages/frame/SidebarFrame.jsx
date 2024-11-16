@@ -12,7 +12,7 @@ const SidebarFrame = ({ role }) => {
       ]
     : [
         { title: 'Dashboard', path: '/manager/dashboard', icon: faChartLine },
-        { title: 'Customer Management', path: '/manager/manage-customers', icon: faUser },
+        { title: 'Customer Management', path: '/manager/manage-customer', icon: faUser },
         { title: 'Staff Management', path: '/manager/manage-staff', icon: faUsers },
       ];
 
