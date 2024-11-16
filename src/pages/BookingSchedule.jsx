@@ -73,16 +73,16 @@ function BookingSchedule() {
           <h2 className="text-2xl font-semibold">
             {currentDate.format("MMM YYYY")}
           </h2>
-          <div className="flex space-x-2">
+          <div className="flex space-x-1">
             <button
               onClick={() => handleMonthChange(-1)}
-              className="p-2 rounded-full bg-gray-200"
+              className="p-2 rounded-s-lg bg-gray-200 hover:bg-gray-300"
             >
               {"<"}
             </button>
             <button
               onClick={() => handleMonthChange(1)}
-              className="p-2 rounded-full bg-gray-200"
+              className="p-2 rounded-e-lg bg-gray-200 hover:bg-gray-300"
             >
               {">"}
             </button>
@@ -97,10 +97,10 @@ function BookingSchedule() {
             <button
               key={day}
               onClick={() => handleDayClick(day + 1)}
-              className={`p-2 rounded ${
+              className={`p-2 ${
                 selectedDate.date() === day + 1
                   ? "bg-black text-white"
-                  : "bg-gray-100"
+                  : "bg-gray-100 hover:bg-gray-200"
               }`}
             >
               {day + 1}
@@ -122,10 +122,10 @@ function BookingSchedule() {
                   <button
                     key={time}
                     onClick={() => handleTimeClick(time)}
-                    className={`p-2 rounded ${
+                    className={`p-2 ${
                       selectedTime === time
                         ? "bg-black text-white"
-                        : "bg-gray-100"
+                        : "bg-gray-100 hover:bg-gray-200"
                     }`}
                   >
                     {time}
@@ -146,20 +146,23 @@ function BookingSchedule() {
         <div className="flex justify-between mt-4">
           <button
             onClick={() => navigate(-1)}
-            className="bg-gray-200 text-black w-1/2 py-2 rounded mr-2"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mr-2"
           >
             Back
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-black text-white w-1/2 py-2 rounded ml-2"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
           >
             Finish
           </button>
         </div>
 
         {!isUserLoggedIn && (
-          <button className="bg-black text-white w-full py-2 mt-4"
+          <button className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
           onClick={handleSignIn}
           >
           Sign in

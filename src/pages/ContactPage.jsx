@@ -107,7 +107,8 @@ const ContactPage = () => {
                     {/* Submit Button */}
                     <div className="flex justify-center pt-4">
                         <button
-                            className="px-4 py-2 font-montserrat font-bold italic bg-transparent border-2 border-black text-black hover:bg-black hover:text-white border-solid transform transition-all duration-300 ease-in-out"
+                            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+                            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black"
                             type="submit"
                         >
                             SEND

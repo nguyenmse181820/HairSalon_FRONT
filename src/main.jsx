@@ -21,7 +21,7 @@ import StaffFrame from "./pages/frame/StaffFrame.jsx";
 import Bookings from "./pages/staffpage/Bookings.jsx";
 import StylistAssignment from "./pages/staffpage/StylistAssignment.jsx";
 import ManageCustomers from "./pages/manager-pages/ManageCustomers.jsx";
-import ManageStaffs from "./pages/manager-pages/ManageStaffs.jsx"; // Add ManageStaffs import
+import ManageStaffs from "./pages/manager-pages/ManageStaffs.jsx";
 import SidebarFrame from "./pages/frame/SidebarFrame.jsx";
 import UnauthorizedAccess from "./pages/UnauthorizedAccess.jsx";
 import BookingService from "./pages/BookingService";

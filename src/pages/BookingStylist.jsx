@@ -68,20 +68,23 @@ function BookingStylist() {
         <div className="flex justify-between mt-4">
           <button
             onClick={() => navigate(-1)}
-            className="bg-gray-200 text-black w-1/2 py-2 mr-2"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mr-2"
           >
             Back
           </button>
           <button
             onClick={handleNext}
-            className="bg-black text-white w-1/2 py-2 ml-2"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
           >
             Next
           </button>
         </div>
 
         {!isUserLoggedIn && (
-          <button className="bg-black text-white w-full py-2 mt-4"
+          <button className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
           onClick={handleSignIn}
           >
           Sign in

@@ -82,14 +82,14 @@ function Checkout() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-center mt-10">Checkout</h2>
+      <h2 className="text-2xl font-semibold text-center uppercase mt-10">Checkout</h2>
       <p className="text-gray-500 text-center uppercase">
         appointment held for {formatTime(countdown)}
       </p>
       <div className="flex flex-col md:flex-row p-8 gap-8">
         <form onSubmit={handleSubmit} className="md:w-2/3 space-y-6">
           <div>
-            <h3 className="font-semibold">Contact info</h3>
+            <h3 className="font-semibold mb-3">Contact info</h3>
             <div className="flex items-center mb-4">
               <select
                 className="border p-2 rounded-l bg-gray-200"
@@ -186,7 +186,8 @@ function Checkout() {
 
           <button
             type="submit"
-            className="bg-black text-white w-full py-2 mt-4 rounded text-lg"
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
           >
             Book Appointment
           </button>
@@ -202,7 +203,8 @@ function Checkout() {
           <div className="mt-4">
             <button
               onClick={() => navigate(-1)}
-              className="bg-gray-200 w-full text-black py-2 rounded"
+              className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
             >
               Back To Schedule
             </button>

@@ -64,10 +64,11 @@ function BookingService() {
           selectedTime = {appointmentTime}
         />
         
-        <div className="mt-4">
+        <div className="mt-4 mb-3">
           <button
             onClick={handleNext}
-            className="bg-black text-white w-full py-2"
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black"
           >
             Next
           </button>
@@ -76,7 +77,8 @@ function BookingService() {
         {!isUserLoggedIn && (
           <button
             onClick={handleSignIn}
-            className="bg-black text-white w-full py-2 mt-4"
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black"
           >
             Sign in
           </button>
