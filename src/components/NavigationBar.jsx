@@ -44,31 +44,13 @@ const NavigationBar = () => {
                 className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
                 icon={faHeadphonesSimple}
               />
-              <a className="hidden lg:inline-block" href="">
+              <a className="hidden lg:inline-block" href="/contact">
                 {" "}
                 Contact us
               </a>
             </div>
-            <div>
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faMagnifyingGlass}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Search
-              </a>
-            </div>
           </div>
           <div className="right-container w-1/2 flex justify-end space-x-5 font-montserrat text-sm">
-            <div className="flex items-center">
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faBell}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Notification
-              </a>
-            </div>
             <div className="flex items-center">
               <FontAwesomeIcon
                 className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
