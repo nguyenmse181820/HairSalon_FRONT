@@ -1,27 +1,17 @@
-import React, { useState } from 'react'
+
+
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
-
+import axios from 'axios';
 function ServiceStatus() {
-    const services = [
-        {
-            id: 1,
-            stylistName: "Phong",
-            serviceType: "Haircut",
-            date: "2023-06-01",
-            time: "60 min",
-            status: "Done",
-        },
-        {
-            id: 2,
-            stylistName: "Joel Doe",
-            serviceType: "Haircut, Massage",
-            date: "2023-06-01",
-            time: "30 min",
-            status: "Doing",
-        }
-    ];
+    const [services, setServices] = useState([])
 
+    useEffect(() => {
+        axios.get('https://673828ca4eb22e24fca7099b.mockapi.io/project/service').then((res) => {
+            setServices(res.data)
+        })
+    }, []);
 
     const [filterModal, setFilterModal] = useState(false);
     const toggleFilterModal = () => {
@@ -101,7 +91,7 @@ function ServiceStatus() {
                 <table className='w-full border-collapse text-center'>
                     <thead className=''>
                         <tr className='xs:text-base text-sm'>
-                            <th className="py-2 px-3 font-semibold text-center uppercase" >Stt</th>
+                            <th className="py-2 px-3 font-semibold text-center uppercase" >Id</th>
                             <th className="py-2 px-3 font-semibold text-center uppercase" >Stylist Name</th>
                             <th className='hidden sm:table-cell py-2 px-3 font-semibold text-center uppercase'>Service Type</th>
                             <th className='p-4 font-semibold uppercase cursor-pointer'>Date</th>
@@ -135,19 +125,21 @@ function ServiceStatus() {
                 </table>
             </div>
             {/* pagination */}
-            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
-                <div className='w-24 text-center'>
-                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
-                </div>
-                <div className='flex gap-1'>
-                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
-                </div>
-                <div className='w-24 text-center'>
-                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+            <div className='w-[75%] sm:w-[70%] lg:w-[50%] mx-auto my-10 cursor-pointer text-sm lg:text-lg'>
+                <div className='flex gap-2 justify-between p-4'>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                    </div>
+                    <div className='flex gap-1'>
+                        <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                    </div>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                    </div>
                 </div>
             </div>
         </div>

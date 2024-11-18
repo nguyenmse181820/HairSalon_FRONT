@@ -1,36 +1,25 @@
-import React, { useState } from 'react'
+
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
-import '../../css/ScheduleManagement.css'
+import axios from 'axios';
 import { toast } from 'sonner';
 
 function StaffManagement() {
-  const [AppointmentList, setAppointmentList] = useState([
-    {
-      Id: 1,
-      customerName: 'John Ngo',
-      stylistName: 'Stylist 1',
-      serviceType: 'Type 1',
-      date: '2024-01-09',
-      status: 'Doing'
-    },
-    {
-      Id: 2,
-      customerName: 'John Doe',
-      stylistName: 'Stylist 2',
-      serviceType: 'Type 2',
-      date: '2024-01-09',
-      status: 'Done'
-    },
-  ]);
+  const [AppointmentList, setAppointmentList] = useState([]);
 
+  useEffect(() => {
+    axios.get('https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings').then((res) => {
+      setAppointmentList(res.data);
+    })
+  }, [])
   const [formData, setFormData] = useState({
     customerName: '',
     stylistName: '',
     serviceType: '',
     date: '',
+    time: '',
   });
-
 
   const [EditModal, setEditModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -59,17 +48,15 @@ function StaffManagement() {
   }
 
   if (EditModal || createModal || DeleteModal) {
-    document.body.classList.add('active-modal');
+    document.body.classList.add('overflow-hidden');
   } else {
-    document.body.classList.remove('active-modal');
+    document.body.classList.remove('overflow-hidden');
   }
 
   //handle change
   const handleEditChange = (event) => {
-    setSelectedItem({
-      ...selectedItem,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+    setSelectedItem({ ...selectedItem, [name]: value });
   };
 
   const handleCreateChange = (e) => {
@@ -99,6 +86,10 @@ function StaffManagement() {
     // valid date
     if (!formData.date.trim()) {
       validationErrors.date = 'Date is required';
+    }
+
+    if (!formData.time.trim()) {
+      validationErrors.time = 'Time is required';
     }
 
     setErrors(validationErrors);
@@ -192,28 +183,30 @@ function StaffManagement() {
               <th className="hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase">Stylist Name</th>
               <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Service Type</th>
               <th className="py-3 px-2 font-semibold text-center uppercase">Date</th>
-              <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Status</th>
+              <th className='hidden md:table-cell py-3 px-2 font-semibold text-center uppercase'>Time</th>
+              <th className='hidden md:table-cell py-3 px-2 font-semibold text-center uppercase'>Status</th>
               <th className="py-3 px-2 font-semibold text-center uppercase">Actions</th>
             </tr>
 
           </thead>
           <tbody className='text-center'>
             <tr>
-              <td colSpan="7">
+              <td colSpan="8">
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
             {AppointmentList.map((item) => {
               return (
-                <tr key={item.Id} className='sm:text-base text-sm'>
-                  <td className='py-3 px-2'>{item.Id}</td>
+                <tr key={item.id} className='sm:text-base text-sm'>
+                  <td className='py-3 px-2'>{item.id}</td>
                   <td className='py-3 px-2'>{item.customerName}</td>
                   <td className='hidden sm:table-cell py-3 px-2'>{item.stylistName}</td>
                   <td className='py-3 px-2 hidden sm:table-cell'>{item.serviceType}</td>
                   <td className='py-3 px-2'>{item.date}</td>
-                  <td className='py-3 px-2 hidden sm:table-cell'>{item.status}</td>
+                  <td className='py-3 px-2 hidden md:table-cell'>{item.time}</td>
+                  <td className='py-3 px-2 hidden md:table-cell'>{item.status}</td>
                   <td className='flex justify-center items-center gap-1 sm:gap-2 py-3 px-2 sm:flex-row flex-col'>
-                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[80%]  lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
+                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
                     <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
                   </td>
                 </tr>
@@ -278,6 +271,16 @@ function StaffManagement() {
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
+                <div className='mb-4 mx-10'>
+                  <label htmlFor="">Time</label> <br />
+                  <input type="text"
+                    className='w-full border border-gray-400 p-2 hover:border-black'
+                    value={selectedItem.time}
+                    name='time'
+                    onChange={handleEditChange}
+                  />
+                  {errors.time && <span className='text-red-500 italic text-sm'>{errors.time}</span>}
+                </div>
                 <div className='flex justify-center items-center gap-4 mt-10'>
                   <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
                   <button onClick={toggleEditModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
@@ -321,6 +324,7 @@ function StaffManagement() {
                     value={formData.customerName}
                     name='customerName'
                     onChange={handleCreateChange}
+                    placeholder='Enter customer name'
                   />
                   {errors.customerName && <span className='text-red-500 italic text-sm'>{errors.customerName}</span>}
                 </div>
@@ -331,12 +335,14 @@ function StaffManagement() {
                     value={formData.stylistName}
                     name='stylistName'
                     onChange={handleCreateChange}
+                    placeholder='Enter stylist name'
+
                   />
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
                 <div className='mb-4'>
-                  <label htmlFor="">Service Type</label> <br />
-                  <select name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
+                  <label  >Service Type</label> <br />
+                  <select placeholder='Enter service type' name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
                     <option value={formData.serviceType}>Type 1</option>
                     <option value={formData.serviceType}>Type 2</option>
                     <option value={formData.serviceType}>Type 3</option>
@@ -346,15 +352,27 @@ function StaffManagement() {
 
                   {errors.serviceType && <span className='text-red-500 italic text-sm'>{errors.serviceType}</span>}
                 </div>
-                <div className=''>
+                <div className='mb-4'>
                   <label htmlFor="">Date</label> <br />
                   <input type="date"
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={formData.date}
                     name='date'
                     onChange={handleCreateChange}
+                    placeholder='Enter date'
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
+                </div>
+                <div className=''>
+                  <label htmlFor="">Time</label> <br />
+                  <input type="text"
+                    className='w-full border border-gray-400 p-2 hover:border-black'
+                    value={formData.time}
+                    name='time'
+                    onChange={handleCreateChange}
+                    placeholder='Enter time'
+                  />
+                  {errors.time && <span className='text-red-500 italic text-sm'>{errors.time}</span>}
                 </div>
                 <div className='flex justify-center items-center gap-4 mt-10'>
                   <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
@@ -369,22 +387,25 @@ function StaffManagement() {
       )
       }
       {/* pagination */}
-      <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
-        <div className='w-24 text-center'>
-          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
-        </div>
-        <div className='flex gap-1'>
-          <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
-        </div>
-        <div className='w-24 text-center'>
-          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+      <div className='w-[75%] sm:w-[70%] lg:w-[50%] mx-auto my-10 cursor-pointer text-sm lg:text-lg'>
+        <div className='flex gap-2 justify-between p-4'>
+          <div className='w-24 text-center'>
+            <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+          </div>
+          <div className='flex gap-1'>
+            <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+          </div>
+          <div className='w-24 text-center'>
+            <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+          </div>
         </div>
       </div>
     </div>
+
   )
 }
 

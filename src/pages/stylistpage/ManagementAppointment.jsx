@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -81,7 +83,6 @@ function ManagementAppointment() {
                     Save
                 </button>
             </div>
-            
         </div>
     );
 }
