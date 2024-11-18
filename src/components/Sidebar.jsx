@@ -11,8 +11,7 @@ const Sidebar = ({ items }) => {
   const { setUser } = useContext(UserContext);
 
   const logout = () => {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
+    sessionStorage.clear();
     setUser(null);
     navigate('/');
   };

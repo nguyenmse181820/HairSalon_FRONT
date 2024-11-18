@@ -34,19 +34,41 @@ import ManageService from "./pages/admin-pages/ManageService.jsx";
 import ManageStylist from "./pages/admin-pages/ManageStylist.jsx";
 import "./index.css";
 import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
+import ProtectedRoute from "./components/control-access/ProtectedRoute.jsx";
 
 export const UserContext = createContext(null);
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    isLoggedIn: false,
+    role: null,
+    id: null,
+  });
+  
   const [loadingUser, setLoadingUser] = useState(true);
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    const token = sessionStorage.getItem("token");
+  
+    if (storedUser && token) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser({
+        ...user,
+        ...parsedUser,   
+        isLoggedIn: true,  
+      });
+    } else {
+      setUser({
+        isLoggedIn: false,
+        role: null,
+        id: null,
+      });
     }
+  
     setLoadingUser(false);
   }, []);
+  
+  
 
   const router = createBrowserRouter([
     {
@@ -105,7 +127,11 @@ const App = () => {
     },
     {
       path: "/stylist",
-      element: <StylistFrame />,
+      element: (
+        <ProtectedRoute allowedRoles={["stylist"]}>
+          <StylistFrame />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "home", element: <StylistPage /> },
         { path: "services", element: <ServiceStatus /> },
@@ -116,17 +142,25 @@ const App = () => {
       ],
     },
     {
-      path: "staff",
-      element: <StaffFrame />,
+      path: "/staff",
+      element: (
+      <ProtectedRoute allowedRoles={["staff"]}>
+        <StaffFrame />
+      </ProtectedRoute>
+    ),
       children: [
         { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        {path: "management", element: <StaffManagement />},
+        { path: "management", element: <StaffManagement />},
       ]
     },
     {
       path: "/manager",
-      element: <SidebarFrame role='manager'/>,
+      element: (
+        <ProtectedRoute allowedRoles={["manager"]}>
+          <SidebarFrame role="manager" />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
@@ -135,7 +169,11 @@ const App = () => {
     },
     {
       path: "/admin",
-      element: <SidebarFrame role='admin'/>,
+      element: (
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <SidebarFrame role="admin" />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "manage-service", element: <ManageService /> },
         { path: "manage-stylist", element: <ManageStylist /> },

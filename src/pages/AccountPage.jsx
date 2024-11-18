@@ -26,7 +26,7 @@ const AccountPage = () => {
     if (storedUser && token) {
       setUser({ ...JSON.parse(storedUser), isLoggedIn: true });
     }
-  }, [setUser, navigate]);
+  }, [setUser]);
 
   const register = async () => {
     if (!fullName || !registerEmail || !registerPassword) {
@@ -71,18 +71,15 @@ const AccountPage = () => {
         );
 
         if (response.status === 200) {
-          const user = response.data.user;
+          const user = { ...response.data.user, isLoggedIn: true };
           const token = response.data.token;
 
-          if (!sessionStorage.getItem("token") || sessionStorage.getItem("token") !== token) {
-            sessionStorage.setItem("user", JSON.stringify(user));
-            sessionStorage.setItem("token", token);
-          }
+          sessionStorage.setItem("user", JSON.stringify(user));
+          sessionStorage.setItem("token", token);
 
-          setUser({ ...user, isLoggedIn: true });
+          setUser(user);
 
           if (user.role === "stylist") {
-            toast.success("Welcome, Stylist!");
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
@@ -90,6 +87,8 @@ const AccountPage = () => {
             navigate("/manager/dashboard");
           } else if (user.role === "admin") {
             navigate("/admin/manage-service");
+          } else if (user.role === "staff") {
+            navigate("/staff/bookings");
           } else {
             toast.error("Unauthorized role");
           }
