@@ -156,10 +156,10 @@ function BookingSchedule() {
             className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
             ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
           >
-            Finish
+            Proceed to checkout
           </button>
         </div>
-
+        
         {!isUserLoggedIn && (
           <button className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
             ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"

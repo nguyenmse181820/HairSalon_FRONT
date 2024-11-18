@@ -7,7 +7,11 @@ import AppointmentSummary from "../components/booking/AppointmentSummary";
 import { toast } from "sonner";
 
 function BookingService() {
-  const { setSelectedService, selectedStylist, selectedService, appointmentDate, appointmentTime } = useAppointment();
+  const { setSelectedService,
+          selectedStylist, 
+          selectedService, 
+          appointmentDate, 
+          appointmentTime } = useAppointment();
   const [services, setServices] = useState([]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -64,7 +68,7 @@ function BookingService() {
           selectedTime = {appointmentTime}
         />
         
-        <div className="mt-4 mb-3">
+        <div className="mt-4 mb-2">
           <button
             onClick={handleNext}
             className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
@@ -73,7 +77,15 @@ function BookingService() {
             Next
           </button>
         </div>
-
+        {isUserLoggedIn && selectedService && selectedStylist && appointmentDate && appointmentTime && (
+          <button
+            onClick={() => navigate("/booking/checkout")}
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
+          >
+            Proceed to checkout
+          </button>
+        )}
         {!isUserLoggedIn && (
           <button
             onClick={handleSignIn}

@@ -7,8 +7,11 @@ import AppointmentSummary from "../components/booking/AppointmentSummary";
 import { toast } from "sonner";
 
 function BookingStylist() {
-  const { setSelectedStylist, selectedService, selectedStylist, appointmentDate, appointmentTime } =
-    useAppointment();
+  const { setSelectedStylist,
+          selectedService,
+          selectedStylist, 
+          appointmentDate, 
+          appointmentTime } = useAppointment();
   const [stylists, setStylists] = useState([]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -81,7 +84,15 @@ function BookingStylist() {
             Next
           </button>
         </div>
-
+        {isUserLoggedIn && selectedService && selectedStylist && appointmentDate && appointmentTime && (
+          <button
+            onClick={() => navigate("/booking/checkout")}
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
+          >
+            Proceed to checkout
+          </button>
+        )}
         {!isUserLoggedIn && (
           <button className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
             ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
