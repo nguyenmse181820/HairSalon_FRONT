@@ -60,22 +60,52 @@ const AccountPage = () => {
     }
   };
 
+  const mockLogin = (email) => {
+    const mockResponses = {
+      "stylist@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "1", role: "stylist" },
+      },
+      "customer@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "2", role: "customer" },
+      },
+      "manager@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "3", role: "manager" },
+      },
+      "admin@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "4", role: "admin" },
+      },
+      "staff@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "5", role: "staff" },
+      },
+    };
+  
+    return mockResponses[email] || { message: "Invalid credentials" };
+  };
+  
+
   const unionLogin = async () => {
     if (email && password) {
       try {
-        const response = await axios.post(
-          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/login",
-          { email, password }
-        );
+        const response = mockLogin(email);
 
-        if (response.status === 200) {
-          const user = { ...response.data.user, isLoggedIn: true };
-          const token = response.data.token;
-          sessionStorage.setItem("user", JSON.stringify(user));
-          sessionStorage.setItem("token", token);
+      if (response.user) {
+        const user = { ...response.user, isLoggedIn: true };
+        const token = response.token;
 
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("token", token);
 
-          setUser(user);
+        setUser(user);
 
           if (user.role === "stylist") {
             navigate("/stylist/home");
