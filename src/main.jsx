@@ -9,7 +9,7 @@ import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedbackPage from "./pages/FeedbackPage.jsx";
 import RewardPage from "./pages/RewardPage.jsx";
-import CustomerAppointment from './pages/CustomerAppointment.jsx';
+import CustomerAppointment from "./pages/CustomerAppointment.jsx";
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
 import ServiceStatus from "./pages/stylistpage/ServiceStatus.jsx";
@@ -60,9 +60,9 @@ const App = () => {
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },
-        { path: 'appointment', element: <CustomerAppointment /> },
-        { path: 'feedback', element: <FeedbackPage /> },
-        { path: 'reward', element: <RewardPage /> },
+        { path: "appointment", element: <CustomerAppointment /> },
+        { path: "feedback", element: <FeedbackPage /> },
+        { path: "reward", element: <RewardPage /> },
         { path: "unauthorized", element: <UnauthorizedAccess /> },
         {
           path: "/booking",
@@ -116,17 +116,17 @@ const App = () => {
       ],
     },
     {
-      path: "staff",
+      path: "/staff",
       element: <StaffFrame />,
       children: [
         { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        {path: "management", element: <StaffManagement />},
-      ]
+        { path: "management", element: <StaffManagement /> },
+      ],
     },
     {
       path: "/manager",
-      element: <SidebarFrame role='manager'/>,
+      element: <SidebarFrame role="manager" />,
       children: [
         { path: "manage-customer", element: <ManageCustomers /> },
         { path: "manage-staff", element: <ManageStaffs /> },
@@ -135,7 +135,7 @@ const App = () => {
     },
     {
       path: "/admin",
-      element: <SidebarFrame role='admin'/>,
+      element: <SidebarFrame role="admin" />,
       children: [
         { path: "manage-service", element: <ManageService /> },
         { path: "manage-stylist", element: <ManageStylist /> },
@@ -155,6 +155,4 @@ const App = () => {
 const container = document.getElementById("root");
 const root = createRoot(container);
 
-root.render(
-  <App />
-);
+root.render(<App />);

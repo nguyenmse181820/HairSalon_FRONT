@@ -60,8 +60,6 @@ const AccountPage = () => {
     }
   };
 
-
-
   const unionLogin = async () => {
     if (email && password) {
       try {
@@ -74,7 +72,10 @@ const AccountPage = () => {
           const user = response.data.user;
           const token = response.data.token;
 
-          if (!sessionStorage.getItem("token") || sessionStorage.getItem("token") !== token) {
+          if (
+            !sessionStorage.getItem("token") ||
+            sessionStorage.getItem("token") !== token
+          ) {
             sessionStorage.setItem("user", JSON.stringify(user));
             sessionStorage.setItem("token", token);
           }
@@ -90,6 +91,8 @@ const AccountPage = () => {
             navigate("/manager/dashboard");
           } else if (user.role === "admin") {
             navigate("/admin/manage-service");
+          } else if (user.role === "staff") {
+            navigate("/staff/bookings");
           } else {
             toast.error("Unauthorized role");
           }
@@ -114,15 +117,17 @@ const AccountPage = () => {
         <div className="options-section pt-10 pb-10">
           <div className="flex justify-center space-x-16 font-montserrat text-xl">
             <button
-              className={`hover:underline ${isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(true)}
             >
               ALREADY REGISTERED?
             </button>
             <button
-              className={`hover:underline ${!isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                !isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(false)}
             >
               CREATE NEW ACCOUNT
