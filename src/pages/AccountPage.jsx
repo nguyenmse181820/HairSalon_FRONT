@@ -60,8 +60,6 @@ const AccountPage = () => {
     }
   };
 
-
-
   const unionLogin = async () => {
     if (email && password) {
       try {
@@ -73,9 +71,9 @@ const AccountPage = () => {
         if (response.status === 200) {
           const user = { ...response.data.user, isLoggedIn: true };
           const token = response.data.token;
-
           sessionStorage.setItem("user", JSON.stringify(user));
           sessionStorage.setItem("token", token);
+
 
           setUser(user);
 
@@ -113,15 +111,17 @@ const AccountPage = () => {
         <div className="options-section pt-10 pb-10">
           <div className="flex justify-center space-x-16 font-montserrat text-xl">
             <button
-              className={`hover:underline ${isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(true)}
             >
               ALREADY REGISTERED?
             </button>
             <button
-              className={`hover:underline ${!isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                !isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(false)}
             >
               CREATE NEW ACCOUNT
