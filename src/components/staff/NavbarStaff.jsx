@@ -1,15 +1,30 @@
-import React, { useState, useEffect } from 'react'
+
+
+import React, { useState, useEffect, useContext } from 'react'
 import Logo from '../../assets/coiffure-logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faHeadphonesSimple, faMagnifyingGlass, faUser, faCalendar, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
-
+import { faBars, faMagnifyingGlass, faUser, faBell, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../main.jsx';
 function NavBarStaff() {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
+    const [logoutOpen, setLogoutOpen] = useState(false);
+    const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
     const toggleMenu = () => {
         setMenuOpen(!menuOpen);
     };
 
+    const toggleLogout = () => {
+        setLogoutOpen(!logoutOpen);
+    }
+
+    const logout = () => {
+        sessionStorage.clear();
+        localStorage.clear();
+        setUser(null);
+        navigate('/');
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -40,8 +55,17 @@ function NavBarStaff() {
                             <a className='hidden lg:inline-block' href="">Notification</a>
                         </div>
                         <div className='flex items-center'>
-                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faUser} />
-                            <a className='hidden lg:inline-block' href="">My Account</a>
+                            <FontAwesomeIcon className='cursor-pointer hover:scale-110 transition-transform duration-200 pr-1' icon={faUser} onClick={toggleLogout} />
+                            <p className='hidden lg:inline-block cursor-pointer' onClick={toggleLogout}>My Account</p>
+                            {logoutOpen && (
+                                <ul className='absolute bg-white text-black w-[70px] lg:w-[100px] right-[1%] lg:right-[1.1%] mt-16 border inline-block '>
+                                    <li className='py-2 text-center px-2 font-semibold text-xs lg:text-sm uppercase hover:scale-110 hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500'>
+                                        <button onClick={logout}>Logout</button>
+                                    </li>
+                                </ul>
+                            )
+
+                            }
                         </div>
 
                     </div>
@@ -77,7 +101,7 @@ function NavBarStaff() {
                             <li><a href="/staff/bookings" className="nav-link font-semibold uppercase">Bookings</a></li>
                             <li><a href="/staff/stylist_assignment" className="nav-link font-semibold  uppercase">Stylist Assignment</a></li>
                             <li><a href="/staff/management" className="nav-link font-semibold  uppercase">Appointment Management</a></li>
-                           
+
                         </ul>
                     </div>
                 </div>
