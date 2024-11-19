@@ -76,7 +76,9 @@ const App = () => {
         { path: "", element: <LandingPage /> },
         {
           path: "account",
-          element: user?.isLoggedIn ? <ProfilePage /> : <AccountPage />,
+          element: user?.isLoggedIn ? <AppointmentProvider>
+                                        <ProfilePage />
+                                      </AppointmentProvider> : <AccountPage />,
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "contact", element: <ContactPage /> },

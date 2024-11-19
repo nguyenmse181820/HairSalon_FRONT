@@ -53,6 +53,10 @@ function BookingSchedule() {
   };
 
   useEffect(() => {
+    if(!appointmentDate) {
+      setAppointmentDate(currentDate.format("YYYY-MM-DD"));
+      setSelectedDate(currentDate);
+    }
     const user = JSON.parse(sessionStorage.getItem("user"));
     setIsUserLoggedIn(!!user);
   }, []);
