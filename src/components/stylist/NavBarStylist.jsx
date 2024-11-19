@@ -181,14 +181,7 @@ function NavBarStylist() {
                   HOME
                 </a>
               </li>
-              <li>
-                <a
-                  href="/stylist/services"
-                  className="nav-link font-semibold uppercase"
-                >
-                  SERVICE STATUS
-                </a>
-              </li>
+            
               <li>
                 <a
                   href="/stylist/earning"

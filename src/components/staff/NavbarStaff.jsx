@@ -183,6 +183,14 @@ function NavBarStaff() {
                   Appointment Management
                 </a>
               </li>
+              <li>
+                <a
+                  href="/staff/question_management"
+                  className="nav-link font-semibold uppercase"
+                >
+                  Question Management
+                </a>
+              </li>
             </ul>
           </div>
         </div>
