@@ -34,6 +34,7 @@ import ManageStylist from "./pages/admin-pages/ManageStylist.jsx";
 import "./index.css";
 import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 import ProtectedRoute from "./components/control-access/ProtectedRoute.jsx";
+import QuestionManagement from "./pages/staffpage/QuestionManagement.jsx";
 
 export const UserContext = createContext(null);
 
@@ -148,6 +149,7 @@ const App = () => {
         { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
         { path: "management", element: <StaffManagement /> },
+        { path: "question_management", element: <QuestionManagement /> },
       ],
     },
     {
