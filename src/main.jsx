@@ -12,7 +12,6 @@ import RewardPage from "./pages/RewardPage.jsx";
 import CustomerAppointment from "./pages/CustomerAppointment.jsx";
 import StylistFrame from "./pages/frame/StylistFrame.jsx";
 import StylistPage from "./pages/stylistpage/StylistPage.jsx";
-import ServiceStatus from "./pages/stylistpage/ServiceStatus.jsx";
 import AppointmentView from "./pages/stylistpage/AppointmentView.jsx";
 import ManagementAppointment from "./pages/stylistpage/ManagementAppointment.jsx";
 import Earning from "./pages/stylistpage/Earning.jsx";
@@ -44,18 +43,18 @@ const App = () => {
     role: null,
     id: null,
   });
-  
+
   const [loadingUser, setLoadingUser] = useState(true);
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
     const token = sessionStorage.getItem("token");
-  
+
     if (storedUser && token) {
       const parsedUser = JSON.parse(storedUser);
       setUser({
         ...user,
-        ...parsedUser,   
-        isLoggedIn: true,  
+        ...parsedUser,
+        isLoggedIn: true,
       });
     } else {
       setUser({
@@ -64,11 +63,9 @@ const App = () => {
         id: null,
       });
     }
-  
+
     setLoadingUser(false);
   }, []);
-  
-  
 
   const router = createBrowserRouter([
     {
@@ -134,7 +131,6 @@ const App = () => {
       ),
       children: [
         { path: "home", element: <StylistPage /> },
-        { path: "services", element: <ServiceStatus /> },
         { path: "appointment_view", element: <AppointmentView /> },
         { path: "appointment_management", element: <ManagementAppointment /> },
         { path: "earning", element: <Earning /> },
@@ -144,15 +140,15 @@ const App = () => {
     {
       path: "/staff",
       element: (
-      <ProtectedRoute allowedRoles={["staff"]}>
-        <StaffFrame />
-      </ProtectedRoute>
-    ),
+        <ProtectedRoute allowedRoles={["staff"]}>
+          <StaffFrame />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "bookings", element: <Bookings /> },
         { path: "stylist_assignment", element: <StylistAssignment /> },
-        { path: "management", element: <StaffManagement />},
-      ]
+        { path: "management", element: <StaffManagement /> },
+      ],
     },
     {
       path: "/manager",
