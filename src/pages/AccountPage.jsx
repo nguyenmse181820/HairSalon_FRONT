@@ -108,14 +108,18 @@ const AccountPage = () => {
         setUser(user);
 
           if (user.role === "stylist") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
           } else if (user.role === "manager") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/manager/dashboard");
           } else if (user.role === "admin") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/admin/manage-service");
           } else if (user.role === "staff") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/staff/bookings");
           } else {
             toast.error("Unauthorized role");
