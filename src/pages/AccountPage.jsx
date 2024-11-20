@@ -26,7 +26,7 @@ const AccountPage = () => {
     if (storedUser && token) {
       setUser({ ...JSON.parse(storedUser), isLoggedIn: true });
     }
-  }, [setUser, navigate]);
+  }, [setUser]);
 
   const register = async () => {
     if (!fullName || !registerEmail || !registerPassword) {
@@ -60,36 +60,67 @@ const AccountPage = () => {
     }
   };
 
-
+  const mockLogin = (email) => {
+    const mockResponses = {
+      "stylist@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "1", role: "stylist" },
+      },
+      "customer@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "2", role: "customer" },
+      },
+      "manager@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "3", role: "manager" },
+      },
+      "admin@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "4", role: "admin" },
+      },
+      "staff@example.com": {
+        message: "Authentication successful",
+        token: "sample-jwt-token",
+        user: { id: "5", role: "staff" },
+      },
+    };
+  
+    return mockResponses[email] || { message: "Invalid credentials" };
+  };
+  
 
   const unionLogin = async () => {
     if (email && password) {
       try {
-        const response = await axios.post(
-          "https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/auth/login",
-          { email, password }
-        );
+        const response = mockLogin(email);
 
-        if (response.status === 200) {
-          const user = response.data.user;
-          const token = response.data.token;
+      if (response.user) {
+        const user = { ...response.user, isLoggedIn: true };
+        const token = response.token;
 
-          if (!sessionStorage.getItem("token") || sessionStorage.getItem("token") !== token) {
-            sessionStorage.setItem("user", JSON.stringify(user));
-            sessionStorage.setItem("token", token);
-          }
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("token", token);
 
-          setUser({ ...user, isLoggedIn: true });
+        setUser(user);
 
           if (user.role === "stylist") {
-            toast.success("Welcome, Stylist!");
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/stylist/home");
           } else if (user.role === "customer") {
             navigate("/");
           } else if (user.role === "manager") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/manager/dashboard");
           } else if (user.role === "admin") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
             navigate("/admin/manage-service");
+          } else if (user.role === "staff") {
+            ["appointmentDate", "appointmentTime", "selectedService", "selectedStylist"].forEach((item) => sessionStorage.removeItem(item));
+            navigate("/staff/bookings");
           } else {
             toast.error("Unauthorized role");
           }
@@ -114,15 +145,17 @@ const AccountPage = () => {
         <div className="options-section pt-10 pb-10">
           <div className="flex justify-center space-x-16 font-montserrat text-xl">
             <button
-              className={`hover:underline ${isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(true)}
             >
               ALREADY REGISTERED?
             </button>
             <button
-              className={`hover:underline ${!isLoginActive ? "font-bold underline" : ""
-                }`}
+              className={`hover:underline ${
+                !isLoginActive ? "font-bold underline" : ""
+              }`}
               onClick={() => setIsLoginActive(false)}
             >
               CREATE NEW ACCOUNT

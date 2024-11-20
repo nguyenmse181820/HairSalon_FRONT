@@ -7,8 +7,13 @@ import AppointmentSummary from "../components/booking/AppointmentSummary";
 import { toast } from "sonner";
 
 function BookingStylist() {
-  const { setSelectedStylist, selectedService, selectedStylist, appointmentDate, appointmentTime } =
-    useAppointment();
+  const {
+    setSelectedStylist,
+    selectedService,
+    selectedStylist,
+    appointmentDate,
+    appointmentTime,
+  } = useAppointment();
   const [stylists, setStylists] = useState([]);
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -33,22 +38,76 @@ function BookingStylist() {
     setSelectedStylist(stylist);
   };
 
-  const handleSignIn = () => { 
+  const handleSignIn = () => {
     navigate("/account");
   };
 
   const handleNext = () => {
-    if(!selectedStylist) {
+    if (!selectedStylist) {
       toast.error("Please select a stylist first.");
       return;
     }
     navigate("/booking/schedule");
-  }
+  };
 
   return (
-    <div className="flex flex-row p-8">
-      <div className="w-3/5 space-y-4">
-        <h2 className="text-2xl font-bold mb-4">Select Your Stylist</h2>
+    <div className="flex flex-col md:flex-row p-4 md:p-8 space-y-5 md:space-y-0">
+      {/* AppointmentSummary Section - Moves to the top on mobile */}
+      <div className="md:w-2/5 px-0 md:px-4 order-1 md:order-2">
+        <AppointmentSummary
+          service={selectedService}
+          stylist={selectedStylist}
+          selectedDate={appointmentDate}
+          selectedTime={appointmentTime}
+        />
+
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mr-2"
+          >
+            Back
+          </button>
+          <button
+            onClick={handleNext}
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
+          >
+            Next
+          </button>
+        </div>
+
+        {isUserLoggedIn &&
+          selectedService &&
+          selectedStylist &&
+          appointmentDate &&
+          appointmentTime && (
+            <button
+              onClick={() => navigate("/booking/checkout")}
+              className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+              ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
+            >
+              Proceed to checkout
+            </button>
+          )}
+
+        {!isUserLoggedIn && (
+          <button
+            onClick={handleSignIn}
+            className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
+          >
+            Sign in
+          </button>
+        )}
+      </div>
+
+      {/* Stylist Selection Section */}
+      <div className="md:w-3/5 space-y-4 order-2 md:order-1">
+        <h2 className="text-xl md:text-2xl font-bold mb-4">
+          Select Your Stylist
+        </h2>
         {stylists.map((stylist) => (
           <StylistCard
             key={stylist.id}
@@ -56,36 +115,6 @@ function BookingStylist() {
             onSelect={() => handleStylistSelect(stylist)}
           />
         ))}
-      </div>
-      <div className="w-2/5 px-4">
-        <AppointmentSummary
-          service={selectedService}
-          stylist={selectedStylist}
-          selectedDate={appointmentDate}
-          selectedTime={appointmentTime}
-        />
-        
-        <div className="flex justify-between mt-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-gray-200 text-black w-1/2 py-2 mr-2"
-          >
-            Back
-          </button>
-          <button
-            onClick={handleNext}
-            className="bg-black text-white w-1/2 py-2 ml-2"
-          >
-            Next
-          </button>
-        </div>
-
-        {!isUserLoggedIn && (
-          <button className="bg-black text-white w-full py-2 mt-4"
-          onClick={handleSignIn}
-          >
-          Sign in
-          </button>)}
       </div>
     </div>
   );

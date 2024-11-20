@@ -44,49 +44,37 @@ const NavigationBar = () => {
                 className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
                 icon={faHeadphonesSimple}
               />
-              <a className="hidden lg:inline-block" href="">
+              <a className="hidden lg:inline-block" href="/contact">
                 {" "}
                 Contact us
-              </a>
-            </div>
-            <div>
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faMagnifyingGlass}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Search
               </a>
             </div>
           </div>
           <div className="right-container w-1/2 flex justify-end space-x-5 font-montserrat text-sm">
             <div className="flex items-center">
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faBell}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Notification
-              </a>
+              <div className="flex items-center">
+                <Link
+                  to="/account"
+                >
+                  <FontAwesomeIcon className="cursor-pointer hover:scale-110 transition-transform duration-200" icon={faUser} />
+                  <span className="hidden lg:inline-block pl-1">My Account</span>
+                </Link>
+              </div>
+
             </div>
-            <div className="flex items-center">
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faUser}
-              />
-              <Link className="hidden lg:inline-block" to="/account">
-                My Account
+            {user?.isLoggedIn && (
+              <div className="flex items-center">
+              <Link
+                to = "/appointment">
+                <FontAwesomeIcon
+                  className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
+                  icon={faCalendar}
+                />
+                <span className="hidden lg:inline-block">
+                  My Appointment
+                </span>
               </Link>
-            </div>
-            <div className="flex items-center">
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faCalendar}
-              />
-              <Link className="hidden lg:inline-block" to="/appointment">
-                My Appointment
-              </Link>
-            </div>
+            </div>)}
           </div>
         </div>
         <div className="middle-header-row flex items-center justify-center">
@@ -121,9 +109,8 @@ const NavigationBar = () => {
           </div>
 
           <div
-            className={`fixed inset-0 bg-white p-8 transform ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            } transition-transform duration-500 ease-in-out`}
+            className={`fixed inset-0 bg-white p-8 transform ${menuOpen ? "translate-x-0" : "translate-x-full"
+              } transition-transform duration-500 ease-in-out`}
           >
             <div className="flex justify-end">
               <FontAwesomeIcon

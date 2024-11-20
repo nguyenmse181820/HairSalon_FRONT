@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +18,7 @@ function AppointmentView() {
         setFilterModal(!filterModal);
     };
     return (
-        <div className="bg-white rounded-lg shadow-lg">
+        <div className="">
             <h4 className="text-2xl font-bold text-black mb-10 uppercase text-center">Appointment</h4>
 
             {/* **FILTER BUTTON** */}
@@ -53,19 +54,21 @@ function AppointmentView() {
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Service Type</div>
                                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">Service 1</option>
-                                    <option value="">Service 2</option>
-                                    <option value="">Service 3</option>
-                                    <option value="">Service 4</option>
-                                    <option value="">Service 5</option>
+                                    {appointments.map((item, index) => (
+                                        <option key={index} value={item.serviceType}>
+                                            {item.serviceType}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className='flex gap-2 items-center justify-between'>
                                 <div>Status</div>
                                 <select className='border p-2 w-[155px] mr-10' name="" id="">
-                                    <option value="">All</option>
-                                    <option value="">Canceled</option>
-                                    <option value="">Success</option>
+                                    {appointments.map((item, index) => (
+                                        <option key={index} value={item.status}>
+                                            {item.status}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
 
@@ -111,6 +114,24 @@ function AppointmentView() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+            {/* pagination */}
+            <div className='w-[75%] sm:w-[70%] lg:w-[50%] mx-auto my-10 cursor-pointer text-sm lg:text-lg'>
+                <div className='flex gap-2 justify-between p-4'>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                    </div>
+                    <div className='flex gap-1'>
+                        <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                    </div>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

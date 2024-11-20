@@ -13,7 +13,6 @@ const CustomerAppointment = () => {
             const response = await axios.get(
                 `https://671f29bf1dfc429919842514.mockapi.io/api/appointment/UserAppointment`
             );
-            console.log("Fetched appointments data:", response.data);
             setAppointments(response.data);
         } catch (error) {
             console.error("Failed to fetch appointments data:", error);
@@ -58,17 +57,16 @@ const CustomerAppointment = () => {
             const appointmentDate = new Date(appointment.date);
 
             if (activeTab === 'UPCOMING') {
-                return appointment.status === true &&
-                    appointmentDate >= today &&
-                    appointmentDate <= upcomingLimitDate;
-            } else if (activeTab === 'SUCCESS') {
-                return appointment.status === true;
-            } else if (activeTab === 'CANCELLED') {
-                return appointment.status === false;
-            }
+                return appointmentDate >= today && appointment.status !== "Canceled";
+              } else if (activeTab === 'CANCELED') {
+                return appointment.status === "Canceled";
+              } else if (activeTab === 'SUCCESS') {
+                return appointment.status === "Success";
+              }
             return false;
         });
     };
+
 
     const filteredAppointments = getFilteredAppointments();
 
@@ -83,10 +81,9 @@ const CustomerAppointment = () => {
     };
 
     return (
-        <div className="p-6 bg-white">
-            {/* Tabs */}
+        <div className="min-h-screen p-6 bg-white">
             <div className="flex border-b">
-                {['UPCOMING', 'SUCCESS', 'CANCELLED'].map((tab) => (
+                {['UPCOMING', 'SUCCESS', 'CANCELED'].map((tab) => (
                     <a
                         key={tab}
                         href="#"
@@ -110,18 +107,18 @@ const CustomerAppointment = () => {
             <div className="divide-y mt-4">
                 {filteredAppointments.length > 0 ? (
                     filteredAppointments.map((appointment, index) => {
-                        const displayDate = getDisplayDate(appointment.date);
-                        const services = appointment.serviceType.split(', ');
+                        const displayDate = appointment.date ? getDisplayDate(appointment.date) : "Invalid Date";
+                        const services = appointment.serviceType ? appointment.serviceType.split(', ') : ["UNKNOWN SERVICE"];
 
                         return (
                             <div key={index} className="flex items-center py-4">
                                 <div className="col-span-1 w-1/4 text-sm">
                                     <div className="font-semibold">{displayDate}</div>
-                                    <div>{appointment.time}</div>
+                                    <div>{appointment.time || "Unknown Time"}</div>
                                 </div>
                                 <div className="col-span-1 w-1/4 text-sm">
-                                    <div className="font-semibold">{appointment.stylistName}</div>
-                                    <div>{appointment.stylistEmail}</div>
+                                    <div className="font-semibold">{appointment.stylistName || "Unknown Stylist"}</div>
+                                    <div>{appointment.stylistEmail || "No Email"}</div>
                                 </div>
                                 <div className="col-span-1 w-1/4 text-sm font-semibold whitespace-pre-line">
                                     {services.map((service, idx) => (
@@ -139,6 +136,7 @@ const CustomerAppointment = () => {
                         No appointments found.
                     </div>
                 )}
+
             </div>
 
             {/* Detail and Confirmation Popups */}
