@@ -17,7 +17,9 @@ function BookingSchedule() {
   const navigate = useNavigate();
 
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const [selectedDate, setSelectedDate] = useState(appointmentDate ? dayjs(appointmentDate) : dayjs(currentDate));
+  const [selectedDate, setSelectedDate] = useState(
+    appointmentDate ? dayjs(appointmentDate) : dayjs(currentDate)
+  );
   const [selectedTime, setSelectedTime] = useState(appointmentTime || "");
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
@@ -27,7 +29,7 @@ function BookingSchedule() {
 
   const handleDayClick = (day) => {
     const newDate = currentDate.date(day);
-    setAppointmentDate(newDate.format("YYYY-MM-DD")); 
+    setAppointmentDate(newDate.format("YYYY-MM-DD"));
     setSelectedDate(newDate);
   };
 
@@ -48,7 +50,7 @@ function BookingSchedule() {
     navigate("/booking/checkout");
   };
 
-  const handleSignIn = () => { 
+  const handleSignIn = () => {
     navigate("/account");
   };
 
@@ -67,37 +69,40 @@ function BookingSchedule() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row p-8 gap-8">
-      <div className="flex flex-col md:w-2/3">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">
+    <div className="flex flex-col md:flex-row p-4 sm:p-6 lg:p-8 gap-6">
+      {/* Left Section */}
+      <div className="flex flex-col md:w-2/3 space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
             {currentDate.format("MMM YYYY")}
           </h2>
           <div className="flex space-x-1">
             <button
               onClick={() => handleMonthChange(-1)}
-              className="p-2 rounded-s-lg bg-gray-200 hover:bg-gray-300"
+              className="p-2 rounded-l-lg bg-gray-200 hover:bg-gray-300"
             >
               {"<"}
             </button>
             <button
               onClick={() => handleMonthChange(1)}
-              className="p-2 rounded-e-lg bg-gray-200 hover:bg-gray-300"
+              className="p-2 rounded-r-lg bg-gray-200 hover:bg-gray-300"
             >
               {">"}
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-7 gap-2 mb-4 text-center">
+        <div className="grid grid-cols-7 gap-2 text-center text-sm sm:text-base">
           {weekdayLabels.map((label) => (
-            <span key={label}>{label}</span>
+            <span key={label} className="font-semibold">
+              {label}
+            </span>
           ))}
           {[...Array(daysInMonth).keys()].map((day) => (
             <button
               key={day}
               onClick={() => handleDayClick(day + 1)}
-              className={`p-2 ${
+              className={`p-2 text-sm sm:text-base rounded ${
                 selectedDate.date() === day + 1
                   ? "bg-black text-white"
                   : "bg-gray-100 hover:bg-gray-200"
@@ -108,21 +113,23 @@ function BookingSchedule() {
           ))}
         </div>
 
-        <h3 className="text-xl font-semibold mb-4">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold">
           {selectedTime ? `${selectedTime}, ` : ""}
           {selectedDate.format("dddd, MMM D, YYYY")}
         </h3>
 
-        <div className="mb-4">
+        <div>
           {["morning", "afternoon", "evening"].map((period) => (
-            <div key={period}>
-              <h4 className="font-semibold capitalize">{period}</h4>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+            <div key={period} className="mb-4">
+              <h4 className="text-sm sm:text-base md:text-lg font-semibold capitalize mb-2">
+                {period}
+              </h4>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {timeSlots[period].map((time) => (
                   <button
                     key={time}
                     onClick={() => handleTimeClick(time)}
-                    className={`p-2 ${
+                    className={`p-2 rounded text-sm sm:text-base ${
                       selectedTime === time
                         ? "bg-black text-white"
                         : "bg-gray-100 hover:bg-gray-200"
@@ -136,37 +143,38 @@ function BookingSchedule() {
           ))}
         </div>
       </div>
-      <div className="md:w-1/3">
+
+      {/* Right Section */}
+      <div className="md:w-1/3 space-y-6">
         <AppointmentSummary
           service={selectedService}
           stylist={selectedStylist}
           selectedDate={selectedDate.format("MMM D, YYYY")}
           selectedTime={selectedTime}
         />
-        <div className="flex justify-between mt-4">
+        <div className="flex flex-wrap gap-4">
           <button
             onClick={() => navigate(-1)}
-            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
-            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mr-2"
+            className="w-full md:w-1/2 bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
           >
             Back
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
-            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
+            className="w-full md:w-1/2 bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
           >
             Proceed to checkout
           </button>
         </div>
-        
+
         {!isUserLoggedIn && (
-          <button className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 
-            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black mt-3"
-          onClick={handleSignIn}
+          <button
+            onClick={handleSignIn}
+            className="w-full bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
           >
-          Sign in
-          </button>)}
+            Sign in
+          </button>
+        )}
       </div>
     </div>
   );

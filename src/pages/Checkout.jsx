@@ -8,7 +8,16 @@ import AppointmentSummary from "../components/booking/AppointmentSummary";
 
 function Checkout() {
   const navigate = useNavigate();
-  const { selectedService, selectedStylist, appointmentDate, appointmentTime, setSelectedService, setSelectedStylist, setAppointmentDate, setAppointmentTime } = useAppointment();
+  const {
+    selectedService,
+    selectedStylist,
+    appointmentDate,
+    appointmentTime,
+    setSelectedService,
+    setSelectedStylist,
+    setAppointmentDate,
+    setAppointmentTime,
+  } = useAppointment();
   const { user } = useContext(UserContext);
 
   const [countdown, setCountdown] = useState(1200);
@@ -82,7 +91,9 @@ function Checkout() {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold text-center uppercase mt-10">Checkout</h2>
+      <h2 className="text-2xl font-semibold text-center uppercase mt-10">
+        Checkout
+      </h2>
       <p className="text-gray-500 text-center uppercase">
         appointment held for {formatTime(countdown)}
       </p>
