@@ -3,9 +3,7 @@ import Logo from "../../assets/coiffure-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
-  faMagnifyingGlass,
   faUser,
-  faBell,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -48,26 +46,10 @@ function NavBarStylist() {
       <div className="sticky-container fixed w-full z-10 bg-white">
         <div className="top-header-row flex items-center px-4 pt-3">
           <div className="left-container w-1/2 flex space-x-5 font-montserrat text-sm">
-            <div>
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faMagnifyingGlass}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Search
-              </a>
-            </div>
+
           </div>
           <div className="right-container w-1/2 flex justify-end space-x-5 font-montserrat text-sm">
-            <div className="flex items-center">
-              <FontAwesomeIcon
-                className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                icon={faBell}
-              />
-              <a className="hidden lg:inline-block" href="">
-                Notification
-              </a>
-            </div>
+
             <div className="flex items-center">
               <FontAwesomeIcon
                 className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
@@ -81,7 +63,7 @@ function NavBarStylist() {
                 My Account
               </p>
               {logoutOpen && (
-                <ul className="absolute bg-white text-black w-[70px] lg:w-[100px] right-[1%] lg:right-[1.1%] mt-16 border inline-block ">
+                <ul className="absolute bg-white text-black w-[70px] lg:w-[100px] right-[1%] lg:right-[1.1%] mt-16 border inline-block z-50">
                   <li className="py-2 text-center px-2 font-semibold text-xs lg:text-sm uppercase hover:scale-110 hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500">
                     <button onClick={logout}>Logout</button>
                   </li>
@@ -124,7 +106,7 @@ function NavBarStylist() {
                 Appointment
               </button>
               {isOpen && (
-                <ul className="absolute bg-white text-black w-[220px] border">
+                <ul className="absolute bg-white text-black z-50 w-[220px] border">
                   <li className="py-2 px-2 font-semibold text-sm uppercase hover:bg-black hover:bg-opacity-90 hover:text-white transition-all ease-in-out duration-500">
                     <a href="/stylist/appointment_view">View Appointment</a>
                   </li>
@@ -155,9 +137,8 @@ function NavBarStylist() {
           </div>
 
           <div
-            className={`fixed inset-0 bg-white p-8 transform ${
-              menuOpen ? "translate-x-0" : "translate-x-full"
-            } transition-transform duration-500 ease-in-out`}
+            className={`fixed inset-0 bg-white p-8 transform ${menuOpen ? "translate-x-0" : "translate-x-full"
+              } transition-transform duration-500 ease-in-out`}
           >
             <div className="flex justify-end">
               <FontAwesomeIcon
@@ -181,7 +162,7 @@ function NavBarStylist() {
                   HOME
                 </a>
               </li>
-            
+
               <li>
                 <a
                   href="/stylist/earning"
@@ -199,7 +180,7 @@ function NavBarStylist() {
                   Appointment
                 </button>
                 {isOpen && (
-                  <ul className="absolute flex flex-col text-center justify-center items-center bg-black text-white w-[280px] my-10 ">
+                  <ul className="absolute flex flex-col text-center justify-center z-50 items-center bg-black text-white w-[280px] my-10 ">
                     <li className="py-2 px-[46px] w-full font-semibold text-sm uppercase hover:bg-white hover:bg-opacity-30">
                       <a href="/stylist/appointment_view">View Appointment</a>
                     </li>

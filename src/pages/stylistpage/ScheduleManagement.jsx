@@ -81,13 +81,13 @@ function ScheduleManagement() {
                 <td className="hidden sm:table-cell py-2 px-2">{item.note}</td>
                 <td className="py-3 px-2 flex flex-col xs:flex-row justify-center items-center gap-2">
                   <button
-                    className="border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[80%] lg:w-[80px] transition-all ease-in-out duration-500"
+                    className="border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[70px] lg:w-[80px] transition-all ease-in-out duration-500"
                     onClick={toggleDetail}
                   >
                     Detail
                   </button>
                   <button
-                    className="border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[80%] lg:w-[80px] transition-all ease-in-out duration-500"
+                    className="border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[70px] lg:w-[80px] transition-all ease-in-out duration-500"
                     onClick={toggleModal}
                   >
                     Cancel

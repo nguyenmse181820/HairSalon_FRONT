@@ -247,7 +247,7 @@ function StylistAssignment() {
                 Edit Form
               </div>
               <form action="">
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label>Email</label> <br />
                   <input
                     type="text"
@@ -262,7 +262,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label>Stylist Name</label> <br />
                   <input
                     type="text"
@@ -277,7 +277,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label>Avatar</label> <br />
                   <input
                     type="text"
@@ -292,7 +292,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label>Phone</label> <br />
                   <input
                     type="number"
@@ -307,7 +307,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label htmlFor="">Address</label> <br />
                   <input
                     type="text"
@@ -322,7 +322,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4 mx-10">
+                <div className="mb-4 xs:mx-10 mx-0">
                   <label>Age</label> <br />
                   <input
                     type="number"
@@ -390,15 +390,15 @@ function StylistAssignment() {
             onClick={toggleCreateModal}
           ></div>
           <div
-            className="modal-content rounded border shadow-md h-[90%] fixed z-50 top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2
-                     bg-white py-16 my-10 overflow-y-auto md:mt-16 lg:mt-[100px] w-[80%] md:w-[60%] lg:w-[35%] flex justify-center"
+            className="modal-content rounded border shadow-md z-50 fixed h-[80%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                     bg-white pb-16  w-[80%] md:w-[60%] lg:w-[35%] flex justify-center overflow-y-auto"
           >
             <div className="w-[80%]">
               <form action="">
                 <div className="text-lg text-center font-bold uppercase tracking-wider my-10">
                   Create New Stylist
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="py-2">Email</label> <br />
                   <input
                     type="email"
@@ -414,7 +414,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Password</label> <br />
                   <input
                     type="password"
@@ -430,7 +430,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Stylist Name</label> <br />
                   <input
                     type="text"
@@ -446,7 +446,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Avatar</label> <br />
                   <input
                     type="text"
@@ -462,7 +462,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Phone</label> <br />
                   <input
                     type="text"
@@ -478,7 +478,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Address</label> <br />
                   <input
                     type="text"
@@ -494,7 +494,7 @@ function StylistAssignment() {
                     </span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 mx-4">
                   <label className="">Age</label> <br />
                   <input
                     type="number"
