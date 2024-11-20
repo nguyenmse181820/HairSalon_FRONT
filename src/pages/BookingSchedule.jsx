@@ -156,16 +156,18 @@ function BookingSchedule() {
           selectedDate={selectedDate.format("MMM D, YYYY")}
           selectedTime={selectedTime}
         />
-        <div className="flex flex-wrap gap-4">
+        <div className="flex justify-between mt-4">
           <button
             onClick={() => navigate(-1)}
-            className="w-full md:w-1/2 bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
           >
             Back
           </button>
           <button
             onClick={handleSubmit}
-            className="w-full md:w-1/2 bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
+            className="bg-black text-white w-1/2 border-black border uppercase py-3 transform duration-300 
+            ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black ml-2"
           >
             Proceed to checkout
           </button>
