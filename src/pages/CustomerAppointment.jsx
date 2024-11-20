@@ -13,7 +13,6 @@ const CustomerAppointment = () => {
             const response = await axios.get(
                 `https://671f29bf1dfc429919842514.mockapi.io/api/appointment/UserAppointment`
             );
-            console.log("Fetched appointments data:", response.data);
             setAppointments(response.data);
         } catch (error) {
             console.error("Failed to fetch appointments data:", error);
@@ -22,7 +21,6 @@ const CustomerAppointment = () => {
 
     useEffect(() => {
         fetchUserAppointments();
-        console.log("Appointments:", appointments);
     }, []);
 
 
@@ -83,7 +81,7 @@ const CustomerAppointment = () => {
     };
 
     return (
-        <div className="p-6 bg-white">
+        <div className="min-h-screen p-6 bg-white">
             <div className="flex border-b">
                 {['UPCOMING', 'SUCCESS', 'CANCELED'].map((tab) => (
                     <a

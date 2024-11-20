@@ -206,8 +206,8 @@ function StaffManagement() {
                   <td className='py-3 px-2 hidden md:table-cell'>{item.time}</td>
                   <td className='py-3 px-2 hidden md:table-cell'>{item.status}</td>
                   <td className='flex justify-center items-center gap-1 sm:gap-2 py-3 px-2 sm:flex-row flex-col'>
-                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
-                    <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[80%] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
+                    <button onClick={() => toggleEditModal(item)} className='border transform hover:scale-110 hover:bg-gray-700 hover:bg-opacity-20 py-1 px-2 w-[70px] lg:w-[100px] transition-all ease-in-out duration-500'>Edit</button>
+                    <button onClick={() => toggleDeleteModal(item)} className='border transform hover:scale-110 bg-red-500 text-white hover:bg-red-600 py-1 px-2 w-[70px] lg:w-[100px] transition-all ease-in-out duration-500'>Delete</button>
                   </td>
                 </tr>
               )
@@ -221,11 +221,12 @@ function StaffManagement() {
       {EditModal && (
         <div className='modal'>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleEditModal}></div>
-          <div className='modal-content rounded border shadow-md z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white pb-16  w-[80%] md:w-[60%] lg:w-[35%] flex justify-center'>
-            <div className='w-[80%]'>
+          <div className='modal-content rounded border shadow-md z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+           bg-white pb-16  w-[80%] md:w-[60%] lg:w-[35%] flex justify-center'>
+            <div className='w-[90%]'>
               <div className='text-center font-bold text-xl uppercase tracking-wider my-10 '>Edit Form</div>
               <form action="">
-                <div className='mb-4 mx-10'>
+                <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Customer Name</label> <br />
                   <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -235,7 +236,7 @@ function StaffManagement() {
                   />
                   {errors.customerName && <span className='text-red-500 italic text-sm'>{errors.customerName}</span>}
                 </div>
-                <div className='mb-4 mx-10'>
+                <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Stylist Name</label> <br />
                   <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -245,7 +246,7 @@ function StaffManagement() {
                   />
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
-                <div className='mb-4 mx-10'>
+                <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Service Type</label> <br />
                   <select
                     name='serviceType'
@@ -261,7 +262,7 @@ function StaffManagement() {
                   </select>
                   {errors.serviceType && <span className='text-red-500 italic text-sm'>{errors.serviceType}</span>}
                 </div>
-                <div className='mb-4 mx-10'>
+                <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Date</label> <br />
                   <input type="date"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -271,7 +272,7 @@ function StaffManagement() {
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
-                <div className='mb-4 mx-10'>
+                <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Time</label> <br />
                   <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -313,11 +314,12 @@ function StaffManagement() {
       {createModal && (
         <div className='modal '>
           <div className='bg-black opacity-50 fixed w-full h-full left-0 top-0 right-0 bottom-0' onClick={toggleCreateModal} ></div>
-          <div className='modal-content rounded border shadow-md fixed z-50 top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white py-16 my-10 md:mt-16 lg:mt-[100px] w-[80%] md:w-[60%] lg:w-[35%] flex justify-center'>
+          <div className='modal-content rounded border shadow-md z-50 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+           bg-white pb-16  w-[80%] md:w-[60%] lg:w-[35%] flex justify-center'>
             <div className='w-[80%]'>
               <form action="">
-                <div className='text-lg text-center font-bold uppercase tracking-wider mb-10'>Create New Appointment</div>
-                <div className='mb-4'>
+                <div className='text-lg text-center font-bold uppercase tracking-wider my-10'>Create New Appointment</div>
+                <div className='mb-2'>
                   <label htmlFor="">Customer Name</label> <br />
                   <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -328,7 +330,7 @@ function StaffManagement() {
                   />
                   {errors.customerName && <span className='text-red-500 italic text-sm'>{errors.customerName}</span>}
                 </div>
-                <div className='mb-4'>
+                <div className='mb-2'>
                   <label htmlFor="">Stylist Name</label> <br />
                   <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
@@ -340,7 +342,7 @@ function StaffManagement() {
                   />
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
-                <div className='mb-4'>
+                <div className='mb-2'>
                   <label  >Service Type</label> <br />
                   <select placeholder='Enter service type' name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
                     <option value={formData.serviceType}>Type 1</option>
@@ -352,7 +354,7 @@ function StaffManagement() {
 
                   {errors.serviceType && <span className='text-red-500 italic text-sm'>{errors.serviceType}</span>}
                 </div>
-                <div className='mb-4'>
+                <div className='mb-2'>
                   <label htmlFor="">Date</label> <br />
                   <input type="date"
                     className='w-full border border-gray-400 p-2 hover:border-black'

@@ -7,10 +7,11 @@ import axios from 'axios';
 function Bookings() {
   const [modal, setModal] = useState(false);
   const [bookings, setBookings] = useState([]);
+  const countBooking = bookings.length;
 
   useEffect(() => {
     axios.get('https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings').then((res) => {
-      setBookings(res.data);
+      setBookings(res.data);    
     })
   }, []);
 
@@ -23,8 +24,8 @@ function Bookings() {
       <div className='sm:ml-10 mx-5 shadow-lg sm:w-1/4 w-3/4 '>
         <div className='p-4'>
           <label htmlFor="" className='block text-gray-700 text-sm font-bold mb-1'>Summary</label>
-          <div>Total Booking: 2</div>
-          <div>Total Stylist available: 2</div>
+          <div>Total Booking: {countBooking}</div>
+          
         </div>
       </div>
       <div className='my-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Booking List</div>
