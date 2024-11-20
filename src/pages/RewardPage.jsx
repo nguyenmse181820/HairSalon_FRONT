@@ -7,14 +7,14 @@ export default function RewardPage() {
     return (
         <div className="reward-page bg-white font-sans">
             {/* Header Section */}
-            <div className="flex relative w-full h-auto">
+            <div className="flex relative w-full h-auto sm:h-48 md:h-64 lg:h-auto">
                 <img
                     src={RewardBanner}
                     alt="Reward Banner"
                     className="object-cover w-full h-full"
                 />
                 <div className="flex absolute inset-0 justify-center items-center">
-                    <h1 className="absolute inset-0 text-gray-600 flex items-center font-semibold italic justify-center text-5xl font-montserrat w-full uppercase text-center">
+                    <h1 className="absolute inset-0 text-gray-600 flex items-center font-semibold italic justify-center text-2xl sm:text-3xl md:text-5xl font-montserrat w-full uppercase text-center">
                         reward
                     </h1>
                 </div>
