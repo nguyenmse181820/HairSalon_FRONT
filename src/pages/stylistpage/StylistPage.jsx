@@ -21,6 +21,25 @@ function StylistPage() {
         setFilterModal(!filterModal);
     };
 
+    const [selectedFilter, setSelectedFilter] = useState(null);
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setSelectedFilter({ ...selectedFilter, [name]: value });
+        setFilterModal(false);
+    }
+
+    const filterDataBySelect = (data, selectedFilter) => {
+        return data.filter(item => {
+            for (const option in selectedFilter) {
+                if (selectedFilter[option] && item[option] !== selectedFilter[option]) {
+                    return false;
+                }
+            }
+            return true;
+        })
+    }
+
     return (
         <div>
 
@@ -61,9 +80,9 @@ function StylistPage() {
 
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Service Type</div>
-                                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                                <select className='border p-2 w-[155px] mr-10' name="serviceType" onChange={handleFilterChange}>
                                     {appointments.map((item, index) => (
-                                        <option key={{ index }} value={item.serviceType}>
+                                        <option key={{ index }} value={item.serviceType} onChange={handleFilterChange}>
                                             {item.serviceType}
                                         </option>
                                     ))}
@@ -73,9 +92,9 @@ function StylistPage() {
                             </div>
                             <div className='flex gap-2 items-center justify-between'>
                                 <div>Status</div>
-                                <select className='border p-2 w-[155px] mr-10'>
+                                <select className='border p-2 w-[155px] mr-10' name="status" onChange={handleFilterChange}>
                                     {appointments.map((item, index) => (
-                                        <option key={index} value={item.status}>
+                                        <option key={index} value={item.status} onChange={handleFilterChange}>
                                             {item.status}
                                         </option>
                                     ))}
@@ -107,7 +126,7 @@ function StylistPage() {
                             </td>
                         </tr>
                         {
-                            appointments.map((item) => {
+                            filterDataBySelect(appointments, selectedFilter).map((item) => {
                                 return (
                                     <tr key={item.id} className='sm:text-base text-sm'>
                                         <td className='py-4'>{item.id}</td>
@@ -115,7 +134,14 @@ function StylistPage() {
                                         <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
                                         <td className='py-4'>{item.date}</td>
                                         <td className='hidden sm:table-cell py-4'>{item.time}</td>
-                                        <td className='py-4'>{item.status}</td>
+                                        <td
+                                            className={`py-4 ${item.status === 'Success' ? 'text-green-500' :
+                                                item.status === 'Canceled' ? 'text-red-500' :
+                                                    item.status === 'Waiting' ? 'text-yellow-500' : ''
+                                                }`}
+                                        >
+                                            {item.status}
+                                        </td>
                                     </tr>
                                 )
                             }

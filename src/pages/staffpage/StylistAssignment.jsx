@@ -19,11 +19,6 @@ function StylistAssignment() {
       });
   });
 
-  if (editModal || createModal) {
-    document.body.classList.add("overflow-hidden");
-  } else {
-    document.body.classList.remove("overflow-hidden");
-  }
 
   const [formData, setFormData] = useState({
     email: "",
@@ -50,20 +45,28 @@ function StylistAssignment() {
   const toggleCreateModal = () => {
     setCreateModal(!createModal);
   };
+
+  if (editModal || createModal) {
+    document.body.classList.add("overflow-hidden");
+  } else {
+    document.body.classList.remove("overflow-hidden");
+  }
+
   //handle change
   const handleEditChange = (event) => {
     const { name, value } = event.target;
     setSelectedItem({ ...selectedItem, [name]: value });
   };
 
-  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [errors, setErrors] = useState({});
+  const validateForm = () => {
+
     const validationErrors = {};
 
     // valid password
@@ -119,10 +122,60 @@ function StylistAssignment() {
 
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
-      toast.error("Form submitted successfully");
-      console.log(formData);
+      return true;
+    } else {
+      return false;
     }
   };
+
+  const handleSubmitEdit = async () => {
+    try {
+      const url = `https://673a9c49339a4ce445188ccb.mockapi.io/project/stylistAssignment/${selectedItem.id}`;
+      const response = await axios.put(url, selectedItem);
+      const updatedItem = response.data;
+      setStylist(
+        stylist.map((item) => (item.id === selectedItem.id ? { ...item, updatedItem } : item))
+      );
+      toast.error('Successfully updated');
+      setEditModal(false);
+    } catch (error) {
+      console.log('Error saving customer:', error);
+    }
+  }
+
+  const handleSubmitCreate = async () => {
+    try {
+      if (validateForm() === true) {
+        const newId = Math.max(...stylist.map((item) => parseInt(item.id, 10))) + 1
+        const url = `https://673a9c49339a4ce445188ccb.mockapi.io/project/stylistAssignment`
+        const response = await axios.post(url, {
+          ...formData,
+          id: newId.toString(),
+        });
+        const newitem = response.data;
+        setStylist((stylist) => [...stylist, newitem]);
+        toast.error('Successfully created');
+        window.location.reload();
+      }
+      else {
+        toast.error('Please fill in all required fields.');
+      }
+    } catch (error) {
+      console.log('Error saving customer:', error);
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      const url = `https://673a9c49339a4ce445188ccb.mockapi.io/project/stylistAssignment/${selectedItem.id}`;
+      const response = await axios.delete(url);
+      setStylist((prev) => prev.filter((item) => item.id !== selectedItem.id));
+      toast.error('Successfully deleted');
+      setDeleteModal(false);
+    } catch (error) {
+      console.log('Error saving customer:', error);
+    }
+  }
 
   const handleReset = () => {
     setFormData({
@@ -338,18 +391,18 @@ function StylistAssignment() {
                   )}
                 </div>
                 <div className="flex justify-center items-center gap-4 mt-6 py-10">
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500"
+                  <div
+                    onClick={handleSubmitEdit}
+                    className="cursor-pointer text-center bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500"
                   >
                     Save
-                  </button>
-                  <button
+                  </div>
+                  <div
                     onClick={toggleEditModal}
-                    className="bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500"
+                    className="cursor-pointer text-center bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500"
                   >
                     Cancel
-                  </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -368,7 +421,7 @@ function StylistAssignment() {
                 Are you sure you want to delete this appointment?
               </p>
               <div className="flex justify-center items-center gap-4 mt-10">
-                <button className="bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500">
+                <button onClick={handleDelete} className="bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500">
                   Yes
                 </button>
                 <button
@@ -511,18 +564,18 @@ function StylistAssignment() {
                   )}
                 </div>
                 <div className="flex justify-center items-center gap-4 mt-10 py-10">
-                  <button
-                    onClick={handleSubmit}
-                    className="bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500"
+                  <div
+                    onClick={handleSubmitCreate}
+                    className="cursor-pointer text-center bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500"
                   >
                     Submit
-                  </button>
-                  <button
+                  </div>
+                  <div
                     onClick={handleReset}
-                    className="bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500"
+                    className="cursor-pointer text-center bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500"
                   >
                     Clear
-                  </button>
+                  </div>
                 </div>
               </form>
             </div>
