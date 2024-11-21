@@ -62,43 +62,112 @@ function StaffManagement() {
   const handleCreateChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    console.log(formData);
   }
 
-  //validation 
+  //validation
   const [errors, setErrors] = useState({});
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = {}
-
-    // valid customerName
-    if (!formData.customerName.trim()) {
-      validationErrors.customerName = 'Customer name is required';
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.customerName) {
+      newErrors.customerName = 'Customer Name is required';
     } else if (formData.customerName.length < 3) {
-      validationErrors.customerName = 'Customer name must be at least 3 characters';
+      newErrors.customerName = 'Customer Name must be at least 3 characters';
     }
-    // valid stylistName
-    if (!formData.stylistName.trim()) {
-      validationErrors.stylistName = 'Stylist name is required';
+    if (!formData.stylistName) {
+      newErrors.stylistName = 'Stylist Name is required';
     } else if (formData.stylistName.length < 3) {
-      validationErrors.stylistName = 'Stylist name must be at least 3 characters';
+      newErrors.stylistName = 'Stylist Name must be at least 3 characters';
     }
 
-    // valid date
-    if (!formData.date.trim()) {
-      validationErrors.date = 'Date is required';
+    if (!formData.date) {
+      newErrors.date = 'Date is required';
     }
-
-    if (!formData.time.trim()) {
-      validationErrors.time = 'Time is required';
+    if (!formData.time) {
+      newErrors.time = 'Time is required';
     }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-    setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      toast.error('Form submitted successfully');
-      console.log(formData);
+  // submit edit form
+  const handleSubmitEdit = async () => {
+    try {
+
+      const url = `https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings/${selectedItem.id}`;
+      const response = await axios.put(url, selectedItem);
+      const updatedItem = response.data;
+      setAppointmentList(
+        AppointmentList.map((item) => (item.id === selectedItem.id ? { ...item, ...updatedItem } : item))
+      );
+
+      toast.error('Successfully updated');
+      setEditModal(false);
+
+    } catch (error) {
+      console.log('Error saving customer:', error);
+    }
+  };
+  //submit create form 
+  const handleSubmitCreate = async () => {
+    try {
+      if (validateForm() === true) {
+        const newId = Math.max(...AppointmentList.map((item) => parseInt(item.id, 10))) + 1
+        const url = `https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings`;
+        const response = await axios.post(url, {
+          ...formData,
+          id: newId.toString(),
+        });
+        const newItem = response.data;
+
+        setAppointmentList((AppointmentList) => [...AppointmentList, newItem]);
+
+        toast.error('Successfully created');
+        window.location.reload();
+      } else {
+        toast.error('Please fill in all required fields.');
+      }
+
+    } catch (error) {
+      console.error("Error saving customer:", error);
     }
   };
 
+  //handle delete 
+  const handleDelete = async () => {
+    try {
+      const url = `https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings/${selectedItem.id}`;
+      const response = await axios.delete(url);
+      setAppointmentList((prev) => prev.filter((item) => item.id !== selectedItem.id));
+      toast.error('Successfully deleted');
+      setDeleteModal(false);
+    } catch (error) {
+      console.error("Error deleting customer:", error);
+    }
+  };
+
+  //filter
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    console.log(selectedFilter);
+    setSelectedFilter({ ...selectedFilter, [name]: value });
+    setFilterModal(false);
+  }
+  const filterDataBySelect = (data, selectedFilter) => {
+    return data.filter(item => {
+      for (const option in selectedFilter) {
+        if (selectedFilter[option] && item[option] !== selectedFilter[option]) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
 
   return (
     <div>
@@ -135,13 +204,13 @@ function StaffManagement() {
             <div className='flex flex-col'>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Date</div>
-                <input className='border mr-10 p-2 w-[155px]' type="date" />
+                <input type="date" className='border p-2 w-[155px] mr-10' />
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Stylist Name</div>
-                <select className='border p-2 w-[155px] mr-10'>
+                <select className='border p-2 w-[155px] mr-10' name="stylistName" onChange={handleFilterChange}>
                   {AppointmentList.map((option, index) => (
-                    <option key={index} value={option.stylistName}>
+                    <option key={index} value={option.stylistName} onChange={handleFilterChange}>
                       {option.stylistName}
                     </option>
                   ))}
@@ -149,9 +218,9 @@ function StaffManagement() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Service Type</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="serviceType" id="" onChange={handleFilterChange}>
                   {AppointmentList.map((option, index) => (
-                    <option key={index} value={option.serviceType}>
+                    <option key={index} value={option.serviceType} onChange={handleFilterChange}>
                       {option.serviceType}
                     </option>
                   ))}
@@ -159,9 +228,9 @@ function StaffManagement() {
               </div>
               <div className='flex gap-2 items-center justify-between'>
                 <div>Status</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="status" id="" onChange={handleFilterChange}>
                   {AppointmentList.map((option, index) => (
-                    <option key={index} value={option.status}>
+                    <option key={index} value={option.status} onChange={handleFilterChange}>
                       {option.status}
                     </option>
                   ))}
@@ -195,7 +264,7 @@ function StaffManagement() {
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
-            {AppointmentList.map((item) => {
+            {filterDataBySelect(AppointmentList, selectedFilter).map((item) => {
               return (
                 <tr key={item.id} className='sm:text-base text-sm'>
                   <td className='py-3 px-2'>{item.id}</td>
@@ -254,17 +323,31 @@ function StaffManagement() {
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.serviceType}
                   >
-                    <option value={selectedItem.serviceType}>Type 1</option>
-                    <option value={selectedItem.serviceType}>Type 2</option>
-                    <option value={selectedItem.serviceType}>Type 3</option>
-                    <option value={selectedItem.serviceType}>Type 4</option>
-                    <option value={selectedItem.serviceType}>Type 5</option>
+                    <option onChange={handleEditChange}
+                      value="Hair cut">
+                      Hair cut
+                    </option>
+                    <option
+                      onChange={handleEditChange}
+                      value="Hair color">
+                      Hair color
+                    </option>
+                    <option
+                      onChange={handleEditChange}
+                      value="Haircut & Beard Trim">
+                      Haircut & Beard Trim
+                    </option>
+                    <option
+                      onChange={handleEditChange}
+                      value="Blow Dry">
+                      Blow Dry
+                    </option>
                   </select>
                   {errors.serviceType && <span className='text-red-500 italic text-sm'>{errors.serviceType}</span>}
                 </div>
                 <div className='mb-2 xs:mx-10 mx-0'>
                   <label htmlFor="">Date</label> <br />
-                  <input type="date"
+                  <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={selectedItem.date}
                     name='date'
@@ -283,8 +366,8 @@ function StaffManagement() {
                   {errors.time && <span className='text-red-500 italic text-sm'>{errors.time}</span>}
                 </div>
                 <div className='flex justify-center items-center gap-4 mt-10'>
-                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
-                  <button onClick={toggleEditModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
+                  <div onClick={handleSubmitEdit} className='cursor-pointer text-center bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</div>
+                  <div onClick={toggleEditModal} className='cursor-pointer text-center bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</div>
                 </div>
               </form>
             </div>
@@ -302,7 +385,7 @@ function StaffManagement() {
             <div>
               <p className='text-center text-lg'>Are you sure you want to delete this appointment?</p>
               <div className='flex justify-center items-center gap-4 mt-10'>
-                <button className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Yes</button>
+                <button onClick={handleDelete} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Yes</button>
                 <button onClick={toggleDeleteModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >No</button>
               </div>
             </div>
@@ -343,25 +426,39 @@ function StaffManagement() {
                   {errors.stylistName && <span className='text-red-500 italic text-sm'>{errors.stylistName}</span>}
                 </div>
                 <div className='mb-2'>
-                  <label  >Service Type</label> <br />
-                  <select placeholder='Enter service type' name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
-                    <option value={formData.serviceType}>Type 1</option>
-                    <option value={formData.serviceType}>Type 2</option>
-                    <option value={formData.serviceType}>Type 3</option>
-                    <option value={formData.serviceType}>Type 4</option>
-                    <option value={formData.serviceType}>Type 5</option>
+                  <label>Service Type</label> <br />
+                  <select name='serviceType' id="" onChange={handleCreateChange} className='w-full border border-gray-400 p-2 hover:border-black'>
+                    <option
+                      onChange={handleCreateChange}
+                      value="Hair cut">
+                      Hair cut
+                    </option>
+                    <option
+                      onChange={handleCreateChange}
+                      value="Hair color">
+                      Hair color
+                    </option>
+                    <option
+                      onChange={handleCreateChange}
+                      value="Haircut & Beard Trim">
+                      Haircut & Beard Trim
+                    </option>
+                    <option
+                      onChange={handleCreateChange}
+                      value="Blow Dry">
+                      Blow Dry
+                    </option>
                   </select>
 
-                  {errors.serviceType && <span className='text-red-500 italic text-sm'>{errors.serviceType}</span>}
                 </div>
                 <div className='mb-2'>
                   <label htmlFor="">Date</label> <br />
-                  <input type="date"
+                  <input type="text"
                     className='w-full border border-gray-400 p-2 hover:border-black'
                     value={formData.date}
                     name='date'
                     onChange={handleCreateChange}
-                    placeholder='Enter date'
+                    placeholder='Enter yyyy-MM-dd hh:mm:ss'
                   />
                   {errors.date && <span className='text-red-500 italic text-sm'>{errors.date}</span>}
                 </div>
@@ -377,8 +474,8 @@ function StaffManagement() {
                   {errors.time && <span className='text-red-500 italic text-sm'>{errors.time}</span>}
                 </div>
                 <div className='flex justify-center items-center gap-4 mt-10'>
-                  <button onClick={handleSubmit} className='bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</button>
-                  <button onClick={toggleCreateModal} className='bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</button>
+                  <div onClick={handleSubmitCreate} className='cursor-pointer text-center bg-white text-black border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-black hover:text-white transition-all ease-in-out duration-500'>Save</div>
+                  <div onClick={toggleCreateModal} className='cursor-pointer text-center bg-black text-white border px-4 py-2 w-[100px] transform hover:scale-110 hover:bg-white hover:text-black transition-all ease-in-out duration-500' >Cancel</div>
                 </div>
               </form>
             </div>

@@ -11,12 +11,31 @@ function Bookings() {
 
   useEffect(() => {
     axios.get('https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings').then((res) => {
-      setBookings(res.data);    
+      setBookings(res.data);
     })
   }, []);
 
   const toggleFilterModal = () => {
     setModal(!modal);
+  }
+
+  //filter
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const handleFliterChange = (event) => {
+    const { name, value } = event.target;
+    setSelectedFilter({...selectedFilter, [name]: value});
+    setModal(false);
+  }
+
+  const filterDataBySelect = (data, selectedFilter) => {
+    return data.filter(item => {
+      for (const option in selectedFilter){
+        if(selectedFilter[option] && item[option] !== selectedFilter[option]){
+          return false;
+        }
+      }
+      return true;
+    })
   }
 
   return (
@@ -25,7 +44,6 @@ function Bookings() {
         <div className='p-4'>
           <label htmlFor="" className='block text-gray-700 text-sm font-bold mb-1'>Summary</label>
           <div>Total Booking: {countBooking}</div>
-          
         </div>
       </div>
       <div className='my-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Booking List</div>
@@ -61,9 +79,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Stylist Name</div>
-                <select className='border p-2 w-[155px] mr-10'>
+                <select className='border p-2 w-[155px] mr-10' onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.stylistName}>
+                    <option key={index} value={option.stylistName} onChange={handleFliterChange}>
                       {option.stylistName}
                     </option>
                   ))}
@@ -71,9 +89,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Service Type</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="serviceType" id="" onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.serviceType}>
+                    <option key={index} value={option.serviceType} onChange={handleFliterChange}>
                       {option.serviceType}
                     </option>
                   ))}
@@ -81,9 +99,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between'>
                 <div>Status</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="status" id="" onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.status}>
+                    <option key={index} value={option.status} onChange={handleFliterChange}>
                       {option.status}
                     </option>
                   ))}
@@ -116,7 +134,7 @@ function Bookings() {
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
-            {bookings.map((item) => {
+            {filterDataBySelect(bookings, selectedFilter).map((item) => {
               return (
                 <tr key={item.id} className='sm:text-base text-sm'>
                   <td className='py-3 px-2'>{item.id}</td>
