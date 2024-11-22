@@ -1,33 +1,41 @@
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Bookings() {
   const [modal, setModal] = useState(false);
-  const bookings = [
-    {
-      stt: 1,
-      customerName: 'John Doe',
-      stylistName: 'Stylist 1',
-      serviceType: 'Haircut',
-      date: '09-10-2023',
-      time: '30 mins',
-      status: 'Completed',
-    },
-    {
-      stt: 2,
-      customerName: 'John Doe',
-      stylistName: 'Stylist 2',
-      serviceType: 'Massage',
-      date: '12-12-2024',
-      time: '30 mins',
-      status: 'Doing',
-    }
-  ];
+  const [bookings, setBookings] = useState([]);
+  const countBooking = bookings.length;
+
+  useEffect(() => {
+    axios.get('https://673828ca4eb22e24fca7099b.mockapi.io/project/bookings').then((res) => {
+      setBookings(res.data);
+    })
+  }, []);
 
   const toggleFilterModal = () => {
     setModal(!modal);
+  }
+
+  //filter
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const handleFliterChange = (event) => {
+    const { name, value } = event.target;
+    setSelectedFilter({...selectedFilter, [name]: value});
+    setModal(false);
+  }
+
+  const filterDataBySelect = (data, selectedFilter) => {
+    return data.filter(item => {
+      for (const option in selectedFilter){
+        if(selectedFilter[option] && item[option] !== selectedFilter[option]){
+          return false;
+        }
+      }
+      return true;
+    })
   }
 
   return (
@@ -35,8 +43,7 @@ function Bookings() {
       <div className='sm:ml-10 mx-5 shadow-lg sm:w-1/4 w-3/4 '>
         <div className='p-4'>
           <label htmlFor="" className='block text-gray-700 text-sm font-bold mb-1'>Summary</label>
-          <div>Total Booking: 2</div>
-          <div>Total Stylist available: 2</div>
+          <div>Total Booking: {countBooking}</div>
         </div>
       </div>
       <div className='my-10 font-bold text-lg md:text-xl text-center uppercase tracking-wider'>Booking List</div>
@@ -72,9 +79,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Stylist Name</div>
-                <select className='border p-2 w-[155px] mr-10'>
+                <select className='border p-2 w-[155px] mr-10' onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.stylistName}>
+                    <option key={index} value={option.stylistName} onChange={handleFliterChange}>
                       {option.stylistName}
                     </option>
                   ))}
@@ -82,9 +89,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between mb-6'>
                 <div>Service Type</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="serviceType" id="" onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.serviceType}>
+                    <option key={index} value={option.serviceType} onChange={handleFliterChange}>
                       {option.serviceType}
                     </option>
                   ))}
@@ -92,9 +99,9 @@ function Bookings() {
               </div>
               <div className='flex gap-2 items-center justify-between'>
                 <div>Status</div>
-                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                <select className='border p-2 w-[155px] mr-10' name="status" id="" onChange={handleFliterChange}>
                   {bookings.map((option, index) => (
-                    <option key={index} value={option.status}>
+                    <option key={index} value={option.status} onChange={handleFliterChange}>
                       {option.status}
                     </option>
                   ))}
@@ -111,7 +118,7 @@ function Bookings() {
         <table className='w-full border-collapse'>
           <thead className=''>
             <tr className='sm:text-base text-sm'>
-              <th className="py-3 px-2 font-semibold text-center uppercase">Stt</th>
+              <th className="py-3 px-2 font-semibold text-center uppercase">Id</th>
               <th className="py-3 px-2 font-semibold text-center uppercase">Customer Name</th>
               <th className="hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase">Stylist Name</th>
               <th className='hidden sm:table-cell py-3 px-2 font-semibold text-center uppercase'>Service Type</th>
@@ -127,10 +134,10 @@ function Bookings() {
                 <hr className="w-full border-gray-300 my-2" />
               </td>
             </tr>
-            {bookings.map((item) => {
+            {filterDataBySelect(bookings, selectedFilter).map((item) => {
               return (
-                <tr key={item.stt} className='sm:text-base text-sm'>
-                  <td className='py-3 px-2'>{item.stt}</td>
+                <tr key={item.id} className='sm:text-base text-sm'>
+                  <td className='py-3 px-2'>{item.id}</td>
                   <td className='py-3 px-2'>{item.customerName}</td>
                   <td className='hidden sm:table-cell py-3 px-2'>{item.stylistName}</td>
                   <td className='hidden sm:table-cell py-3 px-2'>{item.serviceType}</td>
@@ -149,19 +156,21 @@ function Bookings() {
       </div>
 
       {/* pagination */}
-      <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
-        <div className='w-24 text-center'>
-          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
-        </div>
-        <div className='flex gap-1'>
-          <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
-          <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
-        </div>
-        <div className='w-24 text-center'>
-          <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+      <div className='w-[75%] sm:w-[70%] lg:w-[50%] mx-auto my-10 cursor-pointer text-sm lg:text-lg'>
+        <div className='flex gap-2 justify-between p-4'>
+          <div className='w-24 text-center'>
+            <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+          </div>
+          <div className='flex gap-1'>
+            <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+            <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+          </div>
+          <div className='w-24 text-center'>
+            <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+          </div>
         </div>
       </div>
     </div >

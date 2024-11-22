@@ -1,10 +1,11 @@
+
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function ManagementAppointment() {
     const [appointments, setAppointments] = useState([]);
     const [sortOrder, setSortOrder] = useState(null);
-
 
     useEffect(() => {
         axios.get('https://6721ddfa98bbb4d93caa0c5e.mockapi.io/appointment')
@@ -26,8 +27,7 @@ function ManagementAppointment() {
                 .catch((err) => console.log(err));
         }
     };
-
-
+    
     return (
         <div className="xs:p-6 p-2">
             <h1 className="sm:text-2xl text-lg font-bold text-center mb-8 uppercase">Appointment Management</h1>
@@ -81,7 +81,6 @@ function ManagementAppointment() {
                     Save
                 </button>
             </div>
-            
         </div>
     );
 }

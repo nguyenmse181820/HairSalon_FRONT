@@ -22,7 +22,6 @@ const CustomerAppointment = () => {
             const response = await axios.get(
                 `https://671f29bf1dfc429919842514.mockapi.io/api/appointment/UserAppointment`
             );
-            console.log("Fetched appointments data:", response.data);
             setAppointments(response.data);
         } catch (error) {
             console.error("Failed to fetch appointments data:", error);
@@ -67,17 +66,16 @@ const CustomerAppointment = () => {
             const appointmentDate = new Date(appointment.date);
 
             if (activeTab === 'UPCOMING') {
-                return appointment.status === true &&
-                    appointmentDate >= today &&
-                    appointmentDate <= upcomingLimitDate;
+                return appointmentDate >= today && appointment.status !== "Canceled";
+            } else if (activeTab === 'CANCELED') {
+                return appointment.status === "Canceled";
             } else if (activeTab === 'SUCCESS') {
-                return appointment.status === true;
-            } else if (activeTab === 'CANCELLED') {
-                return appointment.status === false;
+                return appointment.status === "Success";
             }
             return false;
         });
     };
+
 
     const filteredAppointments = getFilteredAppointments();
 
@@ -92,7 +90,19 @@ const CustomerAppointment = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen"> {/* Thêm wrapper Flexbox */}
+        <div className="min-h-screen p-6 bg-white">
+            <div className="flex border-b">
+                {['UPCOMING', 'SUCCESS', 'CANCELED'].map((tab) => (
+                    <a
+                        key={tab}
+                        href="#"
+                        className={`px-4 py-2 ${activeTab === tab ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500 hover:text-blue-500'}`}
+                        onClick={() => setActiveTab(tab)}
+                    >
+                        {tab}
+                    </a>
+                ))}
+            </div>
 
             <div className="flex-grow p-6 bg-white">
                 {/* Tabs */}

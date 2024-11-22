@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,6 +20,25 @@ function StylistPage() {
     const toggleFilterModal = () => {
         setFilterModal(!filterModal);
     };
+
+    const [selectedFilter, setSelectedFilter] = useState(null);
+
+    const handleFilterChange = (event) => {
+        const { name, value } = event.target;
+        setSelectedFilter({ ...selectedFilter, [name]: value });
+        setFilterModal(false);
+    }
+
+    const filterDataBySelect = (data, selectedFilter) => {
+        return data.filter(item => {
+            for (const option in selectedFilter) {
+                if (selectedFilter[option] && item[option] !== selectedFilter[option]) {
+                    return false;
+                }
+            }
+            return true;
+        })
+    }
 
     return (
         <div>
@@ -60,9 +80,9 @@ function StylistPage() {
 
                             <div className='flex gap-2 items-center justify-between mb-6'>
                                 <div>Service Type</div>
-                                <select className='border p-2 w-[155px] mr-10' name="" id="">
+                                <select className='border p-2 w-[155px] mr-10' name="serviceType" onChange={handleFilterChange}>
                                     {appointments.map((item, index) => (
-                                        <option key={{ index }} value={item.serviceType}>
+                                        <option key={{ index }} value={item.serviceType} onChange={handleFilterChange}>
                                             {item.serviceType}
                                         </option>
                                     ))}
@@ -72,9 +92,9 @@ function StylistPage() {
                             </div>
                             <div className='flex gap-2 items-center justify-between'>
                                 <div>Status</div>
-                                <select className='border p-2 w-[155px] mr-10'>
+                                <select className='border p-2 w-[155px] mr-10' name="status" onChange={handleFilterChange}>
                                     {appointments.map((item, index) => (
-                                        <option key={index} value={item.status}>
+                                        <option key={index} value={item.status} onChange={handleFilterChange}>
                                             {item.status}
                                         </option>
                                     ))}
@@ -92,9 +112,9 @@ function StylistPage() {
                         <tr className='sm:text-base text-sm'>
                             <th className='py-2 px-3 font-semibold text-center uppercase'>Stt</th>
                             <th className='py-2 px-3 font-semibold text-center uppercase'>Customer Name</th>
-                            <th className='hidden sm:table-cell'>Service Type</th>
+                            <th className='hidden sm:table-cell font-semibold  uppercase'>Service Type</th>
                             <th className='py-2 px-3 font-semibold text-center uppercase'>Date</th>
-                            <th className='hidden sm:table-cell'>Time</th>
+                            <th className='hidden sm:table-cell  font-semibold uppercase'>Time</th>
                             <th className='py-2 px-3 font-semibold text-center uppercase'>Status</th>
                         </tr>
 
@@ -106,7 +126,7 @@ function StylistPage() {
                             </td>
                         </tr>
                         {
-                            appointments.map((item) => {
+                            filterDataBySelect(appointments, selectedFilter).map((item) => {
                                 return (
                                     <tr key={item.id} className='sm:text-base text-sm'>
                                         <td className='py-4'>{item.id}</td>
@@ -114,7 +134,14 @@ function StylistPage() {
                                         <td className='hidden sm:table-cell py-4'>{item.serviceType}</td>
                                         <td className='py-4'>{item.date}</td>
                                         <td className='hidden sm:table-cell py-4'>{item.time}</td>
-                                        <td className='py-4'>{item.status}</td>
+                                        <td
+                                            className={`py-4 ${item.status === 'Success' ? 'text-green-500' :
+                                                item.status === 'Canceled' ? 'text-red-500' :
+                                                    item.status === 'Waiting' ? 'text-yellow-500' : ''
+                                                }`}
+                                        >
+                                            {item.status}
+                                        </td>
                                     </tr>
                                 )
                             }
@@ -126,19 +153,21 @@ function StylistPage() {
             </div>
 
             {/* pagination */}
-            <div className='flex gap-2 justify-between p-4 w-[50%] translate-x-1/2 my-10 cursor-pointer text-sm sm:text-lg'>
-                <div className='w-24 text-center'>
-                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
-                </div>
-                <div className='flex gap-1'>
-                    <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
-                    <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
-                </div>
-                <div className='w-24 text-center'>
-                    <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+            <div className='w-[75%] sm:w-[70%] lg:w-[50%] mx-auto my-10 cursor-pointer text-sm lg:text-lg'>
+                <div className='flex gap-2 justify-between p-4'>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>← Prevous</p>
+                    </div>
+                    <div className='flex gap-1'>
+                        <p className='w-4 sm:w-12 text-center bg-black rounded text-white'>1</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>2</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>3</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>...</p>
+                        <p className='w-4 sm:w-12 text-center hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>9</p>
+                    </div>
+                    <div className='w-24 text-center'>
+                        <p className='italic hover:bg-black rounded hover:text-white trasion-all ease-in-out duration-300'>Next →</p>
+                    </div>
                 </div>
             </div>
         </div>

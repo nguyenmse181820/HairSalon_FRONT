@@ -27,8 +27,8 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
   const totalTimeString = `${hours > 0 ? `${hours} hr ` : ""}${minutes} min +`;
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold pb-8">Appointment Summary</h2>
+    <div className=''>
+      <h2 className="text-2xl font-bold pb-2">Appointment Summary</h2>
       <div className="p-4">
         {service || stylist ? (
           <>
