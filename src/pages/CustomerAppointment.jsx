@@ -91,17 +91,10 @@ const CustomerAppointment = () => {
 
     return (
         <div className="min-h-screen p-6 bg-white">
-            <div className="flex border-b">
-                {['UPCOMING', 'SUCCESS', 'CANCELED'].map((tab) => (
-                    <a
-                        key={tab}
-                        href="#"
-                        className={`px-4 py-2 ${activeTab === tab ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500 hover:text-blue-500'}`}
-                        onClick={() => setActiveTab(tab)}
-                    >
-                        {tab}
-                    </a>
-                ))}
+            <div className="flex justify-center mb-10">
+                <h1 className="text-3xl font-bold font-serif">
+                    My Appointment
+                </h1>
             </div>
 
             <div className="flex-grow p-6 bg-white">
@@ -156,8 +149,8 @@ const CustomerAppointment = () => {
                             );
                         })
                     ) : (
-                        <div className="text-center text-gray-500 mt-4">
-                            No appointments found.
+                        <div className="text-center uppercase text-xl text-gray-500 mt-16 mb-16">
+                            No appointments found
                         </div>
                     )}
                 </div>

@@ -50,7 +50,7 @@ const ContactPage = () => {
       {!isSubmitted ? (
         <form onSubmit={handleSubmit} className="w-full max-w-md bg-white">
           {/* Title */}
-          <h3 className="text-3xl font-bold mb-20 text-center">
+          <h3 className="text-3xl font-bold mb-10 text-center font-serif">
             ASK US A QUESTION
           </h3>
 

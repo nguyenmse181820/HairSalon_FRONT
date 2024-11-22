@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import AOS from "aos";
+
 import { useNavigate } from "react-router-dom";
 import Image1AboutUs from "../assets/AboutUs/pic1_aboutUs.jpg";
 import Image2AboutUs from "../assets/AboutUs/pic2_aboutUs.jpg";

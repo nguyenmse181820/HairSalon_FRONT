@@ -6,6 +6,7 @@ import CustomerFrame from "./pages/frame/CustomerFrame.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import AccountPage from "./pages/AccountPage.jsx";
 import AboutUs from "./pages/AboutUsPage.jsx";
+import BlogStylist from "./pages/BlogStylist.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import FeedbackPage from "./pages/FeedbackPage.jsx";
@@ -78,10 +79,11 @@ const App = () => {
         {
           path: "account",
           element: user?.isLoggedIn ? <AppointmentProvider>
-                                        <ProfilePage />
-                                      </AppointmentProvider> : <AccountPage />,
+            <ProfilePage />
+          </AppointmentProvider> : <AccountPage />,
         },
         { path: "about-us", element: <AboutUs /> },
+        { path: "blog-stylist", element: <BlogStylist /> },
         { path: "contact", element: <ContactPage /> },
         { path: "appointment", element: <CustomerAppointment /> },
         { path: "feedback", element: <FeedbackPage /> },

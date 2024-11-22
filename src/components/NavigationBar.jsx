@@ -64,17 +64,17 @@ const NavigationBar = () => {
             </div>
             {user?.isLoggedIn && (
               <div className="flex items-center">
-              <Link
-                to = "/appointment">
-                <FontAwesomeIcon
-                  className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
-                  icon={faCalendar}
-                />
-                <span className="hidden lg:inline-block">
-                  My Appointment
-                </span>
-              </Link>
-            </div>)}
+                <Link
+                  to="/appointment">
+                  <FontAwesomeIcon
+                    className="cursor-pointer hover:scale-110 transition-transform duration-200 pr-1"
+                    icon={faCalendar}
+                  />
+                  <span className="hidden lg:inline-block">
+                    My Appointment
+                  </span>
+                </Link>
+              </div>)}
           </div>
         </div>
         <div className="middle-header-row flex items-center justify-center">
@@ -87,6 +87,7 @@ const NavigationBar = () => {
           <ul className="hidden lg:flex justify-center items-center space-x-[7rem] list-none pt-2">
             {[
               { name: 'BOOKING', link: '/booking/service' },
+              { name: 'STYLIST', link: '/blog-stylist' },
               { name: 'REWARD', link: '/reward' },
               { name: 'CONTACT', link: '/contact' },
               { name: 'ABOUT US', link: '/about-us' }
@@ -128,6 +129,7 @@ const NavigationBar = () => {
             <ul className="flex flex-col items-center space-y-8 text-xl">
               {[
                 { name: 'BOOKING', link: '/booking/service' },
+                { name: 'STYLIST', link: '/blog-stylist' },
                 { name: 'REWARD', link: '/reward' },
                 { name: 'CONTACT', link: '/contact' },
                 { name: 'ABOUT US', link: '/about-us' }
