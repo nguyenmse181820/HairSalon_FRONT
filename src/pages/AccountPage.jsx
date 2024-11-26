@@ -164,7 +164,7 @@ const AccountPage = () => {
         </div>
         <div className="form-container px-48 pt-10 pb-10">
           {isLoginActive ? (
-            <div className="login-form bg-gray-50 py-20 flex justify-center">
+            <div className="login-form lg:bg-gray-50 py-20 flex justify-center">
               <div className="form-section w-96">
                 <p className="font-serif pb-10 w-96">
                   If you are already registered with Coiffure, login here
@@ -224,9 +224,9 @@ const AccountPage = () => {
               </div>
             </div>
           ) : (
-            <div className="register-form bg-gray-50 py-20 flex justify-center">
+            <div className="register-form lg:bg-gray-50 py-20 flex justify-center">
               <div className="form-section w-96">
-                <p className="font-serif pb-10">
+                <p className="font-serif pb-10 w-96">
                   This space allows you to manage your personal information,
                   news updates.
                 </p>
