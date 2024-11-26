@@ -37,6 +37,7 @@ import "./index.css";
 import StaffManagement from "./pages/staffpage/StaffManagement.jsx";
 import ProtectedRoute from "./components/control-access/ProtectedRoute.jsx";
 import QuestionManagement from "./pages/staffpage/QuestionManagement.jsx";
+import BlogService from "./pages/BlogService.jsx";
 
 export const UserContext = createContext(null);
 
@@ -84,6 +85,7 @@ const App = () => {
         },
         { path: "about-us", element: <AboutUs /> },
         { path: "blog-stylist", element: <BlogStylist /> },
+        { path: "blog-service", element: <BlogService />},
         { path: "contact", element: <ContactPage /> },
         { path: "appointment", element: <CustomerAppointment /> },
         { path: "feedback", element: <FeedbackPage /> },

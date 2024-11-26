@@ -16,7 +16,7 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="mt-2">
+      <div className="">
         <div
           className="top-banner flex justify-center w-full z-0"
           data-aos="fade-down"
