@@ -1,139 +1,135 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AdvancedSearchModal from "../components/modal/AdvancedSearchModal";
+import StylistDetailModal from "../components/modal/StylistDetailModal";
 
 const BlogStylist = () => {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [rating, setRating] = useState(0);
-    const [minReviews, setMinReviews] = useState(0);
-    const [minExperience, setMinExperience] = useState(0);
+    const [stylistData, setStylistData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Trạng thái lưu giá trị khi người dùng nhấn nút Tìm kiếm
-    const [filters, setFilters] = useState({
+    const defaultFilters = {
         searchTerm: "",
         rating: 0,
         minReviews: 0,
         minExperience: 0,
-    });
+    };
+    const [filters, setFilters] = useState(defaultFilters);
+    const [tempFilters, setTempFilters] = useState(defaultFilters);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isAdvancedSearchOpen, setAdvancedSearchOpen] = useState(false);
 
-    const stylistData = [
-        {
-            name: "HOANG THACH",
-            specialty: "Women's Haircuts, Hair Coloring, and Bridal Styling",
-            experience: "4 years",
-            reviews: "12 reviews",
-            rating: 5,
-            image: "https://via.placeholder.com/150",
-        },
-        {
-            name: "HOANG THACH",
-            specialty: "Women's Haircuts, Hair Coloring, and Bridal Styling",
-            experience: "4 years",
-            reviews: "12 reviews",
-            rating: 5,
-            image: "https://via.placeholder.com/150",
-        },
-    ];
 
-    // Lọc stylist theo các tiêu chí trong `filters`
+    const [selectedStylist, setSelectedStylist] = useState(null);
+    const [isDetailModalOpen, setDetailModalOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchStylists = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(
+                    "https://674522dab4e2e04abea4d264.mockapi.io/stylist/StylistData"
+                );
+
+                const data = await response.json();
+                console.log("Fetched Data:", data);
+                setStylistData(data);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStylists();
+    }, []);
+
     const filteredStylists = stylistData
         .filter((stylist) =>
-            stylist.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
+            stylist?.name?.toLowerCase().includes(filters.searchTerm.toLowerCase() || "")
         )
-        .filter((stylist) => stylist.rating >= filters.rating)
-        .filter((stylist) => parseInt(stylist.reviews) >= filters.minReviews)
-        .filter((stylist) => parseInt(stylist.experience) >= filters.minExperience);
+        .filter((stylist) => parseFloat(stylist?.rating || 0) >= (filters.rating || 0))
+        .filter((stylist) => parseInt(stylist?.reviews || "0", 10) >= (filters.minReviews || 0))
+        .filter((stylist) => parseInt(stylist?.experience || "0", 10) >= (filters.minExperience || 0));
 
-    // Hàm xử lý khi nhấn nút "Tìm kiếm"
+
     const handleSearch = () => {
         setFilters({
+            ...tempFilters,
             searchTerm,
-            rating,
-            minReviews,
-            minExperience,
         });
+        setAdvancedSearchOpen(false);
+    };
+
+    const handleReset = () => {
+        setSearchTerm("");
+        setFilters(defaultFilters);
+        setTempFilters(defaultFilters);
+    };
+    const handleDetailClick = (stylist) => {
+        setSelectedStylist(stylist);
+        setDetailModalOpen(true);
     };
 
     return (
         <div className="p-8">
-            {/* Title */}
             <h1 className="text-center text-2xl font-serif mb-8">
                 Explore Our Salon Stylist
             </h1>
 
-            {/* Search Section */}
-            <div className="flex flex-col md:flex-row items-center justify-center mb-8 space-y-4 md:space-y-0 md:space-x-4">
-                {/* Search Input */}
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-8">
                 <input
                     type="text"
-                    className="w-full md:w-1/3 border border-gray-300 rounded-lg py-2 px-4 focus:outline-none"
+                    className="flex-grow md:flex-grow-0 w-full md:w-1/3 max-w-full h-10 text-sm border border-gray-300 py-0 px-3 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-0 focus:border-black"
                     placeholder="Search ..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
-
-                {/* Rating Filter */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1">Minimum Rating</label>
-                    <input
-                        type="number"
-                        className="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none"
-                        min="1"
-                        max="5"
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                    />
+                <div className="flex space-x-2">
+                    <button
+                        className="h-10 bg-black text-white text-xs md:text-sm border-black border uppercase py-0 px-3 transform duration-300 ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black"
+                        onClick={() => setAdvancedSearchOpen(true)}
+                    >
+                        Advanced Search
+                    </button>
+                    <button
+                        className="h-10 bg-red-700 text-white text-xs md:text-sm border-red-700 border uppercase py-0 px-3 transform duration-300 ease-in-out hover:bg-transparent hover:text-red-700 hover:border hover:border-red-700"
+                        onClick={handleReset}
+                    >
+                        Reset
+                    </button>
                 </div>
-
-                {/* Reviews Filter */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1">
-                        Minimum Reviews
-                    </label>
-                    <input
-                        type="number"
-                        className="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none"
-                        min="0"
-                        value={minReviews}
-                        onChange={(e) => setMinReviews(Number(e.target.value))}
-                    />
-                </div>
-
-                {/* Experience Filter */}
-                <div className="flex flex-col">
-                    <label className="text-sm font-medium mb-1">
-                        Minimum Experience (years)
-                    </label>
-                    <input
-                        type="number"
-                        className="border border-gray-300 rounded-lg py-2 px-4 focus:outline-none"
-                        min="0"
-                        value={minExperience}
-                        onChange={(e) => setMinExperience(Number(e.target.value))}
-                    />
-                </div>
-
-                {/* Search Button */}
-                <button
-                    onClick={handleSearch}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-md"
-                >
-                    Tìm kiếm
-                </button>
             </div>
+
+
+
+            <AdvancedSearchModal
+                isOpen={isAdvancedSearchOpen}
+                tempFilters={tempFilters}
+                setTempFilters={setTempFilters}
+                onApply={handleSearch}
+                onCancel={() => setAdvancedSearchOpen(false)}
+            />
 
             {/* Stylist Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredStylists.length > 0 ? (
+                {loading ? (
+                    <p className="text-center text-gray-500 col-span-1 md:col-span-2">
+                        Loading data...
+                    </p>
+                ) : error ? (
+                    <p className="text-center text-red-500 col-span-1 md:col-span-2">
+                        {error}
+                    </p>
+                ) : filteredStylists.length > 0 ? (
                     filteredStylists.map((stylist, index) => (
                         <div
                             key={index}
-                            className="border border-gray-300 rounded-lg p-4 flex flex-col justify-between h-full"
+                            className="border border-gray-300 p-4 flex flex-col justify-between h-full"
                         >
-                            {/* Top Section */}
                             <div className="flex items-center">
                                 <img
-                                    src={stylist.image}
-                                    alt={stylist.name}
-                                    className="w-24 h-32 object-cover rounded-md"
+                                    src={stylist.image || "/path/to/fallback-image.jpg"}
+                                    alt={stylist.name || "Stylist"}
+                                    className="w-24 h-32 object-cover "
                                 />
                                 <div className="flex-grow px-4">
                                     <h2 className="text-lg font-semibold">{stylist.name}</h2>
@@ -141,22 +137,24 @@ const BlogStylist = () => {
                                         {stylist.specialty}
                                     </p>
                                     <p className="text-sm text-gray-500 mt-1">
-                                        {stylist.experience}
+                                        {stylist.experience} years
                                     </p>
                                     <div className="flex items-center mt-2">
                                         <span className="text-yellow-400">
                                             {"★".repeat(stylist.rating)}
                                         </span>
                                         <span className="text-gray-500 text-sm ml-2">
-                                            ({stylist.reviews})
+                                            ({stylist.review} reviews)
                                         </span>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* Bottom Section */}
                             <div className="flex justify-end mt-4">
-                                <button className="bg-black text-white px-6 py-2 rounded-md">
+                                <button
+                                    className="bg-black text-white border-black border uppercase py-2 px-3 transform duration-300 
+                   ease-in-out hover:bg-transparent hover:text-black hover:border hover:border-black"
+                                    onClick={() => handleDetailClick(stylist)}
+                                >
                                     DETAIL
                                 </button>
                             </div>
@@ -168,6 +166,12 @@ const BlogStylist = () => {
                     </p>
                 )}
             </div>
+
+            <StylistDetailModal
+                isOpen={isDetailModalOpen}
+                stylist={selectedStylist}
+                onClose={() => setDetailModalOpen(false)}
+            />
         </div>
     );
 };
