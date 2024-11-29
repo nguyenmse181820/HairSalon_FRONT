@@ -44,7 +44,7 @@ const ContactPage = () => {
 
   return (
     <div
-      className="flex flex-col justify-center items-center bg-white"
+      className="flex flex-col justify-center items-center bg-white mb-20"
       style={{ height: "82vh" }}
     >
       {!isSubmitted ? (
