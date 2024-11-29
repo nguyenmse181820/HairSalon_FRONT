@@ -12,9 +12,9 @@ const Footer = () => {
                 {/* Social Icons */}
                 <div className="flex flex-col items-start justify-start mb-8 md:mb-0">
                     <div className="flex space-x-8 text-lg">
-                        <a href="#salons" className="hover:text-gray-400">SALONS</a>
+                        <a href="salons" className="hover:text-gray-400">SALONS</a>
                         <a href="#company" className="hover:text-gray-400">COMPANY</a>
-                        <a href="#contact" className="hover:text-gray-400">CONTACT</a>
+                        <a href="contact" className="hover:text-gray-400">CONTACT</a>
                     </div>
                     <div className="flex space-x-4 mt-4 text-xl">
                         <FaFacebookF className="text-white cursor-pointer hover:text-gray-400" />
