@@ -1,4 +1,7 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+
 
 const StylistDetailModal = ({ isOpen, stylist, onClose }) => {
     if (!isOpen || !stylist) return null;
@@ -31,9 +34,38 @@ const StylistDetailModal = ({ isOpen, stylist, onClose }) => {
                     <div>
                         <span className="font-semibold">REVIEWS:</span>{" "}
                         <span className="ml-8 font-semilight">
-                            {"★".repeat(stylist.rating)} ({stylist.review} reviews)
+                            {Array.from({ length: 5 }, (_, index) => {
+                                const starRating = stylist.rating - index;
+                                if (starRating >= 1) {
+                                    return (
+                                        <FontAwesomeIcon
+                                            key={index}
+                                            icon={faStar}
+                                            className="text-yellow-500"
+                                        />
+                                    );
+                                } else if (starRating > 0) {
+                                    return (
+                                        <FontAwesomeIcon
+                                            key={index}
+                                            icon={faStarHalfAlt}
+                                            className="text-yellow-500"
+                                        />
+                                    );
+                                } else {
+                                    return (
+                                        <FontAwesomeIcon
+                                            key={index}
+                                            icon={["far", "star"]}
+                                            className="text-gray-300"
+                                        />
+                                    );
+                                }
+                            })}{" "}
+                            ({stylist.review} reviews)
                         </span>
                     </div>
+
                     <div>
                         <span className="font-semibold">SPECIALITY: </span>
                         {Array.isArray(stylist.specialty) ? (
@@ -50,8 +82,8 @@ const StylistDetailModal = ({ isOpen, stylist, onClose }) => {
                 <div className="flex justify-between mt-10">
                     <button
                         onClick={onClose}
-                        className="bg-red-600 text-white border border-red-600 uppercase py-2 px-4 transform duration-300 ease-in-out 
-               hover:bg-transparent hover:text-red-500 hover:border-red-600 active:scale-95"
+                        className="bg-red-700 text-white border border-red-700 uppercase py-2 px-4 transform duration-300 ease-in-out 
+               hover:bg-transparent hover:text-red-700 hover:border-red-700 active:scale-95"
                     >
                         CANCEL
                     </button>
