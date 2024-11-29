@@ -18,7 +18,7 @@ const BlogService = () => {
             <p className="text-center font-extrabold uppercase text-3xl pb-3 tracking-wide">
               {title}
             </p>
-            <span className="absolute right-0 top-0 text-gray-600 text-sm">
+            <span className="hidden xl:flex absolute right-0 top-0 text-gray-600 text-sm">
               {extra}
             </span>
           </div>
