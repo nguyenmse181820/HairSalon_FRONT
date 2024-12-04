@@ -9,7 +9,6 @@ import { useAppointment } from '../context/AppointmentContext.jsx';
 
 const ProfilePage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [userAPI, setUserAPI] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [originalUserInfo, setOriginalUserInfo] = useState({});
   const [isActing, setIsActing] = useState(false);
@@ -18,7 +17,6 @@ const ProfilePage = () => {
     selectedService,
     appointmentDate,
     appointmentTime } = useAppointment();
-
   const [userInfo, setUserInfo] = useState(() => {
     const storedUserInfo = sessionStorage.getItem("user");
     return storedUserInfo ? JSON.parse(storedUserInfo) : {
