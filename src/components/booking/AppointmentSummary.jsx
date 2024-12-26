@@ -5,13 +5,6 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
     return parseFloat(priceString.replace("$", ""));
   };
 
-  const servicePrice = parsePrice(service?.price);
-  const stylistPrice = parsePrice(stylist?.price);
-  const totalPrice = (servicePrice + stylistPrice).toFixed(2);
-
-  const serviceTime = service?.time || "0 min";
-  const stylistTime = stylist?.time || "0 min";
-
   const parseTime = (timeString) => {
     const hoursMatch = timeString.match(/(\d+)\s*hr/);
     const minutesMatch = timeString.match(/(\d+)\s*min/);
@@ -20,26 +13,43 @@ function AppointmentSummary({ service, stylist, selectedDate, selectedTime }) {
     return hours * 60 + minutes;
   };
 
-  const totalMinutes = parseTime(serviceTime) + parseTime(stylistTime);
+  const totalServicesPrice = service.reduce((totalPrice, selectedServices) => {
+    return totalPrice + parsePrice(selectedServices.price);
+  }, 0);
+
+  const totalServicesTime = service.reduce((totalMinutes, selectedServices) => {
+    return totalMinutes + parseTime(selectedServices.time);
+  }, 0)
+  const stylistPrice = parsePrice(stylist?.price);
+  const stylistTime = parseTime(stylist?.time || "0 min");
+
+  const totalPrice = (totalServicesPrice + stylistPrice).toFixed(2);
+  const totalMinutes = totalServicesTime + stylistTime;
+  
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
 
-  const totalTimeString = `${hours > 0 ? `${hours} hr ` : ""}${minutes} min +`;
+  const totalTimeString = `${hours > 0 ? `${hours} hr ` : ""}${minutes} min+`;
 
   return (
     <div className=''>
       <h2 className="text-2xl font-bold pb-2">Appointment Summary</h2>
       <div className="p-4">
-        {service || stylist ? (
+        {service.length > 0 || stylist ? (
           <>
-            {service && (
+            {service.length > 0 && (
               <>
-                <p className="mt-2 font-bold">{service.title}</p>
-                <p className="text-sm text-gray-600">{service.description}</p>
-                <p>
-                  {service.price} · {service.time}
-                </p>
-              </>
+              <h3 className="mt-2 font-bold">Selected Services:</h3>
+              {service.map((s) => (
+                <div key={s.id} className="mb-2">
+                  <p className="font-semibold">{s.title}</p>
+                  <p className="text-sm text-gray-600">{s.description}</p>
+                  <p>
+                    {s.price} · {s.time}
+                  </p>
+                </div>
+              ))}
+            </>
             )}
             {stylist && (
               <>

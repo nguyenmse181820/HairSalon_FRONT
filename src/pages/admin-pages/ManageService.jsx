@@ -28,7 +28,7 @@ const ManageService = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('https://667c07dd3c30891b865b026d.mockapi.io/ass2/services');
+        const response = await axios.get('https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/services');
         setServices(response.data);
       } catch (error) {
         console.error("Error fetching service data:", error);

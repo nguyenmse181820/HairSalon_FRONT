@@ -8,9 +8,9 @@ import { toast } from "sonner";
 
 function BookingService() {
   const {
+    selectedService,
     setSelectedService,
     selectedStylist,
-    selectedService,
     appointmentDate,
     appointmentTime,
   } = useAppointment();
@@ -20,7 +20,7 @@ function BookingService() {
 
   useEffect(() => {
     axios
-      .get("https://667c07dd3c30891b865b026d.mockapi.io/ass2/services")
+      .get("https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/services")
       .then((response) => {
         setServices(response.data);
       })
@@ -35,11 +35,21 @@ function BookingService() {
   }, []);
 
   const handleServiceSelect = (service) => {
-    setSelectedService(service);
+    setSelectedService((prevSelectedService) => {
+      const isSelected = prevSelectedService.some((s) => s.id === service.id);
+      if (isSelected) {
+        toast.warning(`${service.title} removed from your booking.`);
+        return prevSelectedService.filter((s) => s.id !== service.id);
+      } else {
+        toast.success(`${service.title} added to your booking.`);
+        return [...prevSelectedService, service];
+      }
+    });
+    
   };
 
   const handleNext = () => {
-    if (!selectedService) {
+    if (selectedService.length <= 0) {
       toast.error("Please select a service first.");
       return;
     }
@@ -52,7 +62,6 @@ function BookingService() {
 
   return (
     <div className="flex flex-col md:flex-row p-4 md:p-8 space-y-5 md:space-y-0">
-      {/* AppointmentSummary Section - Moves to the top on mobile */}
       <div className="md:w-2/5 px-0 md:px-4 order-1 md:order-2">
         <AppointmentSummary
           service={selectedService}
@@ -99,13 +108,17 @@ function BookingService() {
         <h2 className="text-xl md:text-2xl font-bold pb-3">
           Select your service
         </h2>
-        {services.map((service) => (
-          <ServiceCard
+        {services.map((service) => {
+          const isSelected = Array.isArray(selectedService) && selectedService.some(s => s.id === service.id);
+          return (
+            <ServiceCard
             key={service.id}
             service={service}
             onSelect={() => handleServiceSelect(service)}
+            isSelected={isSelected}
           />
-        ))}
+          );
+        })}
       </div>
     </div>
   );

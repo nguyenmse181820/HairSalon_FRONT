@@ -11,8 +11,12 @@ export const useAppointment = () => {
 };
 
 export const AppointmentProvider = ({ children }) => {
+  // const [selectedService, setSelectedService] = useState(() => {
+  //   const storedValue = sessionStorage.getItem("selectedService");
+  //   return Array.isArray(JSON.parse(storedValue)) ? JSON.parse(storedValue) : [];
+  // });
   const [selectedService, setSelectedService] = useState(
-    () => JSON.parse(sessionStorage.getItem("selectedService")) || null
+    () => JSON.parse(sessionStorage.getItem("selectedService")) || []
   );
   const [selectedStylist, setSelectedStylist] = useState(
     () => JSON.parse(sessionStorage.getItem("selectedStylist")) || null
