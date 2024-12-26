@@ -44,7 +44,10 @@ function BookingStylist() {
 
   const handleNext = () => {
     if (!selectedStylist) {
-      toast.error("Please select a stylist first.");
+      toast.error("Please select a stylist to checkout.");
+      return;
+    } else if (!selectedService) {
+      toast.error("Please select a service to checkout.");
       return;
     }
     navigate("/booking/schedule");
@@ -108,13 +111,17 @@ function BookingStylist() {
         <h2 className="text-xl md:text-2xl font-bold mb-4">
           Select Your Stylist
         </h2>
-        {stylists.map((stylist) => (
-          <StylistCard
-            key={stylist.id}
-            stylist={stylist}
-            onSelect={() => handleStylistSelect(stylist)}
-          />
-        ))}
+        {stylists.map((stylist) => {
+          const isSelected = stylist.id === selectedStylist?.id;
+          return (
+            <StylistCard
+              key={stylist.id}
+              stylist={stylist}
+              onSelect={() => handleStylistSelect(stylist)}
+              isSelected={isSelected}
+            />
+          )
+        })}
       </div>
     </div>
   );

@@ -184,13 +184,14 @@ const ProfilePage = () => {
             </p>
           </div>
           <div className="text-right">
-            <p className="font-bold text-sm lg:text-base">
-              {selectedService?.title ? selectedService.title : "No service selected"}
-            </p>
-            <p className="font-bold text-sm lg:text-base">
-              {selectedService?.time ? selectedService.time : ""}
-            </p>
+            {selectedService.map((service) => (
+              <div key={service.id} className="flex justify-between items-center">
+                <p className="font-bold text-sm lg:text-base pr-5">{service?.title || "No service selected"}</p>
+                <p className="text-sm lg:text-base text-gray-600">{service?.time || ""}</p>
+              </div>
+            ))}
           </div>
+
           <div className="flex items-center">
             {appointmentDate && appointmentTime && selectedStylist && selectedService ? (
               <a

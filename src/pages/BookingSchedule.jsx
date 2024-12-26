@@ -44,7 +44,16 @@ function BookingSchedule() {
       return;
     }
     if (!selectedTime) {
-      toast.error("Please select a time first!");
+      toast.error("Please select a time to checkout.!");
+      return;
+    } else if(!selectedDate) {
+      toast.error("Please select a date to checkout.!");
+      return;
+    } else if(!selectedService) {
+      toast.error("Please select a service to checkout.!");
+      return;
+    } else if(!selectedStylist) {
+      toast.error("Please select a stylist to checkout.!");
       return;
     }
     navigate("/booking/checkout");

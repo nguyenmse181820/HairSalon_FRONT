@@ -1,7 +1,8 @@
-function StylistCard({ stylist, onSelect }) {
+function StylistCard({ stylist, onSelect, isSelected }) {
   return (
     <div
-      className="border p-4 rounded-lg cursor-pointer hover:shadow-lg"
+      className={`p-4 border rounded-lg cursor-pointer ${isSelected ? "bg-green-100 border-green-500" : "bg-white border-gray-300 hover:border-gray-500"
+        }`}
       onClick={onSelect}
     >
       <h3 className="font-bold uppercase">{stylist.name}</h3>
