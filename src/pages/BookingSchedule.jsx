@@ -49,7 +49,7 @@ function BookingSchedule() {
     } else if(!selectedDate) {
       toast.error("Please select a date to checkout.!");
       return;
-    } else if(!selectedService) {
+    } else if(selectedService.length < 1) {
       toast.error("Please select a service to checkout.!");
       return;
     } else if(!selectedStylist) {
@@ -185,7 +185,8 @@ function BookingSchedule() {
         {!isUserLoggedIn && (
           <button
             onClick={handleSignIn}
-            className="w-full bg-black text-white border-black border py-3 uppercase transition hover:bg-transparent hover:text-black"
+            className="w-full bg-black text-white border-black border py-3 uppercase transition 
+            hover:bg-transparent hover:text-black"
           >
             Sign in
           </button>

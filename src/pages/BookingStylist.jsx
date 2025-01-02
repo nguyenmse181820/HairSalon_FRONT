@@ -20,7 +20,7 @@ function BookingStylist() {
 
   useEffect(() => {
     axios
-      .get("https://667c07dd3c30891b865b026d.mockapi.io/ass2/stylists")
+      .get("https://1e9571cd-9582-429d-abfe-167d79882ad7.mock.pstmn.io/stylists")
       .then((response) => {
         setStylists(response.data);
       })
@@ -44,10 +44,10 @@ function BookingStylist() {
 
   const handleNext = () => {
     if (!selectedStylist) {
-      toast.error("Please select a stylist to checkout.");
+      toast.error("Please select a stylist.");
       return;
-    } else if (!selectedService) {
-      toast.error("Please select a service to checkout.");
+    } else if (selectedService.length < 1) {
+      toast.error("Please select a service.");
       return;
     }
     navigate("/booking/schedule");
@@ -82,7 +82,7 @@ function BookingStylist() {
         </div>
 
         {isUserLoggedIn &&
-          selectedService &&
+          selectedService.length > 0 &&
           selectedStylist &&
           appointmentDate &&
           appointmentTime && (

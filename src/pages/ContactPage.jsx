@@ -1,19 +1,50 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../main";
+import { fetchUserData } from "../utils/apiUtils";
 
 const ContactPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    message: ""
+  });
+
+  useEffect(() => {
+    const fetchAndPrefillUserData = async() => {
+      try {
+        if(user?.id) {
+          const userData = await fetchUserData(user.id);
+          setForm((prevForm) => ({
+            ...prevForm,
+            fullName: userData.fullName || "",
+            email: userData.email || "",
+          }))
+        }
+      } catch(error) {
+        console.error("Error fetching user data for Contact page:", error);
+      }
+    }
+    fetchAndPrefillUserData(); 
+  }, [user])
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      message: e.target.message.value,
+      name: form.fullName,
+      email: form.email,
+      message: form.message,
     };
 
     try {
@@ -49,29 +80,26 @@ const ContactPage = () => {
     >
       {!isSubmitted ? (
         <form onSubmit={handleSubmit} className="w-full max-w-md bg-white">
-          {/* Title */}
           <h3 className="text-3xl font-bold mb-10 text-center font-serif">
             ASK US A QUESTION
           </h3>
-
-          {/* Name Input */}
           <div className="mb-10">
             <label
               className="block text-gray-700 text-sm font-bold mb-2 m-0"
               htmlFor="name"
             >
-              NAME*
+              FULL NAME*
             </label>
             <input
               className="w-full border border-gray-400 p-2"
               id="name"
               type="text"
               placeholder="Name*"
+              value={form.fullName}
+              onChange={handleInputChange}
               required
             />
           </div>
-
-          {/* Email Input */}
           <div className="mb-10">
             <label
               className="block text-gray-700 text-sm font-bold mb-2 m-0"
@@ -84,11 +112,11 @@ const ContactPage = () => {
               id="email"
               type="email"
               placeholder="Email*"
+              value={form.email}
+              onChange={handleInputChange}
               required
             />
           </div>
-
-          {/* Message Input */}
           <div className="mb-10">
             <label
               className="block text-gray-700 text-sm font-bold mb-2 m-0"
@@ -103,16 +131,12 @@ const ContactPage = () => {
               required
             />
           </div>
-
-          {/* Info Text */}
           <div className="flex items-center justify-center mb-6">
             <input type="checkbox" id="confirmInfo" className="mr-2" required />
             <label htmlFor="confirmInfo" className="text-xs text-gray-500">
               COIFFURE WILL RECEIVE AN EMAIL WITH YOUR MESSAGE
             </label>
           </div>
-
-          {/* Submit Button */}
           <div className="flex justify-center pt-4">
             <button
               className="bg-black text-white w-full border-black border uppercase py-3 transform duration-300 

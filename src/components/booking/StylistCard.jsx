@@ -8,7 +8,9 @@ function StylistCard({ stylist, onSelect, isSelected }) {
       <h3 className="font-bold uppercase">{stylist.name}</h3>
       <div className="flex justify-between mt-2">
         <span>{stylist.price}</span>
-        <span>{stylist.time}</span>
+      </div>
+      <div className="flex font-semibold mt-2">
+        <p>{stylist.experienceYears} year{stylist.experienceYears > 1 ? "s" : ""} experience</p>
       </div>
     </div>
   );

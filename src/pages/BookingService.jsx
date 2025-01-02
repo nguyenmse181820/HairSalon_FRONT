@@ -80,7 +80,7 @@ function BookingService() {
           </button>
         </div>
         {isUserLoggedIn &&
-          selectedService &&
+          selectedService.length > 0 &&
           selectedStylist &&
           appointmentDate &&
           appointmentTime && (
